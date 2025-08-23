@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Neon Swipe — Clean photos with a swipe</title>
+  <meta name="description" content="Swipe to keep or delete. Free up space fast—duplicates, screenshots, bursts & blurry shots. Review & Undo with a live GB counter."/>
+  <link rel="icon" href="img/favicon.png"/>
+  <meta property="og:title" content="Neon Swipe — Clean photos with a swipe"/>
+  <meta property="og:description" content="Turn photo cleanup into a quick swipe. Keep the best, clear the rest."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:image" content="img/hero.png"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <div class="brand">
+        <span class="logo">⥄</span>
+        <span>Neon Swipe</span>
+      </div>
+      <nav>
+        <a href="#features" data-i18n="nav_features">Features</a>
+        <a href="support/" data-i18n="nav_support">Support</a>
+        <button id="lang-en" class="lang-btn" aria-pressed="false">EN</button>
+        <button id="lang-es" class="lang-btn" aria-pressed="false">ES</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="kicker" data-i18n="kicker">Photo cleaner • iOS & Android</div>
+          <h1 data-i18n="h1">Clean photos with a swipe.</h1>
+          <p class="subtitle" data-i18n="sub">
+            Keep your best shots and delete the rest—duplicates, screenshots, bursts & blurry pics.
+          </p>
+          <div class="badges">
+            <a id="btn-ios" class="badge" href="#" target="_blank" rel="noopener">
+              <img src="img/apple.svg" alt="" aria-hidden="true"/><span data-i18n="get_ios">Get on the App Store</span>
+            </a>
+            <a id="btn-android" class="badge ghost" href="#" target="_blank" rel="noopener">
+              <img src="img/play.svg" alt="" aria-hidden="true"/><span data-i18n="get_android">Get on Google Play</span>
+            </a>
+          </div>
+          <p class="kicker" style="margin-top:8px" data-i18n="note">Store links coming soon.</p>
+        </div>
+        <div class="panel device">
+          <img src="img/hero.png" alt="Neon Swipe app screenshot"/>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="kicker" data-i18n="feat_kicker">Why you’ll love it</div>
+        <div class="cards">
+          <article class="card">
+            <h3 data-i18n="f1_t">Swipe to keep/delete</h3>
+            <p data-i18n="f1_d">Lightning-fast triage that makes cleanup fun.</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="f2_t">Smart queues</h3>
+            <p data-i18n="f2_d">Duplicates & similars, screenshots, bursts, and blurry shots.</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="f3_t">Review & Undo</h3>
+            <p data-i18n="f3_d">Confirm before trash—your memories stay safe.</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="f4_t">Space meter</h3>
+            <p data-i18n="f4_d">Watch MB/GB freed climb in real time.</p>
+          </article>
+        </div>
+
+        <div class="grid-screens">
+          <img src="img/screen-1.png" alt="Neon Swipe review screen"/>
+          <img src="img/screen-2.png" alt="Neon Swipe review screen with screenshot category"/>
+          <img src="img/screen-3.png" alt="Settings screen"/>
+          <img src="img/screen-4.png" alt="Review screen timeline"/>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="panel" style="padding:22px">
+          <div class="kicker" data-i18n="how_k">How it works</div>
+          <div class="cards">
+            <article class="card"><h3 data-i18n="h_t1">1) Open & allow Photos</h3><p data-i18n="h_d1">We never touch your cloud—works on-device.</p></article>
+            <article class="card"><h3 data-i18n="h_t2">2) Swipe right/left</h3><p data-i18n="h_d2">Right to keep, left to delete—simple.</p></article>
+            <article class="card"><h3 data-i18n="h_t3">3) Review & reclaim space</h3><p data-i18n="h_d3">Empty “Recently Deleted” to free storage instantly.</p></article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <span>© <span id="year"></span> Neon Swipe</span>
+      <span><a href="support/" data-i18n="footer_support">Support</a> • <a href="#" data-i18n="footer_privacy">Privacy</a></span>
+    </div>
+  </footer>
+
+  <script src="lang.js"></script>
+</body>
+</html>

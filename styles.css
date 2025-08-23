@@ -1,0 +1,77 @@
+/* Neon Swipe landing — modern, futuristic, dark + neon */
+:root{
+  --bg:#080a12;
+  --panel:#0f1220;
+  --edge:#191d2f;
+  --text:#e8ecf3;
+  --muted:#9aa3b2;
+  --primary:#00e5ff;
+  --accent:#8a4bff;
+  --accent2:#ff00d4;
+  --glow:0 12px 40px rgba(0,229,255,.18), 0 8px 30px rgba(138,75,255,.14);
+  --radius:22px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.55}
+a{color:inherit}
+
+.container{width:min(1100px,92%);margin:0 auto}
+
+.header{
+  position:sticky;top:0;z-index:10;
+  backdrop-filter:saturate(150%) blur(8px);
+  background:linear-gradient(180deg,rgba(8,10,18,0.9),rgba(8,10,18,0.6) 60%,transparent);
+  border-bottom:1px solid #121629;
+}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px}
+.logo{display:grid;place-items:center;width:36px;height:36px;border-radius:12px;
+  background:conic-gradient(from 180deg at 50% 50%, var(--primary), var(--accent), var(--accent2), var(--primary));
+  color:#061218; font-size:18px; box-shadow:var(--glow)
+}
+.nav a, .lang-btn{opacity:.9;text-decoration:none;margin-left:16px}
+.lang-btn{border:1px solid var(--edge);background:#0e1120;border-radius:12px;padding:6px 10px;cursor:pointer;color:var(--text)}
+.lang-btn[aria-pressed="true"]{background:#14182a}
+
+.hero{
+  padding:80px 0 40px;
+  background:
+   radial-gradient(60% 40% at 15% 10%, rgba(0,229,255,.18), transparent 60%),
+   radial-gradient(60% 40% at 85% 0%, rgba(255,0,212,.16), transparent 60%);
+}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center}
+h1{font-size:44px;margin:0 0 10px}
+.subtitle{color:var(--muted);margin:0 0 18px}
+.badges{display:flex;gap:12px;flex-wrap:wrap}
+.badge{
+  display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;
+  background:linear-gradient(45deg,var(--primary),var(--accent));color:#061218;font-weight:700;border:0;
+  box-shadow:var(--glow);text-decoration:none
+}
+.badge.ghost{background:#101429;color:var(--text);border:1px solid var(--edge)}
+.badge svg{width:20px;height:20px;display:block}
+
+.panel{
+  background:linear-gradient(180deg,#0e1221,#0a0d1a);
+  border:1px solid var(--edge);border-radius:28px;box-shadow:var(--glow);overflow:hidden
+}
+.device{padding:10px}
+.device img{display:block;width:100%;border-radius:22px;border:1px solid #1b1f33}
+
+.section{padding:64px 0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--edge);border-radius:20px;padding:18px}
+.card h3{margin:0 0 6px;font-size:18px}
+.card p{margin:0;color:var(--muted)}
+.kicker{font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+
+.footer{border-top:1px solid var(--edge);padding:28px 0;margin-top:40px;color:var(--muted);font-size:14px}
+
+.grid-screens{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:16px}
+.grid-screens img{width:100%;border-radius:18px;border:1px solid #1b1f33}
+
+@media (max-width: 900px){
+  .hero-grid{grid-template-columns:1fr}
+  h1{font-size:36px}
+}

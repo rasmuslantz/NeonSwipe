@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Neon Swipe — Support</title>
+  <link rel="icon" href="../img/favicon.png"/>
+  <link rel="stylesheet" href="../styles.css"/>
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <div class="brand">
+        <a href="../" style="text-decoration:none;color:inherit"><span class="logo">⥄</span></a>
+        <span>Neon Swipe</span>
+      </div>
+      <nav>
+        <a href="../" data-i18n="nav_home">Home</a>
+        <button id="lang-en" class="lang-btn" aria-pressed="false">EN</button>
+        <button id="lang-es" class="lang-btn" aria-pressed="false">ES</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <div class="panel" style="padding:24px">
+        <h1 data-i18n="s_title">Support</h1>
+        <p class="subtitle" data-i18n="s_intro">We’re here to help. Email us and we’ll reply within 1–2 business days.</p>
+        <p><strong>Email:</strong> <a href="mailto:support@neonswipe.app">support@neonswipe.app</a></p>
+
+        <div class="cards">
+          <article class="card">
+            <h3 data-i18n="sq1_t">Can’t access Photos?</h3>
+            <p data-i18n="sq1_d">iOS: Settings → Privacy & Security → Photos → Neon Swipe → Allow “All Photos”.</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="sq2_t">Undo a deletion?</h3>
+            <p data-i18n="sq2_d">Open Photos → Albums → Recently Deleted (available ~30 days).</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="sq3_t">Storage not changing?</h3>
+            <p data-i18n="sq3_d">After a cleanup, empty “Recently Deleted” to reclaim storage immediately.</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="sq4_t">Restore purchases</h3>
+            <p data-i18n="sq4_d">Open Neon Swipe → Settings → Restore Purchases.</p>
+          </article>
+        </div>
+
+        <p class="kicker" style="margin-top:16px" data-i18n="s_priv">
+          Neon Swipe processes your photos on-device. See our privacy policy on the App Store.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <span>© <span id="year"></span> Neon Swipe</span>
+      <a href="../" data-i18n="nav_home">Home</a>
+    </div>
+  </footer>
+  <script src="../lang.js"></script>
+</body>
+</html>
