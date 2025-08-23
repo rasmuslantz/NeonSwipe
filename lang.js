@@ -3,35 +3,43 @@
 window.locales = window.locales || {};
 window.locales.es_has_badges = false;
 
+// Price table
+const PRICING = {
+  EUR: { monthly: 2.99, annual: 19.99, symbol: "€", per_m: "/month", per_y: "/year" },
+  USD: { monthly: 3.99, annual: 29.99, symbol: "$", per_m: "/month", per_y: "/year" }
+};
+
 const L = {
   en: {
-    nav_functions:"Functions",
-    nav_features:"Features",
     nav_support:"Support",
     kicker:"Photo cleaner • iOS & Android",
     h1:"Clean photos with a swipe.",
-    sub:"Keep your best shots and delete the rest—duplicates, screenshots, bursts & blurry pics. See GB freed in real time.",
+    sub:"Swipe right to keep, left to delete. Sort by screenshots, videos or photos. See your queue and progress. Undo & recover from “Recently Deleted”.",
     metric_saved:"Space saved",
-    metric_safe:"Review & Undo safe",
-    metric_fast:"Lightning-fast swiping",
-    tag_timeline:"Timeline",
-    fx_title:"Functions — see it in action",
-    fx_sub:"Tap a function to preview how Neon Swipe helps you clean faster and safer.",
-    fx_dup:"Duplicates", fx_ss:"Screenshots", fx_blur:"Blurry", fx_burst:"Bursts", fx_month:"Monthly Blitz", fx_safety:"Review & Undo",
-    fx_learn:"Learn more",
-    fx_hint:"Tip: use ← → to switch functions",
-    feat_title:"Why you’ll love Neon Swipe",
-    feat_sub:"Built for speed, safety, and satisfaction—cleanup that actually feels good.",
-    // features (cards)
-    f1_t:"Swipe to keep/delete", f1_d:"Lightning-fast triage that makes cleanup fun.",
-    f2_t:"Smart queues", f2_d:"Duplicates & similars, screenshots, bursts, and blurry shots.",
-    f3_t:"Review & Undo", f3_d:"Confirm before trash—your memories stay safe.",
-    f4_t:"Space meter", f4_d:"Watch MB/GB freed climb in real time.",
-    how_title:"How it works", how_sub:"Three quick steps—no cloud access, no risk.",
-    h_t1:"1) Open & allow Photos", h_d1:"We never touch your cloud—works on-device.",
-    h_t2:"2) Swipe right/left", h_d2:"Right to keep, left to delete—simple.",
-    h_t3:"3) Review & reclaim space", h_d3:"Empty “Recently Deleted” to free storage instantly.",
-    footer_support:"Support", footer_privacy:"Privacy",
+    metric_safe:"Undo & recovery safe",
+    metric_sort:"Sort: screenshots • videos • photos",
+    tag_queue:"Queue",
+
+    // Checklist
+    do_swipe:"Swipe right to keep, left to delete",
+    do_sort:"Sort by screenshots, videos or photos",
+    do_queue:"See your queue & progress at a glance",
+    do_undo:"Undo anytime & recover from Recently Deleted (~30 days)",
+
+    // Premium
+    pro_title:"Go Premium — remove ads & keep your session",
+    pro_sub:"The app shows ads by default. Premium removes ads and lets you continue a session so you never lose progress — plus access to future features.",
+    pro_monthly:"Monthly",
+    pro_annual:"Annual",
+    per_month:"/month",
+    per_year:"/year",
+    pro_noads:"No ads — cleaner, faster experience",
+    pro_session:"Continue session so you don’t lose progress",
+    pro_future:"Access to future features as they roll out",
+    pro_legal:"Prices shown for your region. Billed via App Store / Google Play. Cancel anytime. Taxes may apply.",
+    get_ios_premium:"Upgrade on App Store",
+    get_gp_premium:"Upgrade on Google Play",
+
     // Support page
     nav_home:"Home",
     s_title:"Support",
@@ -43,116 +51,44 @@ const L = {
     s_priv:"Neon Swipe processes your photos on-device. See our privacy policy on the App Store."
   },
   es: {
-    nav_functions:"Funciones",
-    nav_features:"Funciones clave",
     nav_support:"Soporte",
     kicker:"Limpieza de fotos • iOS y Android",
     h1:"Limpia tus fotos con un swipe.",
-    sub:"Conserva lo mejor y borra el resto—duplicados, capturas, ráfagas y borrosas. Mira los GB liberados en tiempo real.",
+    sub:"Desliza a la derecha para conservar y a la izquierda para borrar. Ordena por capturas, vídeos o fotos. Mira tu cola y progreso. Deshaz y recupera desde «Eliminado recientemente».",
     metric_saved:"Espacio liberado",
-    metric_safe:"Revisión y Deshacer seguras",
-    metric_fast:"Deslizamiento ultrarrápido",
-    tag_timeline:"Cronología",
-    fx_title:"Funciones — míralo en acción",
-    fx_sub:"Toca una función para ver cómo Neon Swipe te ayuda a limpiar más rápido y con seguridad.",
-    fx_dup:"Duplicados", fx_ss:"Capturas", fx_blur:"Borrosas", fx_burst:"Ráfagas", fx_month:"Blitz mensual", fx_safety:"Revisión y Deshacer",
-    fx_learn:"Más información",
-    fx_hint:"Sugerencia: usa ← → para cambiar",
-    feat_title:"Por qué te encantará Neon Swipe",
-    feat_sub:"Velocidad, seguridad y satisfacción—una limpieza que apetece hacer.",
-    f1_t:"Desliza para conservar/borrar", f1_d:"Triage rapidísimo que hace la limpieza divertida.",
-    f2_t:"Colas inteligentes", f2_d:"Duplicados y similares, capturas, ráfagas y borrosas.",
-    f3_t:"Revisión y Deshacer", f3_d:"Confirma antes de borrar: tus recuerdos, a salvo.",
-    f4_t:"Medidor de espacio", f4_d:"Mira subir los MB/GB liberados en tiempo real.",
-    how_title:"Cómo funciona", how_sub:"Tres pasos—sin nube, sin riesgos.",
-    h_t1:"1) Abre y permite acceso a Fotos", h_d1:"No tocamos tu nube: todo se hace en el dispositivo.",
-    h_t2:"2) Desliza derecha/izquierda", h_d2:"Derecha para conservar, izquierda para borrar.",
-    h_t3:"3) Revisa y recupera espacio", h_d3:"Vacía “Eliminado recientemente” para liberar espacio al instante.",
-    footer_support:"Soporte", footer_privacy:"Privacidad",
+    metric_safe:"Deshacer y recuperación seguras",
+    metric_sort:"Ordenar: capturas • vídeos • fotos",
+    tag_queue:"Cola",
+
+    // Checklist
+    do_swipe:"Desliza derecha para conservar, izquierda para borrar",
+    do_sort:"Ordena por capturas, vídeos o fotos",
+    do_queue:"Consulta tu cola y progreso de un vistazo",
+    do_undo:"Deshaz en cualquier momento y recupera desde Eliminado recientemente (~30 días)",
+
+    // Premium
+    pro_title:"Hazte Premium — sin anuncios y con sesión guardada",
+    pro_sub:"La app muestra anuncios por defecto. Con Premium eliminas los anuncios y puedes continuar una sesión para no perder progreso — además de acceso a futuras funciones.",
+    pro_monthly:"Mensual",
+    pro_annual:"Anual",
+    per_month:"/mes",
+    per_year:"/año",
+    pro_noads:"Sin anuncios — experiencia más limpia y rápida",
+    pro_session:"Continúa la sesión para no perder tu progreso",
+    pro_future:"Acceso a funciones futuras a medida que salgan",
+    pro_legal:"Precios según tu región. Se factura vía App Store / Google Play. Cancela cuando quieras. Impuestos aplicables.",
+    get_ios_premium:"Mejorar en App Store",
+    get_gp_premium:"Mejorar en Google Play",
+
+    // Support page
     nav_home:"Inicio",
     s_title:"Soporte",
     s_intro:"Estamos para ayudarte. Respondemos en 1–2 días laborables.",
     sq1_t:"¿Sin acceso a Fotos?",sq1_d:"iOS: Ajustes → Privacidad y seguridad → Fotos → Neon Swipe → “Todas las fotos”.",
     sq2_t:"¿Deshacer un borrado?",sq2_d:"Fotos → Álbumes → Eliminado recientemente (≈30 días).",
-    sq3_t:"¿El espacio no cambia?",sq3_d:"Después de limpiar, vacía “Eliminado recientemente” para recuperar espacio.",
+    sq3_t:"¿El espacio no cambia?",sq3_d:"Tras limpiar, vacía “Eliminado recientemente” para recuperar espacio.",
     sq4_t:"Restaurar compras",sq4_d:"Neon Swipe → Ajustes → Restaurar compras.",
     s_priv:"Neon Swipe procesa tus fotos en el dispositivo. Consulta la política de privacidad en App Store."
-  }
-};
-
-// --- Interactive content data for the Functions stage ---
-const FX = {
-  duplicates: {
-    title: {en:"Find and clear duplicates", es:"Detecta y quita duplicados"},
-    desc: {
-      en:"Groups near-identical shots so you keep the best and remove the rest in seconds.",
-      es:"Agrupa tomas casi idénticas para que conserves la mejor y elimines el resto en segundos."
-    },
-    points: {
-      en:["Smart detection of similar shots","Swipe right to keep, left to delete","Watch the GB freed counter rise"],
-      es:["Detección inteligente de fotos similares","Desliza derecha para conservar, izquierda para borrar","Mira subir el contador de GB"]
-    },
-    shot:"img/screen-1.png"
-  },
-  screenshots: {
-    title:{en:"Nuke screenshots in bulk", es:"Elimina capturas en lote"},
-    desc:{
-      en:"All your screenshots in one queue—clear the clutter fast.",
-      es:"Todas tus capturas en una cola—quita el ruido en minutos."
-    },
-    points:{
-      en:["One tap into the screenshots queue","Swipe through and clear quickly","Safe review before removal"],
-      es:["Cola específica de capturas","Desliza y limpia rápido","Revisión segura antes de borrar"]
-    },
-    shot:"img/screen-2.png"
-  },
-  blurry: {
-    title:{en:"Kill blurry mistakes", es:"Elimina fotos borrosas"},
-    desc:{
-      en:"Surface the blurry misses so your gallery stays sharp.",
-      es:"Aflora las tomas borrosas para que tu galería quede nítida."
-    },
-    points:{
-      en:["Find and remove out-of-focus shots","Keep only crisp memories","Satisfying cleanup in seconds"],
-      es:["Detecta y elimina fotos desenfocadas","Quédate solo con recuerdos nítidos","Limpieza satisfactoria en segundos"]
-    },
-    shot:"img/screen-4.png"
-  },
-  bursts: {
-    title:{en:"Handle burst fails", es:"Gestiona ráfagas fallidas"},
-    desc:{
-      en:"Bursts often hide duplicates—keep the winner and ditch the rest.",
-      es:"Las ráfagas esconden duplicados—conserva la mejor y descarta el resto."
-    },
-    points:{
-      en:["Review a set at full size","Pick the keeper with a swipe","Instantly reclaim space"],
-      es:["Revisa el conjunto a pantalla completa","Elige la mejor con un swipe","Recupera espacio al instante"]
-    },
-    shot:"img/screen-4.png"
-  },
-  month: {
-    title:{en:"Monthly Blitz mode", es:"Modo Blitz mensual"},
-    desc:{
-      en:"Clean a whole month at once with a progress ring that makes finishing addictive.",
-      es:"Limpia un mes entero con un anillo de progreso que engancha."
-    },
-    points:{
-      en:["Focus on one time range","Feel progress with the ring","Form a quick daily habit"],
-      es:["Enfócate en un periodo","Siente el progreso con el anillo","Crea un hábito rápido diario"]
-    },
-    shot:"img/hero.png"
-  },
-  safety: {
-    title:{en:"Review & Undo safety", es:"Seguridad con Revisión y Deshacer"},
-    desc:{
-      en:"Confirm before removal and undo any step. Photos go to Recently Deleted for ~30 days.",
-      es:"Confirma antes de borrar y deshaz cualquier paso. Las fotos van a Eliminado recientemente (~30 días)."
-    },
-    points:{
-      en:["Confirm screen before trash","Undo anytime","Nothing leaves your device"],
-      es:["Pantalla de confirmación","Deshacer en cualquier momento","Nada sale de tu dispositivo"]
-    },
-    shot:"img/screen-3.png"
   }
 };
 
@@ -161,13 +97,16 @@ function $all(q,scope=document){ return Array.from(scope.querySelectorAll(q)); }
 
 function setLocale(loc){
   const dict = L[loc] || L.en;
-  $all("[data-i18n]").forEach(el=>{ const k=el.dataset.i18n; if (dict[k]!==undefined){ el.innerHTML = dict[k]; }});
-  const enBtn=$("#lang-en"), esBtn=$("#lang-es");
-  if(enBtn) enBtn.setAttribute("aria-pressed", loc==="en");
-  if(esBtn) esBtn.setAttribute("aria-pressed", loc==="es");
+
+  // Translate text nodes
+  $all("[data-i18n]").forEach(el=>{ const k=el.dataset.i18n; if (dict[k]!==undefined) el.innerHTML = dict[k]; });
+
+  // Lang toggle
+  $("#lang-en")?.setAttribute("aria-pressed", loc==="en");
+  $("#lang-es")?.setAttribute("aria-pressed", loc==="es");
   localStorage.setItem("locale", loc);
 
-  // Localize badge images (falls back to EN)
+  // Localize badges (fallback to EN images)
   const iosImg=$("#badge-ios"), andImg=$("#badge-android");
   if(iosImg){
     if(loc==="es" && window.locales && window.locales.es_has_badges){
@@ -180,21 +119,35 @@ function setLocale(loc){
     } else { andImg.src="img/badge-google-en.png"; andImg.alt="Get it on Google Play"; }
   }
 
-  // Update current function texts to the locale
-  const current = document.querySelector(".pill.is-active")?.dataset.key || "duplicates";
-  renderFunction(current, loc);
+  // Localize period labels in pricing
+  $("#pricePer").textContent = (loc==="es") ? (billing.period==="monthly" ? L.es.per_month : L.es.per_year)
+                                            : (billing.period==="monthly" ? L.en.per_month : L.en.per_year);
+
+  // Rerender the swipe demo captions (if any) + pricing
+  renderPrices();
 }
 
-function renderFunction(key, loc){
-  const locale = (loc || localStorage.getItem("locale") || "en");
-  const data = FX[key] || FX.duplicates;
-  $("#stageShot").src = data.shot;
-  $("#fxTitle").textContent = data.title[locale] || data.title.en;
-  $("#fxDesc").textContent = data.desc[locale] || data.desc.en;
-  const ul = $("#fxPoints"); ul.innerHTML = "";
-  (data.points[locale] || data.points.en).forEach(p=>{
-    const li=document.createElement("li"); li.textContent=p; ul.appendChild(li);
-  });
+const billing = {
+  currency: "EUR",   // "EUR" or "USD"
+  period: "monthly"  // "monthly" or "annual"
+};
+
+function detectCurrency(){
+  const lang = (navigator.language||"en").toLowerCase();
+  // Simple heuristic: US English -> USD, everything else -> EUR
+  return lang.includes("en-us") ? "USD" : "EUR";
+}
+
+function renderPrices(){
+  const cfg = PRICING[billing.currency];
+  const amount = billing.period==="monthly" ? cfg.monthly : cfg.annual;
+  $("#curSymbol").textContent = cfg.symbol;
+  $("#priceAmount").textContent = amount.toFixed(2);
+  const i18n = (localStorage.getItem("locale")==="es") ? L.es : L.en;
+  $("#pricePer").textContent = billing.period==="monthly" ? i18n.per_month : i18n.per_year;
+
+  // Animate the number a bit for delight
+  $("#priceAmount").animate([{transform:"scale(1)"},{transform:"scale(1.06)"},{transform:"scale(1)"}], {duration:220, easing:"ease-out"});
 }
 
 function countUp(el, to=1.24, secs=2){
@@ -209,13 +162,10 @@ function countUp(el, to=1.24, secs=2){
 }
 
 (function init(){
+  // Locale
   const userLang = (navigator.language||"en").toLowerCase();
   const defaultLoc = localStorage.getItem("locale") || (userLang.startsWith("es") ? "es" : "en");
   setLocale(defaultLoc);
-
-  // Lang buttons
-  $("#lang-en")?.addEventListener("click", ()=>setLocale("en"));
-  $("#lang-es")?.addEventListener("click", ()=>setLocale("es"));
 
   // Year
   $("#year").textContent = new Date().getFullYear();
@@ -229,35 +179,19 @@ function countUp(el, to=1.24, secs=2){
   // TODO: set real store links
   if(iosBtn) iosBtn.href="https://apps.apple.com/app/your-app-id";
   if(andBtn) andBtn.href="https://play.google.com/store/apps/details?id=your.package";
+  $("#btn-ios-premium").href = "https://apps.apple.com/app/your-app-id";
+  $("#btn-android-premium").href = "https://play.google.com/store/apps/details?id=your.package";
 
-  // Functions pill interactions
-  $all(".pill").forEach(p=>{
-    p.addEventListener("click", ()=>{
-      $all(".pill").forEach(x=>x.classList.remove("is-active"));
-      p.classList.add("is-active");
-      renderFunction(p.dataset.key);
-    });
-  });
-  // Keyboard ← →
-  document.addEventListener("keydown", (e)=>{
-    const keys=["ArrowLeft","ArrowRight"]; if(!keys.includes(e.key)) return;
-    const pills=$all(".pill"); const i=pills.findIndex(x=>x.classList.contains("is-active"));
-    const next = e.key==="ArrowRight" ? (i+1)%pills.length : (i-1+pills.length)%pills.length;
-    pills[next].click();
-  });
+  // Badge locale toggles
+  $("#lang-en")?.addEventListener("click", ()=>setLocale("en"));
+  $("#lang-es")?.addEventListener("click", ()=>setLocale("es"));
 
-  // Count-up when hero enters
+  // Animate "Space saved" when visible
   const gb = $("#gbCount");
   const io = new IntersectionObserver((ent)=>{ if(ent[0].isIntersecting){ countUp(gb, 1.24, 2.2); io.disconnect(); }},{threshold:0.4});
   io.observe(gb);
 
-  // Reveal cards on scroll
-  const ro = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); ro.unobserve(e.target);} });
-  },{threshold:0.25});
-  $all(".card.reveal").forEach(c=>ro.observe(c));
-
-  // Simple parallax on hero device
+  // Simple parallax/tilt on hero device
   const wrap = document.getElementById("deviceWrap");
   if(wrap){
     wrap.addEventListener("mousemove", (e)=>{
@@ -268,4 +202,49 @@ function countUp(el, to=1.24, secs=2){
     });
     wrap.addEventListener("mouseleave", ()=>{ wrap.querySelector(".iphone").style.transform=""; });
   }
+
+  // Auto swipe demo (alternates left/right)
+  const phone = document.querySelector(".iphone");
+  let dir = "left";
+  setInterval(()=>{
+    if(!phone) return;
+    phone.classList.remove("show-left","show-right");
+    if(dir==="left"){ phone.classList.add("show-left"); dir="right"; }
+    else { phone.classList.add("show-right"); dir="left"; }
+  }, 2400);
+
+  // Pricing controls
+  billing.currency = detectCurrency(); // USD for en-US, otherwise EUR
+  renderPrices();
+
+  $("#billMonthly")?.addEventListener("click", ()=>{
+    billing.period="monthly";
+    document.getElementById("billMonthly").classList.add("is-active");
+    document.getElementById("billAnnual").classList.remove("is-active");
+    renderPrices();
+  });
+  $("#billAnnual")?.addEventListener("click", ()=>{
+    billing.period="annual";
+    document.getElementById("billAnnual").classList.add("is-active");
+    document.getElementById("billMonthly").classList.remove("is-active");
+    renderPrices();
+  });
+
+  $("#curEUR")?.addEventListener("click", ()=>{
+    billing.currency="EUR";
+    document.getElementById("curEUR").classList.add("is-active");
+    document.getElementById("curUSD").classList.remove("is-active");
+    renderPrices();
+  });
+  $("#curUSD")?.addEventListener("click", ()=>{
+    billing.currency="USD";
+    document.getElementById("curUSD").classList.add("is-active");
+    document.getElementById("curEUR").classList.remove("is-active");
+    renderPrices();
+  });
+
+  // Initialize currency pill state
+  if(billing.currency==="USD"){ $("#curUSD")?.classList.add("is-active"); } else { $("#curEUR")?.classList.add("is-active"); }
+  // Default period pill
+  $("#billMonthly")?.classList.add("is-active");
 })();

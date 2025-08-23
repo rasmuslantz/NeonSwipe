@@ -4,11 +4,11 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Neon Swipe — Clean photos with a swipe</title>
-  <meta name="description" content="Swipe to keep or delete. Free up space fast—find duplicates, screenshots, bursts & blurry shots. Review & Undo with a live GB counter."/>
-  <meta property="og:title" content="Neon Swipe — Clean photos with a swipe"/>
-  <meta property="og:description" content="Turn photo cleanup into a quick swipe. Keep the best, clear the rest."/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:image" content="img/hero.png"/>
+  <meta name="description" content="Swipe right to keep, left to delete. Sort by screenshots, videos or photos. See your queue and progress. Undo and recover from Recently Deleted.">
+  <meta property="og:title" content="Neon Swipe — Clean photos with a swipe">
+  <meta property="og:description" content="Fast, fun, and safe photo cleanup. Keep the best, clear the rest.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="img/hero.png">
   <link rel="icon" href="img/hero.png"/>
   <link rel="stylesheet" href="styles.css"/>
 </head>
@@ -20,8 +20,6 @@
         <span>Neon Swipe</span>
       </div>
       <nav>
-        <a href="#functions" data-i18n="nav_functions">Functions</a>
-        <a href="#features" data-i18n="nav_features">Features</a>
         <a href="support/" data-i18n="nav_support">Support</a>
         <button id="lang-en" class="lang-btn" aria-pressed="false">EN</button>
         <button id="lang-es" class="lang-btn" aria-pressed="false">ES</button>
@@ -37,10 +35,10 @@
           <div class="kicker" data-i18n="kicker">Photo cleaner • iOS & Android</div>
           <h1 class="grad" data-i18n="h1">Clean photos with a swipe.</h1>
           <p class="subtitle" data-i18n="sub">
-            Keep your best shots and delete the rest—duplicates, screenshots, bursts & blurry pics. See GB freed in real time.
+            Swipe right to keep, left to delete. Sort by screenshots, videos or photos. See your queue and progress. Undo & recover from “Recently Deleted”.
           </p>
 
-          <!-- Official store badges (localised by lang.js) -->
+          <!-- Official badges (auto-localised & auto-resized) -->
           <div class="badges">
             <a id="btn-ios" class="store-link" href="#" target="_blank" rel="noopener" title="App Store">
               <img id="badge-ios" src="img/badge-appstore-en.png" alt="Download on the App Store" loading="lazy"/>
@@ -52,111 +50,77 @@
 
           <div class="hero-metrics">
             <div class="chip"><span data-i18n="metric_saved">Space saved</span> <strong><span id="gbCount">0.00</span> GB</strong></div>
-            <div class="chip" data-i18n="metric_safe">Review & Undo safe</div>
-            <div class="chip" data-i18n="metric_fast">Lightning-fast swiping</div>
+            <div class="chip" data-i18n="metric_safe">Undo & recovery safe</div>
+            <div class="chip" data-i18n="metric_sort">Sort: screenshots • videos • photos</div>
           </div>
+
+          <!-- Quick checklist (no separate features screen) -->
+          <ul class="ticks hero-ticks">
+            <li data-i18n="do_swipe">Swipe right to keep, left to delete</li>
+            <li data-i18n="do_sort">Sort by screenshots, videos or photos</li>
+            <li data-i18n="do_queue">See your queue & progress at a glance</li>
+            <li data-i18n="do_undo">Undo anytime & recover from Recently Deleted (~30 days)</li>
+          </ul>
         </div>
 
-        <!-- iPhone mockup with parallax -->
+        <!-- iPhone mockup with swipe demo -->
         <div class="device-wrap" id="deviceWrap">
           <div class="iphone panel">
             <div class="iphone-notch"></div>
             <img id="heroShot" src="img/hero.png" alt="Neon Swipe app screenshot"/>
+            <div class="swipe-overlay swipe-left" aria-hidden="true">
+              <span>🗑️</span>
+            </div>
+            <div class="swipe-overlay swipe-right" aria-hidden="true">
+              <span>✓</span>
+            </div>
           </div>
           <div class="floating-tag" style="top:-10px;left:-14px">0%</div>
-          <div class="floating-tag" style="bottom:-10px;right:-14px" data-i18n="tag_timeline">Timeline</div>
+          <div class="floating-tag" style="bottom:-10px;right:-14px" data-i18n="tag_queue">Queue</div>
         </div>
       </div>
     </section>
 
-    <!-- DYNAMIC FUNCTIONS (new) -->
-    <section class="section functions" id="functions" aria-labelledby="functionsTitle">
+    <!-- PREMIUM (placed lower on the page) -->
+    <section class="section" id="premium">
       <div class="container">
         <div class="section-head">
-          <h2 id="functionsTitle" class="grad" data-i18n="fx_title">Functions — see it in action</h2>
-          <p class="subtitle" data-i18n="fx_sub">Tap a function to preview how Neon Swipe helps you clean faster and safer.</p>
+          <h2 class="grad" data-i18n="pro_title">Go Premium — remove ads & keep your session</h2>
+          <p class="subtitle" data-i18n="pro_sub">
+            The app shows ads by default. Premium removes ads and lets you continue a session so you never lose progress — plus access to future features.
+          </p>
         </div>
 
-        <!-- Pills -->
-        <div class="pillbar" role="tablist" aria-label="Functions">
-          <button class="pill is-active" role="tab" aria-selected="true" data-key="duplicates" data-i18n="fx_dup">Duplicates</button>
-          <button class="pill" role="tab" aria-selected="false" data-key="screenshots" data-i18n="fx_ss">Screenshots</button>
-          <button class="pill" role="tab" aria-selected="false" data-key="blurry" data-i18n="fx_blur">Blurry</button>
-          <button class="pill" role="tab" aria-selected="false" data-key="bursts" data-i18n="fx_burst">Bursts</button>
-          <button class="pill" role="tab" aria-selected="false" data-key="month" data-i18n="fx_month">Monthly Blitz</button>
-          <button class="pill" role="tab" aria-selected="false" data-key="safety" data-i18n="fx_safety">Review & Undo</button>
-        </div>
-
-        <!-- Interactive stage -->
-        <div class="stage panel">
-          <div class="stage-left">
-            <div class="iphone iphone--small">
-              <div class="iphone-notch"></div>
-              <img id="stageShot" src="img/screen-1.png" alt="Function preview"/>
-            </div>
+        <!-- Currency + billing period controls -->
+        <div class="controls">
+          <div class="pillbar" role="tablist" aria-label="Billing period">
+            <button class="pill is-active" id="billMonthly" data-i18n="pro_monthly">Monthly</button>
+            <button class="pill" id="billAnnual" data-i18n="pro_annual">Annual</button>
           </div>
-          <div class="stage-right">
-            <h3 id="fxTitle">Find and clear duplicates</h3>
-            <p id="fxDesc" class="subtitle">
-              Neon Swipe groups near-identical photos so you can keep the best and remove the rest in seconds.
-            </p>
-            <ul class="ticks" id="fxPoints">
-              <li>Smart detection of similar shots</li>
-              <li>Swipe right to keep, left to delete</li>
-              <li>Watch the GB freed counter rise</li>
+          <div class="pillbar" role="tablist" aria-label="Currency">
+            <button class="pill" id="curEUR">EUR €</button>
+            <button class="pill" id="curUSD">USD $</button>
+          </div>
+        </div>
+
+        <div class="pricing panel">
+          <div class="price-main">
+            <div class="price-figure">
+              <span class="currency" id="curSymbol">€</span><span class="amount" id="priceAmount">2.99</span>
+              <span class="per" id="pricePer" data-i18n="per_month">/month</span>
+            </div>
+            <ul class="ticks">
+              <li data-i18n="pro_noads">No ads — cleaner, faster experience</li>
+              <li data-i18n="pro_session">Continue session so you don’t lose progress</li>
+              <li data-i18n="pro_future">Access to future features as they roll out</li>
             </ul>
-            <div class="cta-inline">
-              <a href="#features" class="button ghost" data-i18n="fx_learn">Learn more</a>
-            </div>
+            <p class="tiny muted" data-i18n="pro_legal">
+              Prices shown for your region. Billed via App Store / Google Play. Cancel anytime. Taxes may apply.
+            </p>
           </div>
-        </div>
-
-        <!-- Keyboard hint -->
-        <p class="tiny hint" data-i18n="fx_hint">Tip: use ← → to switch functions</p>
-      </div>
-    </section>
-
-    <!-- WHY / FEATURES -->
-    <section class="section" id="features">
-      <div class="container">
-        <div class="section-head">
-          <h2 class="grad" data-i18n="feat_title">Why you’ll love Neon Swipe</h2>
-          <p class="subtitle" data-i18n="feat_sub">Built for speed, safety, and satisfaction—cleanup that actually feels good.</p>
-        </div>
-
-        <div class="cards tilt-grid">
-          <article class="card reveal">
-            <h3 data-i18n="f1_t">Swipe to keep/delete</h3>
-            <p data-i18n="f1_d">Lightning-fast triage that makes cleanup fun.</p>
-          </article>
-          <article class="card reveal">
-            <h3 data-i18n="f2_t">Smart queues</h3>
-            <p data-i18n="f2_d">Duplicates & similars, screenshots, bursts, and blurry shots.</p>
-          </article>
-          <article class="card reveal">
-            <h3 data-i18n="f3_t">Review & Undo</h3>
-            <p data-i18n="f3_d">Confirm before trash—your memories stay safe.</p>
-          </article>
-          <article class="card reveal">
-            <h3 data-i18n="f4_t">Space meter</h3>
-            <p data-i18n="f4_d">Watch MB/GB freed climb in real time.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- HOW -->
-    <section class="section">
-      <div class="container">
-        <div class="panel" style="padding:22px">
-          <div class="section-head">
-            <h2 class="grad" data-i18n="how_title">How it works</h2>
-            <p class="subtitle" data-i18n="how_sub">Three quick steps—no cloud access, no risk.</p>
-          </div>
-          <div class="cards steps">
-            <article class="card reveal"><h3 data-i18n="h_t1">1) Open & allow Photos</h3><p data-i18n="h_d1">We never touch your cloud—works on-device.</p></article>
-            <article class="card reveal"><h3 data-i18n="h_t2">2) Swipe right/left</h3><p data-i18n="h_d2">Right to keep, left to delete—simple.</p></article>
-            <article class="card reveal"><h3 data-i18n="h_t3">3) Review & reclaim space</h3><p data-i18n="h_d3">Empty “Recently Deleted” to free storage instantly.</p></article>
+          <div class="price-cta">
+            <a id="btn-ios-premium" href="#" class="button primary" target="_blank" rel="noopener" data-i18n="get_ios_premium">Upgrade on App Store</a>
+            <a id="btn-android-premium" href="#" class="button ghost" target="_blank" rel="noopener" data-i18n="get_gp_premium">Upgrade on Google Play</a>
           </div>
         </div>
       </div>
