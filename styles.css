@@ -105,3 +105,9 @@ img,video{max-width:100%;display:block}
 @media (max-width:950px){
   .hero-grid{grid-template-columns:1fr}
 }
+
+/* Support two-column layout */
+.two-col{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-top:10px}
+@media (max-width:900px){.two-col{grid-template-columns:1fr}}
+details.card summary{cursor:pointer;outline:none}
+details.card[open]{border-color:#2a3150}

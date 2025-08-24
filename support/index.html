@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Neon Swipe — Support</title>
 
-  <!-- Favicons (subfolder paths) -->
+  <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png">
@@ -35,31 +35,45 @@
     <div class="container">
       <div class="panel" style="padding:24px">
         <h1 data-i18n="s_title">Support</h1>
-        <p class="subtitle" data-i18n="s_intro">We’re here to help. Email us and we’ll reply within 1–2 business days.</p>
-        <p><strong>Email:</strong> <a href="mailto:support@neonswipe.app">support@neonswipe.app</a></p>
+        <p class="subtitle" data-i18n="s_intro">We’re here to help. Start with the quick fixes below or contact us — we usually reply within 1–2 business days.</p>
 
-        <div class="cards">
-          <article class="card">
-            <h3 data-i18n="sq1_t">Can’t access Photos?</h3>
-            <p data-i18n="sq1_d">iOS: Settings → Privacy & Security → Photos → Neon Swipe → Allow “All Photos”.</p>
-          </article>
-          <article class="card">
-            <h3 data-i18n="sq2_t">Undo a deletion?</h3>
-            <p data-i18n="sq2_d">Open Photos → Albums → Recently Deleted (available ~30 days).</p>
-          </article>
-          <article class="card">
-            <h3 data-i18n="sq3_t">Storage not changing?</h3>
-            <p data-i18n="sq3_d">After a cleanup, empty “Recently Deleted” to reclaim storage immediately.</p>
-          </article>
-          <article class="card">
-            <h3 data-i18n="sq4_t">Restore purchases</h3>
-            <p data-i18n="sq4_d">Open Neon Swipe → Settings → Restore Purchases.</p>
-          </article>
+        <div class="two-col">
+          <!-- Left: Quick fixes -->
+          <section>
+            <h2 class="grad" data-i18n="s_quick_title">Quick fixes</h2>
+
+            <details class="card" open>
+              <summary><strong data-i18n="s_q_perm_t">Allow Photos access</strong></summary>
+              <p class="muted" data-i18n="s_q_perm_d">iOS: Settings → Privacy & Security → Photos → Neon Swipe → Allow “All Photos”.</p>
+            </details>
+
+            <details class="card">
+              <summary><strong data-i18n="s_q_undo_t">Undo a deletion</strong></summary>
+              <p class="muted" data-i18n="s_q_undo_d">Photos → Albums → Recently Deleted (available ~30 days).</p>
+            </details>
+
+            <details class="card">
+              <summary><strong data-i18n="s_q_space_t">Storage not changing?</strong></summary>
+              <p class="muted" data-i18n="s_q_space_d">After a cleanup, empty “Recently Deleted” to reclaim space immediately.</p>
+            </details>
+
+            <details class="card">
+              <summary><strong data-i18n="s_q_restore_t">Restore purchases</strong></summary>
+              <p class="muted" data-i18n="s_q_restore_d">Open Neon Swipe → Settings → Restore Purchases.</p>
+            </details>
+          </section>
+
+          <!-- Right: Contact -->
+          <aside>
+            <div class="card">
+              <h3 data-i18n="s_contact_title">Contact us</h3>
+              <p class="muted" data-i18n="s_contact_desc">Can’t find what you need? Email us and include your device model and iOS/Android version.</p>
+              <p><strong data-i18n="s_email_label">Email</strong><br>
+                <a href="mailto:neonswipe-support@gmail.com" data-i18n="s_email_value">neonswipe-support@gmail.com</a>
+              </p>
+            </div>
+          </aside>
         </div>
-
-        <p class="kicker" style="margin-top:16px" data-i18n="s_priv">
-          Neon Swipe processes your photos on-device. See our privacy policy.
-        </p>
       </div>
     </div>
   </main>
