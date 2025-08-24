@@ -8,7 +8,7 @@ const PRICING = {
 };
 
 const L = {
-  en: { /* … unchanged … */ 
+  en: {
     nav_support:"Support", nav_home:"Home", footer_support:"Support", footer_privacy:"Privacy",
     kicker:"Photo cleaner • iOS & Android",
     h1:"Clean photos with a swipe.",
@@ -58,7 +58,7 @@ const L = {
     p_contact_t:"Contact", p_contact_d:'Questions about privacy? Email <a href="mailto:neonswipe.help@gmail.com">neonswipe.help@gmail.com</a>.',
     p_effective_t:"Effective date", p_effective_d:"This policy is effective as of 1 October 2025."
   },
-  es: { /* … unchanged … */ 
+  es: {
     nav_support:"Soporte", nav_home:"Inicio", footer_support:"Soporte", footer_privacy:"Privacidad",
     kicker:"Limpieza de fotos • iOS y Android",
     h1:"Limpia tus fotos con un swipe.",
@@ -268,14 +268,14 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
     // Features auto-loop (home only)
     initInfiniteRail(document.getElementById("featureRail"));
 
-    // ===== Testimonials slider pause on hover / reduced motion =====
-    const slider = document.querySelector('#testimonials .slider');
-    const track  = slider?.querySelector('.slider-track');
-    if (slider && track){
-      slider.addEventListener('mouseenter', ()=> track.style.animationPlayState = 'paused');
-      slider.addEventListener('mouseleave', ()=> track.style.animationPlayState = 'running');
+    // === Testimonials: pause on hover, respect reduced motion ===
+    const track = document.querySelector('#testimonials .slider-track') || document.querySelector('.slider-track');
+    if (track){
+      const slider = track.closest('.slider') || document.querySelector('.slider');
+      slider?.addEventListener('mouseenter', ()=> track.style.animationPlayState = 'paused');
+      slider?.addEventListener('mouseleave', ()=> track.style.animationPlayState = 'running');
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        track.style.animation = 'none';
+        track.style.animationPlayState = 'paused';
       }
     }
   }
@@ -285,5 +285,6 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
   } else {
     onReady();
   }
+  // Also run on load in case a script loader defers DOM work
   window.addEventListener("load", onReady, { once:true });
 })();

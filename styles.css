@@ -96,9 +96,47 @@ details.card[open]{border-color:#2a3150}
 .footer{border-top:1px solid var(--edge);padding:28px 0;margin-top:40px;color:var(--muted);font-size:14px}
 .footer-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 
+/* ===== Testimonials slider (new) ===== */
+.section-title{margin:0 0 6px;font-weight:800;font-size:28px}
+.section-sub{margin:4px 0 16px;color:var(--muted)}
+
+#testimonials .slider{overflow:hidden;position:relative}
+#testimonials .reviews-wrap{overflow:hidden}
+#testimonials .slider-track{
+  --loop-dur: 42s;       /* speed: lower = faster */
+  display:flex;
+  gap:16px;
+  width:max-content;     /* so -50% equals one full set */
+  will-change:transform;
+  animation:testimonialsLoop var(--loop-dur) linear infinite;
+}
+#testimonials .slide{flex:0 0 auto;max-width:420px}
+#testimonials .quote-card{
+  background:var(--panel);
+  border:1px solid var(--edge);
+  border-radius:16px;
+  padding:16px;
+  box-shadow:var(--glow);
+}
+#testimonials .quote{font-size:16px;line-height:1.45}
+#testimonials .who{margin-top:8px;color:var(--muted)}
+
+#testimonials .slider:hover .slider-track,
+#testimonials .slider:focus-within .slider-track{
+  animation-play-state:paused;
+}
+
 @media (prefers-reduced-motion: reduce){
   .smooth-float{animation:none}
+  #testimonials .slider-track{animation:none}
 }
+
+@keyframes testimonialsLoop{
+  from{transform:translateX(0)}
+  to  {transform:translateX(-50%)}
+}
+
+/* small screens */
 @media (max-width:950px){
   .hero-grid{grid-template-columns:1fr}
 }
