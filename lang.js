@@ -192,55 +192,88 @@ function initInfiniteRail(rail){
   ["pointerup","pointercancel","pointerleave"].forEach(ev=>rail.addEventListener(ev,()=>{isDown=false;}));
 }
 
-(function init(){
-  const userLang=(navigator.language||"en").toLowerCase();
-  const defaultLoc=localStorage.getItem("locale")||(userLang.startsWith("es")?"es":"en");
-  setLocale(defaultLoc);
-
-  $("#year") && ($("#year").textContent = new Date().getFullYear());
-
-  // Store links (home only)
-  const iosBtn=$("#btn-ios"), andBtn=$("#btn-android");
-  if(iosBtn&&andBtn){
-    const isIOS=/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent);
-    iosBtn.style.order=isIOS?0:1; andBtn.style.order=isIOS?1:0;
-    iosBtn.href="https://apps.apple.com/app/your-app-id";
-    andBtn.href="https://play.google.com/store/apps/details?id=your.package";
-  }
-
-  // Toggle handlers
-  $("#lang-en")?.addEventListener("click", ()=>setLocale("en"));
-  $("#lang-es")?.addEventListener("click", ()=>setLocale("es"));
-
-  // Count-up when visible (home only)
-  const gb=$("#gbCount");
-  if(gb){
-    const io=new IntersectionObserver((ent)=>{ if(ent[0].isIntersecting){ countUp(gb,16.82,5.6); io.disconnect(); } },{threshold:0.4});
-    io.observe(gb);
-  }
-
-  // Pricing controls (home only)
-  billing.currency = detectCurrency();
-  const curEUR=$("#curEUR"), curUSD=$("#curUSD"), billM=$("#billMonthly"), billA=$("#billAnnual");
-  if(curEUR&&curUSD){ (billing.currency==="USD"?curUSD:curEUR).classList.add("is-active"); }
-  if(billM) billM.classList.add("is-active");
-  renderPrices();
-  billM?.addEventListener("click", ()=>{ billing.period="monthly"; billM.classList.add("is-active"); billA?.classList.remove("is-active"); renderPrices(); });
-  billA?.addEventListener("click", ()=>{ billing.period="annual"; billA.classList.add("is-active"); billM?.classList.remove("is-active"); renderPrices(); });
-  curEUR?.addEventListener("click", ()=>{ billing.currency="EUR"; curEUR.classList.add("is-active"); curUSD?.classList.remove("is-active"); renderPrices(); });
-  curUSD?.addEventListener("click", ()=>{ billing.currency="USD"; curUSD.classList.add("is-active"); curEUR?.classList.remove("is-active"); renderPrices(); });
-
-  // === Phone hover + keep video still (ONLY addition you asked for) ===
-  // Add gentle float to the phone container (no HTML change needed)
+/* Ensure the phone floats and the video remains still, robust to async loaders */
+function ensurePhoneFloat(){
   const phoneEl = document.querySelector(".iphone");
-  if (phoneEl) phoneEl.classList.add("smooth-float");
-
-  // Ensure the video itself is not running any separate animation
+  if (phoneEl && !phoneEl.classList.contains("smooth-float")) {
+    phoneEl.classList.add("smooth-float");
+  }
   const vidEl =
-    phoneEl?.querySelector("video, .iphone-video") ||
+    (phoneEl && phoneEl.querySelector("video, .iphone-video")) ||
     document.querySelector(".iphone-video, .iphone video");
-  if (vidEl) { vidEl.style.animation = "none"; vidEl.style.transform = "none"; }
+  if (vidEl) {
+    vidEl.style.animation = "none";
+    vidEl.style.transform  = "none";
+  }
+}
 
-  // Features auto-loop (home only) — unchanged
-  initInfiniteRail(document.getElementById("featureRail"));
+/* Retry a few times in case Rocket Loader/async injects markup late */
+function retryEnsurePhoneFloat(ms=250, tries=16){
+  ensurePhoneFloat();
+  let count = 1;
+  const id = setInterval(()=>{
+    ensurePhoneFloat();
+    if(++count >= tries) clearInterval(id);
+  }, ms);
+}
+
+(function init(){
+  let booted = false;
+
+  function onReady(){
+    if (booted) return;
+    booted = true;
+
+    const userLang=(navigator.language||"en").toLowerCase();
+    const defaultLoc=localStorage.getItem("locale")||(userLang.startsWith("es")?"es":"en");
+    setLocale(defaultLoc);
+
+    $("#year") && ($("#year").textContent = new Date().getFullYear());
+
+    // Store links (home only)
+    const iosBtn=$("#btn-ios"), andBtn=$("#btn-android");
+    if(iosBtn&&andBtn){
+      const isIOS=/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent);
+      iosBtn.style.order=isIOS?0:1; andBtn.style.order=isIOS?1:0;
+      iosBtn.href="https://apps.apple.com/app/your-app-id";
+      andBtn.href="https://play.google.com/store/apps/details?id=your.package";
+    }
+
+    // Toggle handlers
+    $("#lang-en")?.addEventListener("click", ()=>setLocale("en"));
+    $("#lang-es")?.addEventListener("click", ()=>setLocale("es"));
+
+    // Count-up when visible (home only)
+    const gb=$("#gbCount");
+    if(gb){
+      const io=new IntersectionObserver((ent)=>{ if(ent[0].isIntersecting){ countUp(gb,16.82,5.6); io.disconnect(); } },{threshold:0.4});
+      io.observe(gb);
+    }
+
+    // Pricing controls (home only)
+    billing.currency = detectCurrency();
+    const curEUR=$("#curEUR"), curUSD=$("#curUSD"), billM=$("#billMonthly"), billA=$("#billAnnual");
+    if(curEUR&&curUSD){ (billing.currency==="USD"?curUSD:curEUR).classList.add("is-active"); }
+    if(billM) billM.classList.add("is-active");
+    renderPrices();
+    billM?.addEventListener("click", ()=>{ billing.period="monthly"; billM.classList.add("is-active"); billA?.classList.remove("is-active"); renderPrices(); });
+    billA?.addEventListener("click", ()=>{ billing.period="annual"; billA.classList.add("is-active"); billM?.classList.remove("is-active"); renderPrices(); });
+    curEUR?.addEventListener("click", ()=>{ billing.currency="EUR"; curEUR.classList.add("is-active"); curUSD?.classList.remove("is-active"); renderPrices(); });
+    curUSD?.addEventListener("click", ()=>{ billing.currency="USD"; curUSD.classList.add("is-active"); curEUR?.classList.remove("is-active"); renderPrices(); });
+
+    // Phone hover + keep video still
+    ensurePhoneFloat();
+    retryEnsurePhoneFloat(250, 16); // extra safety for async loaders
+
+    // Features auto-loop (home only)
+    initInfiniteRail(document.getElementById("featureRail"));
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", onReady, { once:true });
+  } else {
+    onReady();
+  }
+  // Also run on load in case a script loader defers DOM work
+  window.addEventListener("load", onReady, { once:true });
 })();
