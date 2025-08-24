@@ -60,7 +60,7 @@ img,video{max-width:100%;display:block}
 .section-head{margin:0 0 16px}
 .subtitle{color:var(--muted);margin:8px 0 0}
 
-/* Feature rail — auto loop + pause on hover */
+/* Feature rail — legacy base styles (kept) */
 .rail-wrap{position:relative}
 .rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px, 1fr);gap:14px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory;scroll-behavior:smooth}
 .fcard{scroll-snap-align:start;background:var(--panel);border:1px solid var(--edge);border-radius:20px;padding:14px}
@@ -70,6 +70,24 @@ img,video{max-width:100%;display:block}
 .rail-fade{position:absolute;top:0;bottom:0;width:40px;pointer-events:none}
 .rail-fade--left{left:-2px;background:linear-gradient(90deg,var(--bg),transparent)}
 .rail-fade--right{right:-2px;background:linear-gradient(270deg,var(--bg),transparent)}
+
+/* Feature rail — CSS infinite loop for #features only */
+#features .rail{display:block;overflow:hidden;padding-bottom:0}
+#features .rail-track{
+  --loop-dur: 48s;          /* lower = faster */
+  display:flex;
+  gap:14px;
+  width:max-content;        /* so -50% equals one full set */
+  will-change:transform;
+  animation:featureLoop var(--loop-dur) linear infinite;
+}
+#features .rail:hover .rail-track,
+#features .rail:focus-within .rail-track{animation-play-state:paused}
+
+@keyframes featureLoop{
+  from{transform:translateX(0)}
+  to  {transform:translateX(-50%)}
+}
 
 /* Pricing */
 .controls{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin:10px 0 14px}
@@ -96,44 +114,9 @@ details.card[open]{border-color:#2a3150}
 .footer{border-top:1px solid var(--edge);padding:28px 0;margin-top:40px;color:var(--muted);font-size:14px}
 .footer-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 
-/* ===== Testimonials slider (new) ===== */
-.section-title{margin:0 0 6px;font-weight:800;font-size:28px}
-.section-sub{margin:4px 0 16px;color:var(--muted)}
-
-#testimonials .slider{overflow:hidden;position:relative}
-#testimonials .reviews-wrap{overflow:hidden}
-#testimonials .slider-track{
-  --loop-dur: 42s;       /* speed: lower = faster */
-  display:flex;
-  gap:16px;
-  width:max-content;     /* so -50% equals one full set */
-  will-change:transform;
-  animation:testimonialsLoop var(--loop-dur) linear infinite;
-}
-#testimonials .slide{flex:0 0 auto;max-width:420px}
-#testimonials .quote-card{
-  background:var(--panel);
-  border:1px solid var(--edge);
-  border-radius:16px;
-  padding:16px;
-  box-shadow:var(--glow);
-}
-#testimonials .quote{font-size:16px;line-height:1.45}
-#testimonials .who{margin-top:8px;color:var(--muted)}
-
-#testimonials .slider:hover .slider-track,
-#testimonials .slider:focus-within .slider-track{
-  animation-play-state:paused;
-}
-
 @media (prefers-reduced-motion: reduce){
   .smooth-float{animation:none}
-  #testimonials .slider-track{animation:none}
-}
-
-@keyframes testimonialsLoop{
-  from{transform:translateX(0)}
-  to  {transform:translateX(-50%)}
+  #features .rail-track{animation:none}
 }
 
 /* small screens */

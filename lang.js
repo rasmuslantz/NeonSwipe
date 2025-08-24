@@ -118,16 +118,11 @@ const detectCurrency = () => (navigator.language||"en").toLowerCase().includes("
 
 function setLocale(loc){
   const dict = L[loc] || L.en;
-
-  // Translate anything with data-i18n
   $all("[data-i18n]").forEach(el => { const k=el.dataset.i18n; if(dict[k]!==undefined) el.innerHTML=dict[k]; });
-
-  // Lang button state + remember
   $("#lang-en")?.setAttribute("aria-pressed", loc==="en");
   $("#lang-es")?.setAttribute("aria-pressed", loc==="es");
   localStorage.setItem("locale", loc);
 
-  // Badges (home)
   const iosImg=$("#badge-ios"), andImg=$("#badge-android");
   if(iosImg){
     iosImg.src=(loc==="es"&&window.locales.es_has_badges)?"/img/badge-appstore-es.png":"/img/badge-appstore-en.png";
@@ -138,13 +133,12 @@ function setLocale(loc){
     andImg.alt = (loc==="es")?"Disponible en Google Play":"Get it on Google Play";
   }
 
-  // Pricing label (home only)
   const pricePerEl=$("#pricePer");
   if(pricePerEl){
     pricePerEl.textContent=(loc==="es") ? (billing.period==="monthly"?L.es.per_month:L.es.per_year)
                                         : (billing.period==="monthly"?L.en.per_month:L.en.per_year);
   }
-  renderPrices(); // no-op on subpages if price nodes absent
+  renderPrices();
 }
 
 function renderPrices(){
@@ -169,7 +163,7 @@ function countUp(el, to=16.82, secs=5.6){
   requestAnimationFrame(tick);
 }
 
-/* Infinite auto-scroll rail (dup children), pause on hover/focus/drag */
+/* Legacy manual rail kept (unused for #featureRail now) */
 function initInfiniteRail(rail){
   if(!rail) return;
   rail.innerHTML += rail.innerHTML;
@@ -182,47 +176,31 @@ function initInfiniteRail(rail){
     rafId=requestAnimationFrame(step);
   }
   rafId=requestAnimationFrame(step);
-
   ["mouseenter","focusin","pointerdown"].forEach(ev=>rail.addEventListener(ev,()=>paused=true));
   ["mouseleave","focusout","pointerup","pointercancel"].forEach(ev=>rail.addEventListener(ev,()=>paused=false));
-
   let isDown=false,startX=0,sl=0;
   rail.addEventListener("pointerdown",e=>{isDown=true;rail.setPointerCapture(e.pointerId);startX=e.clientX;sl=rail.scrollLeft;});
   rail.addEventListener("pointermove",e=>{if(isDown){rail.scrollLeft=sl-(e.clientX-startX);}});
   ["pointerup","pointercancel","pointerleave"].forEach(ev=>rail.addEventListener(ev,()=>{isDown=false;}));
 }
 
-/* Ensure the phone floats and the video remains still, robust to async loaders */
+/* Ensure phone floats + video still */
 function ensurePhoneFloat(){
   const phoneEl = document.querySelector(".iphone");
-  if (phoneEl && !phoneEl.classList.contains("smooth-float")) {
-    phoneEl.classList.add("smooth-float");
-  }
-  const vidEl =
-    (phoneEl && phoneEl.querySelector("video, .iphone-video")) ||
-    document.querySelector(".iphone-video, .iphone video");
-  if (vidEl) {
-    vidEl.style.animation = "none";
-    vidEl.style.transform  = "none";
-  }
+  if (phoneEl && !phoneEl.classList.contains("smooth-float")) phoneEl.classList.add("smooth-float");
+  const vidEl = (phoneEl && phoneEl.querySelector("video, .iphone-video")) || document.querySelector(".iphone-video, .iphone video");
+  if (vidEl){ vidEl.style.animation = "none"; vidEl.style.transform = "none"; }
 }
-
-/* Retry a few times in case Rocket Loader/async injects markup late */
 function retryEnsurePhoneFloat(ms=250, tries=16){
   ensurePhoneFloat();
-  let count = 1;
-  const id = setInterval(()=>{
-    ensurePhoneFloat();
-    if(++count >= tries) clearInterval(id);
-  }, ms);
+  let count=1;
+  const id=setInterval(()=>{ ensurePhoneFloat(); if(++count>=tries) clearInterval(id); }, ms);
 }
 
 (function init(){
-  let booted = false;
-
+  let booted=false;
   function onReady(){
-    if (booted) return;
-    booted = true;
+    if(booted) return; booted=true;
 
     const userLang=(navigator.language||"en").toLowerCase();
     const defaultLoc=localStorage.getItem("locale")||(userLang.startsWith("es")?"es":"en");
@@ -230,7 +208,6 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
 
     $("#year") && ($("#year").textContent = new Date().getFullYear());
 
-    // Store links (home only)
     const iosBtn=$("#btn-ios"), andBtn=$("#btn-android");
     if(iosBtn&&andBtn){
       const isIOS=/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent);
@@ -239,45 +216,32 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
       andBtn.href="https://play.google.com/store/apps/details?id=your.package";
     }
 
-    // Toggle handlers
     $("#lang-en")?.addEventListener("click", ()=>setLocale("en"));
     $("#lang-es")?.addEventListener("click", ()=>setLocale("es"));
 
-    // Count-up when visible (home only)
     const gb=$("#gbCount");
     if(gb){
       const io=new IntersectionObserver((ent)=>{ if(ent[0].isIntersecting){ countUp(gb,16.82,5.6); io.disconnect(); } },{threshold:0.4});
       io.observe(gb);
     }
 
-    // Pricing controls (home only)
-    billing.currency = detectCurrency();
-    const curEUR=$("#curEUR"), curUSD=$("#curUSD"), billM=$("#billMonthly"), billA=$("#billAnnual");
-    if(curEUR&&curUSD){ (billing.currency==="USD"?curUSD:curEUR).classList.add("is-active"); }
-    if(billM) billM.classList.add("is-active");
-    renderPrices();
-    billM?.addEventListener("click", ()=>{ billing.period="monthly"; billM.classList.add("is-active"); billA?.classList.remove("is-active"); renderPrices(); });
-    billA?.addEventListener("click", ()=>{ billing.period="annual"; billA.classList.add("is-active"); billM?.classList.remove("is-active"); renderPrices(); });
-    curEUR?.addEventListener("click", ()=>{ billing.currency="EUR"; curEUR.classList.add("is-active"); curUSD?.classList.remove("is-active"); renderPrices(); });
-    curUSD?.addEventListener("click", ()=>{ billing.currency="USD"; curUSD.classList.add("is-active"); curEUR?.classList.remove("is-active"); renderPrices(); });
-
-    // Phone hover + keep video still
+    /* Phone animation safety */
     ensurePhoneFloat();
-    retryEnsurePhoneFloat(250, 16); // extra safety for async loaders
+    retryEnsurePhoneFloat(250,16);
 
-    // Features auto-loop (home only)
-    initInfiniteRail(document.getElementById("featureRail"));
-
-    // === Testimonials: pause on hover, respect reduced motion ===
-    const track = document.querySelector('#testimonials .slider-track') || document.querySelector('.slider-track');
-    if (track){
-      const slider = track.closest('.slider') || document.querySelector('.slider');
-      slider?.addEventListener('mouseenter', ()=> track.style.animationPlayState = 'paused');
-      slider?.addEventListener('mouseleave', ()=> track.style.animationPlayState = 'running');
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        track.style.animationPlayState = 'paused';
+    /* NEW: Pause CSS loop on hover & respect reduced motion for the features rail */
+    const featTrack = document.querySelector('#featureRail .rail-track');
+    const featRail  = document.getElementById('featureRail');
+    if(featTrack && featRail){
+      featRail.addEventListener('mouseenter', ()=> featTrack.style.animationPlayState='paused');
+      featRail.addEventListener('mouseleave', ()=> featTrack.style.animationPlayState='running');
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        featTrack.style.animationPlayState = 'paused';
       }
     }
+
+    /* NOTE: We no longer call initInfiniteRail(featureRail) because the CSS loop handles it */
+    // initInfiniteRail(document.getElementById("featureRail"));
   }
 
   if (document.readyState === "loading") {
@@ -285,6 +249,5 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
   } else {
     onReady();
   }
-  // Also run on load in case a script loader defers DOM work
   window.addEventListener("load", onReady, { once:true });
 })();

@@ -85,7 +85,7 @@
       </div>
     </section>
 
-    <!-- FEATURES: infinite auto-scroll loop, pause on hover/focus/drag -->
+    <!-- FEATURES: infinite auto-scroll loop, hover to pause -->
     <section class="section" id="features">
       <div class="container">
         <div class="section-head">
@@ -94,82 +94,97 @@
         </div>
 
         <div class="rail-wrap">
-          <div class="rail is-loop" id="featureRail" tabindex="0" aria-label="Neon Swipe features">
-            <article class="fcard">
-              <img src="/img/screen-3.png" alt="" class="fshot"/>
-              <h3 data-i18n="f_start_t">Start or continue a session</h3>
-              <p class="muted" data-i18n="f_start_d">Pick up where you left off or start fresh. Premium lets you continue across sessions without losing progress.</p>
-            </article>
-            <article class="fcard">
-              <img src="/img/hero.png" alt="" class="fshot"/>
-              <h3 data-i18n="f_progress_t">See progress as you go</h3>
-              <p class="muted" data-i18n="f_progress_d">A clear progress view helps you finish confidently and build a quick daily habit.</p>
-            </article>
-            <article class="fcard">
-              <img src="/img/screen-4.png" alt="" class="fshot"/>
-              <h3 data-i18n="f_recover_t">Inspect & recover from the queue</h3>
-              <p class="muted" data-i18n="f_recover_d">Review before removal, undo any step, and recover from “Recently Deleted” for ~30 days.</p>
-            </article>
-            <article class="fcard">
-              <img src="/img/screen-1.png" alt="" class="fshot"/>
-              <h3 data-i18n="f_swipe_t">Swipe to keep or delete</h3>
-              <p class="muted" data-i18n="f_swipe_d">Right to keep, left to delete. Full-screen review so every decision is easy.</p>
-            </article>
-            <article class="fcard">
-              <img src="/img/screen-2.png" alt="" class="fshot"/>
-              <h3 data-i18n="f_info_t">See info, share, and favorite</h3>
-              <p class="muted" data-i18n="f_info_d">Open details for photos & videos, share, or mark favorites without leaving the flow.</p>
-            </article>
-            <article class="fcard">
-              <img src="/img/screen-2.png" alt="" class="fshot"/>
-              <h3 data-i18n="f_sort_t">Sort by type</h3>
-              <p class="muted" data-i18n="f_sort_d">Focus on screenshots, videos, or just photos to clear clutter faster.</p>
-            </article>
-            <article class="fcard">
-              <img src="/img/screen-4.png" alt="" class="fshot"/>
-              <h3 data-i18n="f_zoom_t">Zoom & play</h3>
-              <p class="muted" data-i18n="f_zoom_d">Pinch to zoom into photos, or play videos inline to choose the best moments.</p>
-            </article>
-            <article class="fcard">
-              <img src="/img/hero.png" alt="" class="fshot"/>
-              <h3 data-i18n="f_timeline_t">Timeline or random</h3>
-              <p class="muted" data-i18n="f_timeline_d">Work newest-to-oldest for momentum — or switch to random mode for a fresh mix.</p>
-            </article>
+          <!-- NOTE: we wrap your cards in .rail-track and duplicate once for seamless loop -->
+          <div class="rail" id="featureRail" tabindex="0" aria-label="Neon Swipe features">
+            <div class="rail-track">
+              <!-- Set A -->
+              <article class="fcard">
+                <img src="/img/screen-3.png" alt="" class="fshot"/>
+                <h3 data-i18n="f_start_t">Start or continue a session</h3>
+                <p class="muted" data-i18n="f_start_d">Pick up where you left off or start fresh. Premium lets you continue across sessions without losing progress.</p>
+              </article>
+              <article class="fcard">
+                <img src="/img/hero.png" alt="" class="fshot"/>
+                <h3 data-i18n="f_progress_t">See progress as you go</h3>
+                <p class="muted" data-i18n="f_progress_d">A clear progress view helps you finish confidently and build a quick daily habit.</p>
+              </article>
+              <article class="fcard">
+                <img src="/img/screen-4.png" alt="" class="fshot"/>
+                <h3 data-i18n="f_recover_t">Inspect & recover from the queue</h3>
+                <p class="muted" data-i18n="f_recover_d">Review before removal, undo any step, and recover from “Recently Deleted” for ~30 days.</p>
+              </article>
+              <article class="fcard">
+                <img src="/img/screen-1.png" alt="" class="fshot"/>
+                <h3 data-i18n="f_swipe_t">Swipe to keep or delete</h3>
+                <p class="muted" data-i18n="f_swipe_d">Right to keep, left to delete. Full-screen review so every decision is easy.</p>
+              </article>
+              <article class="fcard">
+                <img src="/img/screen-2.png" alt="" class="fshot"/>
+                <h3 data-i18n="f_info_t">See info, share, and favorite</h3>
+                <p class="muted" data-i18n="f_info_d">Open details for photos & videos, share, or mark favorites without leaving the flow.</p>
+              </article>
+              <article class="fcard">
+                <img src="/img/screen-2.png" alt="" class="fshot"/>
+                <h3 data-i18n="f_sort_t">Sort by type</h3>
+                <p class="muted" data-i18n="f_sort_d">Focus on screenshots, videos, or just photos to clear clutter faster.</p>
+              </article>
+              <article class="fcard">
+                <img src="/img/screen-4.png" alt="" class="fshot"/>
+                <h3 data-i18n="f_zoom_t">Zoom & play</h3>
+                <p class="muted" data-i18n="f_zoom_d">Pinch to zoom into photos, or play videos inline to choose the best moments.</p>
+              </article>
+              <article class="fcard">
+                <img src="/img/hero.png" alt="" class="fshot"/>
+                <h3 data-i18n="f_timeline_t">Timeline or random</h3>
+                <p class="muted" data-i18n="f_timeline_d">Work newest-to-oldest for momentum — or switch to random mode for a fresh mix.</p>
+              </article>
+
+              <!-- Set B (duplicate of Set A for seamless loop) -->
+              <article class="fcard">
+                <img src="/img/screen-3.png" alt="" class="fshot"/>
+                <h3 data-i18n="f_start_t">Start or continue a session</h3>
+                <p class="muted" data-i18n="f_start_d">Pick up where you left off or start fresh. Premium lets you continue across sessions without losing progress.</p>
+              </article>
+              <article class="fcard">
+                <img src="/img/hero.png" alt="" class="fshot"/>
+                <h3 data-i18n="f_progress_t">See progress as you go</h3>
+                <p class="muted" data-i18n="f_progress_d">A clear progress view helps you finish confidently and build a quick daily habit.</p>
+              </article>
+              <article class="fcard">
+                <img src="/img/screen-4.png" alt="" class="fshot"/>
+                <h3 data-i18n="f_recover_t">Inspect & recover from the queue</h3>
+                <p class="muted" data-i18n="f_recover_d">Review before removal, undo any step, and recover from “Recently Deleted” for ~30 days.</p>
+              </article>
+              <article class="fcard">
+                <img src="/img/screen-1.png" alt="" class="fshot"/>
+                <h3 data-i18n="f_swipe_t">Swipe to keep or delete</h3>
+                <p class="muted" data-i18n="f_swipe_d">Right to keep, left to delete. Full-screen review so every decision is easy.</p>
+              </article>
+              <article class="fcard">
+                <img src="/img/screen-2.png" alt="" class="fshot"/>
+                <h3 data-i18n="f_info_t">See info, share, and favorite</h3>
+                <p class="muted" data-i18n="f_info_d">Open details for photos & videos, share, or mark favorites without leaving the flow.</p>
+              </article>
+              <article class="fcard">
+                <img src="/img/screen-2.png" alt="" class="fshot"/>
+                <h3 data-i18n="f_sort_t">Sort by type</h3>
+                <p class="muted" data-i18n="f_sort_d">Focus on screenshots, videos, or just photos to clear clutter faster.</p>
+              </article>
+              <article class="fcard">
+                <img src="/img/screen-4.png" alt="" class="fshot"/>
+                <h3 data-i18n="f_zoom_t">Zoom & play</h3>
+                <p class="muted" data-i18n="f_zoom_d">Pinch to zoom into photos, or play videos inline to choose the best moments.</p>
+              </article>
+              <article class="fcard">
+                <img src="/img/hero.png" alt="" class="fshot"/>
+                <h3 data-i18n="f_timeline_t">Timeline or random</h3>
+                <p class="muted" data-i18n="f_timeline_d">Work newest-to-oldest for momentum — or switch to random mode for a fresh mix.</p>
+              </article>
+            </div>
           </div>
           <div class="rail-fade rail-fade--left" aria-hidden="true"></div>
           <div class="rail-fade rail-fade--right" aria-hidden="true"></div>
         </div>
-      </div>
-    </section>
-
-    <!-- TESTIMONIALS: auto-scroll, infinite loop, hover to pause -->
-    <section id="testimonials" class="section">
-      <div class="container">
-        <h3 class="section-title">What athletes say</h3>
-        <p class="section-sub">Snapshots from early users training for longevity, not just the next race.</p>
-
-        <div class="reviews-wrap">
-          <div class="slider" aria-live="off">
-            <div class="slider-track">
-              <!-- Set A -->
-              <div class="slide"><div class="quote-card"><div class="quote">“My deep sleep is up 35 minutes on average. The readiness score stops me from overdoing it.”</div><div class="who">— M.K., Cyclist</div></div></div>
-              <div class="slide"><div class="quote-card"><div class="quote">“The band is so light I forget it’s there, but the coaching is spot on.”</div><div class="who">— M.R., CrossFit</div></div></div>
-              <div class="slide"><div class="quote-card"><div class="quote">“It’s the first tracker that actually changed my habits.”</div><div class="who">— J.S., Entrepreneur</div></div></div>
-              <div class="slide"><div class="quote-card"><div class="quote">“I’ve shaved 2 minutes off my 10K while improving recovery scores — game changer.”</div><div class="who">— L.P., Marathon Runner</div></div></div>
-              <div class="slide"><div class="quote-card"><div class="quote">“Night shifts wrecked my sleep for years, but Aeon got me back on track.”</div><div class="who">— T.R., Paramedic</div></div></div>
-              <div class="slide"><div class="quote-card"><div class="quote">“The HRV data is so accurate I use it to plan my tournament prep.”</div><div class="who">— C.D., Tennis</div></div></div>
-              <!-- Set B (duplicate for seamless loop) -->
-              <div class="slide"><div class="quote-card"><div class="quote">“My deep sleep is up 35 minutes on average. The readiness score stops me from overdoing it.”</div><div class="who">— M.K., Cyclist</div></div></div>
-              <div class="slide"><div class="quote-card"><div class="quote">“The band is so light I forget it’s there, but the coaching is spot on.”</div><div class="who">— M.R., CrossFit</div></div></div>
-              <div class="slide"><div class="quote-card"><div class="quote">“It’s the first tracker that actually changed my habits.”</div><div class="who">— J.S., Entrepreneur</div></div></div>
-              <div class="slide"><div class="quote-card"><div class="quote">“I’ve shaved 2 minutes off my 10K while improving recovery scores — game changer.”</div><div class="who">— L.P., Marathon Runner</div></div></div>
-              <div class="slide"><div class="quote-card"><div class="quote">“Night shifts wrecked my sleep for years, but Aeon got me back on track.”</div><div class="who">— T.R., Paramedic</div></div></div>
-              <div class="slide"><div class="quote-card"><div class="quote">“The HRV data is so accurate I use it to plan my tournament prep.”</div><div class="who">— C.D., Tennis</div></div></div>
-            </div>
-          </div>
-        </div>
-
-        <p class="note" style="margin-top:8px;">Auto-scrolling. Hover to pause.</p>
       </div>
     </section>
 
@@ -222,7 +237,7 @@
     </div>
   </footer>
 
-  <!-- IMPORTANT: cache-buster bumped -->
-  <script defer src="/lang.js?v=6"></script>
+  <!-- bump cache-buster -->
+  <script defer src="/lang.js?v=7"></script>
 </body>
 </html>
