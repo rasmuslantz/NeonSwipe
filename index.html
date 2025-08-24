@@ -5,27 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Neon Swipe — Clean photos with a swipe</title>
   <meta name="description" content="Swipe right to keep, left to delete. Sort by screenshots, videos or photos. See your queue and progress. Undo and recover from Recently Deleted.">
-
-  <!-- Social preview -->
   <meta property="og:title" content="Neon Swipe — Clean photos with a swipe">
   <meta property="og:description" content="Fast, fun, and safe photo cleanup. Keep the best, clear the rest.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="img/hero.png">
-
   <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
   <link rel="icon" href="img/favicon.png">
   <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
-
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
   <header class="header">
     <div class="container nav">
       <div class="brand">
-        <!-- PNG logo -->
         <img src="img/logo.png" alt="Neon Swipe" class="logo-img">
         <span>Neon Swipe</span>
       </div>
@@ -38,7 +33,7 @@
   </header>
 
   <main>
-    <!-- HERO (styled like your screenshot) -->
+    <!-- HERO (like your screenshot) -->
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-copy">
@@ -48,7 +43,7 @@
             Swipe right to keep, left to delete. Sort by screenshots, videos or photos. See your queue and progress. Undo & recover from “Recently Deleted”.
           </p>
 
-          <!-- Official badges (auto-localised & auto-resized) -->
+          <!-- Store badges (auto language via JS) -->
           <div class="badges">
             <a id="btn-ios" class="store-link" href="#" target="_blank" rel="noopener" title="App Store">
               <img id="badge-ios" src="img/badge-appstore-en.png" alt="Download on the App Store" loading="lazy"/>
@@ -58,9 +53,12 @@
             </a>
           </div>
 
-          <!-- Pills (chips) -->
+          <!-- Pills -->
           <div class="hero-metrics">
-            <div class="chip"><span data-i18n="metric_saved">Space saved</span> <strong><span id="gbCount">0.00</span> GB</strong></div>
+            <div class="chip">
+              <span data-i18n="metric_saved">Space saved</span>
+              <strong><span id="gbCount" class="num">0.00</span> GB</strong>
+            </div>
             <div class="chip" data-i18n="metric_safe">Undo & recovery safe</div>
             <div class="chip" data-i18n="metric_sort">Sort: screenshots • videos • photos</div>
           </div>
@@ -74,11 +72,10 @@
           </ul>
         </div>
 
-        <!-- iPhone mockup with autoplay video (labels removed) -->
+        <!-- iPhone mockup with smoother float + autoplay video -->
         <div class="device-wrap" id="deviceWrap">
-          <div class="iphone panel">
+          <div class="iphone panel smooth-float">
             <div class="iphone-notch"></div>
-            <!-- Replace media/demo.mp4 with your video file -->
             <video id="heroVideo" class="iphone-video" src="media/demo.mp4" autoplay muted playsinline loop></video>
             <noscript><img src="img/hero.png" alt="Neon Swipe app screenshot"/></noscript>
           </div>
@@ -86,7 +83,7 @@
       </div>
     </section>
 
-    <!-- FEATURE RAIL (auto-sliding, pauses on hover/focus/drag) -->
+    <!-- FEATURES: auto-loop slider, pause on hover -->
     <section class="section" id="features">
       <div class="container">
         <div class="section-head">
@@ -143,7 +140,7 @@
       </div>
     </section>
 
-    <!-- PREMIUM -->
+    <!-- PREMIUM (informational) -->
     <section class="section" id="premium">
       <div class="container">
         <div class="section-head">
@@ -154,7 +151,6 @@
           </p>
         </div>
 
-        <!-- Currency + billing period controls (informational only) -->
         <div class="controls">
           <div class="pillbar" role="tablist" aria-label="Billing period">
             <button class="pill is-active" id="billMonthly" data-i18n="pro_monthly">Monthly</button>
