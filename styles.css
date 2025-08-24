@@ -60,7 +60,7 @@ img,video{max-width:100%;display:block}
 .section-head{margin:0 0 16px}
 .subtitle{color:var(--muted);margin:8px 0 0}
 
-/* Feature rail — looks good + auto-loop */
+/* Feature rail — auto loop + pause on hover */
 .rail-wrap{position:relative}
 .rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px, 1fr);gap:14px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory;scroll-behavior:smooth}
 .fcard{scroll-snap-align:start;background:var(--panel);border:1px solid var(--edge);border-radius:20px;padding:14px}

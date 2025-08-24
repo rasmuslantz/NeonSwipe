@@ -8,26 +8,26 @@
   <meta property="og:title" content="Neon Swipe — Clean photos with a swipe">
   <meta property="og:description" content="Fast, fun, and safe photo cleanup. Keep the best, clear the rest.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="img/hero.png">
+  <meta property="og:image" content="/img/hero.png">
 
   <!-- Favicons -->
-  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
-  <link rel="icon" href="img/favicon.png">
-  <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
 
-  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="/styles.css"/>
 </head>
 <body>
   <header class="header">
     <div class="container nav">
       <div class="brand">
-        <img src="img/logo.png" alt="Neon Swipe" class="logo-img">
+        <img src="/img/logo.png" alt="Neon Swipe" class="logo-img">
         <span>Neon Swipe</span>
       </div>
       <nav>
-        <a href="support/" data-i18n="nav_support">Support</a>
+        <a href="/support/" data-i18n="nav_support">Support</a>
         <button id="lang-en" class="lang-btn" aria-pressed="false">EN</button>
         <button id="lang-es" class="lang-btn" aria-pressed="false">ES</button>
       </nav>
@@ -45,13 +45,13 @@
             Swipe right to keep, left to delete. Sort by screenshots, videos or photos. See your queue and progress. Undo & recover from “Recently Deleted”.
           </p>
 
-          <!-- Official badges -->
+          <!-- Badges (auto language in JS) -->
           <div class="badges">
             <a id="btn-ios" class="store-link" href="#" target="_blank" rel="noopener" title="App Store">
-              <img id="badge-ios" src="img/badge-appstore-en.png" alt="Download on the App Store" loading="lazy"/>
+              <img id="badge-ios" src="/img/badge-appstore-en.png" alt="Download on the App Store" loading="lazy"/>
             </a>
             <a id="btn-android" class="store-link" href="#" target="_blank" rel="noopener" title="Google Play">
-              <img id="badge-android" src="img/badge-google-en.png" alt="Get it on Google Play" loading="lazy"/>
+              <img id="badge-android" src="/img/badge-google-en.png" alt="Get it on Google Play" loading="lazy"/>
             </a>
           </div>
 
@@ -65,7 +65,7 @@
             <div class="chip" data-i18n="metric_sort">Sort: screenshots • videos • photos</div>
           </div>
 
-          <!-- Green tick list -->
+          <!-- Green ticks (now fully translatable) -->
           <ul class="ticks hero-ticks">
             <li data-i18n="do_swipe">Swipe right to keep, left to delete</li>
             <li data-i18n="do_sort">Sort by screenshots, videos or photos</li>
@@ -74,18 +74,18 @@
           </ul>
         </div>
 
-        <!-- iPhone mockup: phone hovers, video is still -->
+        <!-- iPhone mockup: phone hovers, video stays still -->
         <div class="device-wrap">
           <div class="iphone panel smooth-float">
             <div class="iphone-notch"></div>
-            <video id="heroVideo" class="iphone-video" src="media/demo.mp4" autoplay muted playsinline loop></video>
-            <noscript><img src="img/hero.png" alt="Neon Swipe app screenshot"/></noscript>
+            <video id="heroVideo" class="iphone-video" src="/media/demo.mp4" autoplay muted playsinline loop></video>
+            <noscript><img src="/img/hero.png" alt="Neon Swipe app screenshot"/></noscript>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- FEATURES: infinite auto-scroll, pauses on hover/focus/drag -->
+    <!-- FEATURES: infinite auto-scroll loop, pause on hover/focus/drag -->
     <section class="section" id="features">
       <div class="container">
         <div class="section-head">
@@ -96,42 +96,42 @@
         <div class="rail-wrap">
           <div class="rail is-loop" id="featureRail" tabindex="0" aria-label="Neon Swipe features">
             <article class="fcard">
-              <img src="img/screen-3.png" alt="" class="fshot"/>
+              <img src="/img/screen-3.png" alt="" class="fshot"/>
               <h3 data-i18n="f_start_t">Start or continue a session</h3>
               <p class="muted" data-i18n="f_start_d">Pick up where you left off or start fresh. Premium lets you continue across sessions without losing progress.</p>
             </article>
             <article class="fcard">
-              <img src="img/hero.png" alt="" class="fshot"/>
+              <img src="/img/hero.png" alt="" class="fshot"/>
               <h3 data-i18n="f_progress_t">See progress as you go</h3>
               <p class="muted" data-i18n="f_progress_d">A clear progress view helps you finish confidently and build a quick daily habit.</p>
             </article>
             <article class="fcard">
-              <img src="img/screen-4.png" alt="" class="fshot"/>
+              <img src="/img/screen-4.png" alt="" class="fshot"/>
               <h3 data-i18n="f_recover_t">Inspect & recover from the queue</h3>
               <p class="muted" data-i18n="f_recover_d">Review before removal, undo any step, and recover from “Recently Deleted” for ~30 days.</p>
             </article>
             <article class="fcard">
-              <img src="img/screen-1.png" alt="" class="fshot"/>
+              <img src="/img/screen-1.png" alt="" class="fshot"/>
               <h3 data-i18n="f_swipe_t">Swipe to keep or delete</h3>
               <p class="muted" data-i18n="f_swipe_d">Right to keep, left to delete. Full-screen review so every decision is easy.</p>
             </article>
             <article class="fcard">
-              <img src="img/screen-2.png" alt="" class="fshot"/>
+              <img src="/img/screen-2.png" alt="" class="fshot"/>
               <h3 data-i18n="f_info_t">See info, share, and favorite</h3>
               <p class="muted" data-i18n="f_info_d">Open details for photos & videos, share, or mark favorites without leaving the flow.</p>
             </article>
             <article class="fcard">
-              <img src="img/screen-2.png" alt="" class="fshot"/>
+              <img src="/img/screen-2.png" alt="" class="fshot"/>
               <h3 data-i18n="f_sort_t">Sort by type</h3>
               <p class="muted" data-i18n="f_sort_d">Focus on screenshots, videos, or just photos to clear clutter faster.</p>
             </article>
             <article class="fcard">
-              <img src="img/screen-4.png" alt="" class="fshot"/>
+              <img src="/img/screen-4.png" alt="" class="fshot"/>
               <h3 data-i18n="f_zoom_t">Zoom & play</h3>
               <p class="muted" data-i18n="f_zoom_d">Pinch to zoom into photos, or play videos inline to choose the best moments.</p>
             </article>
             <article class="fcard">
-              <img src="img/hero.png" alt="" class="fshot"/>
+              <img src="/img/hero.png" alt="" class="fshot"/>
               <h3 data-i18n="f_timeline_t">Timeline or random</h3>
               <p class="muted" data-i18n="f_timeline_d">Work newest-to-oldest for momentum — or switch to random mode for a fresh mix.</p>
             </article>
@@ -142,7 +142,7 @@
       </div>
     </section>
 
-    <!-- PREMIUM (informational) -->
+    <!-- PREMIUM (informational only) -->
     <section class="section" id="premium">
       <div class="container">
         <div class="section-head">
@@ -187,10 +187,11 @@
   <footer class="footer">
     <div class="container footer-row">
       <span>© <span id="year"></span> Neon Swipe</span>
-      <span><a href="support/" data-i18n="footer_support">Support</a> • <a href="privacy/" data-i18n="footer_privacy">Privacy</a></span>
+      <span><a href="/support/" data-i18n="footer_support">Support</a> • <a href="/privacy/" data-i18n="footer_privacy">Privacy</a></span>
     </div>
   </footer>
 
-  <script src="lang.js"></script>
+  <!-- IMPORTANT: root-absolute path + cache-buster -->
+  <script defer src="/lang.js?v=4"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-// i18n + pricing + animations + auto-loop rail
+// i18n + animations + pricing + feature rail auto-loop
 window.locales = window.locales || {};
 window.locales.es_has_badges = true;
 
@@ -14,13 +14,10 @@ const L = {
     h1:"Clean photos with a swipe.",
     sub:"Swipe right to keep, left to delete. Sort by screenshots, videos or photos. See your queue and progress. Undo & recover from “Recently Deleted”.",
     metric_saved:"Space saved", metric_safe:"Undo & recovery safe", metric_sort:"Sort: screenshots • videos • photos",
-
-    /* ✅ Bullet list keys (now translatable) */
     do_swipe:"Swipe right to keep, left to delete",
     do_sort:"Sort by screenshots, videos or photos",
     do_queue:"See your queue & progress at a glance",
     do_undo:"Undo anytime & recover from Recently Deleted (~30 days)",
-
     feat_title:"What you can do", feat_sub:"A focused toolkit for fast, safe cleanup — with clear progress and full control.",
     f_start_t:"Start or continue a session", f_start_d:"Pick up where you left off or start fresh. Premium lets you continue across sessions without losing progress.",
     f_progress_t:"See progress as you go", f_progress_d:"A clear progress view helps you finish confidently and build a quick daily habit.",
@@ -30,15 +27,12 @@ const L = {
     f_sort_t:"Sort by type", f_sort_d:"Focus on screenshots, videos, or just photos to clear clutter faster.",
     f_zoom_t:"Zoom & play", f_zoom_d:"Pinch to zoom into photos, or play videos inline to choose the best moments.",
     f_timeline_t:"Timeline or random", f_timeline_d:"Work newest-to-oldest for momentum — or switch to random mode for a fresh mix.",
-
     pro_title:"Go Premium — remove ads & keep your session",
     pro_sub:"The app shows ads by default. Premium removes ads and lets you continue a session so you never lose progress — plus access to future features.",
     pro_freeboost:"Tip:", pro_freeboost2:"Get 3 hours of Premium twice a day by watching two long ads.",
     pro_monthly:"Monthly", pro_annual:"Annual", per_month:"/month", per_year:"/year",
     pro_noads:"No ads — cleaner, faster experience", pro_session:"Continue session so you don’t lose progress", pro_future:"Access to future features as they roll out",
     pro_legal:"Prices shown for your region. Upgrades are made inside the app via App Store / Google Play. Cancel anytime. Taxes may apply.",
-
-    /* Support */
     s_title:"Support",
     s_intro:"We’re here to help. Start with the quick fixes below or contact us — we usually reply within 1–2 business days.",
     s_quick_title:"Quick fixes",
@@ -48,20 +42,13 @@ const L = {
     s_q_restore_t:"Restore purchases", s_q_restore_d:"Open Neon Swipe → Settings → Restore Purchases.",
     s_contact_title:"Contact us", s_contact_desc:"Can’t find what you need? Email us and include your device model and iOS/Android version.",
     s_email_label:"Email", s_email_value:"neonswipe.help@gmail.com",
-
-    /* Privacy (long form) */
     p_title:"Privacy Policy",
     p_intro:"Neon Swipe is designed to respect your privacy. This notice explains our practices in clear terms.",
-    p_local_t:"On-device processing",
-    p_local_d:"All photo and video review happens locally on your device. We do not upload or store your library on our servers, and we do not view your content.",
-    p_perm_t:"Permissions",
-    p_perm_d:"Access to your Photos library is requested only to display items and perform actions you choose (keep, delete, favorite). You can change or revoke permission anytime in system settings.",
-    p_ads_t:"Advertising & connectivity",
-    p_ads_d:"The app needs an internet connection to load ads. Your photo/video content is never sent with ad requests. Ad providers may receive device identifiers and coarse information (like language and region) required to deliver and measure ads under their own policies.",
-    p_iap_t:"In-app purchases",
-    p_iap_d:"Subscriptions and purchases are processed by Apple or Google. They may maintain purchase metadata and receipts per their privacy terms. We do not receive your full payment details.",
-    p_data_t:"Data we do not collect",
-    p_data_d:"We do not collect on our servers: your photo/video files, albums, favorites, or the structure of your library. Actions you take (keep/delete) remain on your device.",
+    p_local_t:"On-device processing", p_local_d:"All photo and video review happens locally on your device. We do not upload or store your library on our servers, and we do not view your content.",
+    p_perm_t:"Permissions", p_perm_d:"Access to your Photos library is requested only to display items and perform actions you choose (keep, delete, favorite). You can change or revoke permission anytime in system settings.",
+    p_ads_t:"Advertising & connectivity", p_ads_d:"The app needs an internet connection to load ads. Your photo/video content is never sent with ad requests. Ad providers may receive device identifiers and coarse information (like language and region) required to deliver and measure ads under their own policies.",
+    p_iap_t:"In-app purchases", p_iap_d:"Subscriptions and purchases are processed by Apple or Google. They may maintain purchase metadata and receipts per their privacy terms. We do not receive your full payment details.",
+    p_data_t:"Data we do not collect", p_data_d:"We do not collect on our servers: your photo/video files, albums, favorites, or the structure of your library. Actions you take (keep/delete) remain on your device.",
     p_diag_t:"Diagnostics", p_diag_d:"If you opt in to share diagnostics with Apple/Google or send us logs via support, we may receive anonymized crash reports and technical data used only to fix issues and improve performance.",
     p_security_t:"Security", p_security_d:"We apply industry-standard safeguards to any limited data we hold (e.g., support emails). Where feasible, data is encrypted in transit and at rest.",
     p_third_t:"Third-party partners", p_third_d:"When you interact with ads or make a purchase, the relevant partners (ad networks, Apple, Google) process your data under their own policies.",
@@ -71,20 +58,16 @@ const L = {
     p_contact_t:"Contact", p_contact_d:'Questions about privacy? Email <a href="mailto:neonswipe.help@gmail.com">neonswipe.help@gmail.com</a>.',
     p_effective_t:"Effective date", p_effective_d:"This policy is effective as of 1 October 2025."
   },
-
   es: {
     nav_support:"Soporte", nav_home:"Inicio", footer_support:"Soporte", footer_privacy:"Privacidad",
     kicker:"Limpieza de fotos • iOS y Android",
     h1:"Limpia tus fotos con un swipe.",
     sub:"Desliza a la derecha para conservar y a la izquierda para borrar. Ordena por capturas, vídeos o fotos. Mira tu cola y progreso. Deshaz y recupera desde «Eliminado recientemente».",
     metric_saved:"Espacio liberado", metric_safe:"Deshacer y recuperación seguras", metric_sort:"Ordenar: capturas • vídeos • fotos",
-
-    /* ✅ Lista con checks traducida */
     do_swipe:"Desliza a la derecha para conservar y a la izquierda para borrar",
     do_sort:"Ordena por capturas, vídeos o fotos",
     do_queue:"Consulta tu cola y progreso de un vistazo",
     do_undo:"Deshaz en cualquier momento y recupera desde “Eliminado recientemente” (~30 días)",
-
     feat_title:"Qué puedes hacer", feat_sub:"Un conjunto de herramientas enfocado para limpiar rápido y con seguridad — con progreso claro y control total.",
     f_start_t:"Inicia o continúa una sesión", f_start_d:"Retoma donde lo dejaste o empieza de cero. Con Premium continúas entre sesiones sin perder progreso.",
     f_progress_t:"Ve el progreso mientras avanzas", f_progress_d:"Una vista de progreso clara te ayuda a terminar con confianza y crear un hábito diario.",
@@ -94,15 +77,12 @@ const L = {
     f_sort_t:"Ordena por tipo", f_sort_d:"Enfócate en capturas, vídeos o solo fotos para limpiar más rápido.",
     f_zoom_t:"Zoom y reproducción", f_zoom_d:"Acércate a las fotos o reproduce vídeos para elegir los mejores momentos.",
     f_timeline_t:"Cronología o aleatorio", f_timeline_d:"Trabaja de lo más nuevo a lo más antiguo o cambia a modo aleatorio para variar.",
-
     pro_title:"Hazte Premium — sin anuncios y con sesión guardada",
     pro_sub:"La app muestra anuncios por defecto. Con Premium eliminas los anuncios y puedes continuar una sesión sin perder progreso — además de acceso a funciones futuras.",
     pro_freeboost:"Truco:", pro_freeboost2:"Obtén 3 horas de Premium dos veces al día viendo dos anuncios largos.",
     pro_monthly:"Mensual", pro_annual:"Anual", per_month:"/mes", per_year:"/año",
     pro_noads:"Sin anuncios — experiencia más limpia y rápida", pro_session:"Continúa la sesión para no perder tu progreso", pro_future:"Acceso a funciones futuras a medida que salgan",
     pro_legal:"Precios según tu región. La mejora se realiza dentro de la app (App Store / Google Play). Cancela cuando quieras. Pueden aplicarse impuestos.",
-
-    /* Soporte */
     s_title:"Soporte",
     s_intro:"Estamos para ayudarte. Prueba primero estas soluciones rápidas o contáctanos — solemos responder en 1–2 días laborables.",
     s_quick_title:"Soluciones rápidas",
@@ -112,8 +92,6 @@ const L = {
     s_q_restore_t:"Restaurar compras", s_q_restore_d:"Neon Swipe → Ajustes → Restaurar compras.",
     s_contact_title:"Contáctanos", s_contact_desc:"¿No encuentras lo que necesitas? Escríbenos e incluye tu modelo de dispositivo y versión de iOS/Android.",
     s_email_label:"Correo", s_email_value:"neonswipe.help@gmail.com",
-
-    /* Privacidad */
     p_title:"Política de privacidad",
     p_intro:"Neon Swipe está diseñado para respetar tu privacidad. Este aviso explica nuestras prácticas de forma clara.",
     p_local_t:"Procesamiento en el dispositivo", p_local_d:"Toda la revisión de fotos y vídeos ocurre localmente en tu dispositivo. No subimos ni almacenamos tu biblioteca en nuestros servidores, ni vemos tu contenido.",
@@ -141,30 +119,32 @@ const detectCurrency = () => (navigator.language||"en").toLowerCase().includes("
 function setLocale(loc){
   const dict = L[loc] || L.en;
 
-  // Translate everything with data-i18n
+  // Translate anything with data-i18n
   $all("[data-i18n]").forEach(el => { const k=el.dataset.i18n; if(dict[k]!==undefined) el.innerHTML=dict[k]; });
 
-  // Lang buttons
+  // Lang button state + remember
   $("#lang-en")?.setAttribute("aria-pressed", loc==="en");
   $("#lang-es")?.setAttribute("aria-pressed", loc==="es");
   localStorage.setItem("locale", loc);
 
-  // Swap store badges on home
+  // Badges (home)
   const iosImg=$("#badge-ios"), andImg=$("#badge-android");
-  if(iosImg){ iosImg.src=(loc==="es"&&window.locales.es_has_badges)?"img/badge-appstore-es.png":"img/badge-appstore-en.png";
-              iosImg.alt=(loc==="es")?"Descárgalo en el App Store":"Download on the App Store"; }
-  if(andImg){ andImg.src=(loc==="es"&&window.locales.es_has_badges)?"img/badge-google-es.png":"img/badge-google-en.png";
-              andImg.alt=(loc==="es")?"Disponible en Google Play":"Get it on Google Play"; }
+  if(iosImg){
+    iosImg.src=(loc==="es"&&window.locales.es_has_badges)?"/img/badge-appstore-es.png":"/img/badge-appstore-en.png";
+    iosImg.alt = (loc==="es")?"Descárgalo en el App Store":"Download on the App Store";
+  }
+  if(andImg){
+    andImg.src=(loc==="es"&&window.locales.es_has_badges)?"/img/badge-google-es.png":"/img/badge-google-en.png";
+    andImg.alt = (loc==="es")?"Disponible en Google Play":"Get it on Google Play";
+  }
 
   // Pricing label (home only)
   const pricePerEl=$("#pricePer");
   if(pricePerEl){
-    pricePerEl.textContent = (loc==="es")
-      ? (billing.period==="monthly" ? L.es.per_month : L.es.per_year)
-      : (billing.period==="monthly" ? L.en.per_month : L.en.per_year);
+    pricePerEl.textContent=(loc==="es") ? (billing.period==="monthly"?L.es.per_month:L.es.per_year)
+                                        : (billing.period==="monthly"?L.en.per_month:L.en.per_year);
   }
-
-  renderPrices(); // no-op on subpages if elements missing
+  renderPrices(); // no-op on subpages if price nodes absent
 }
 
 function renderPrices(){
@@ -189,21 +169,23 @@ function countUp(el, to=16.82, secs=5.6){
   requestAnimationFrame(tick);
 }
 
-/* Infinite auto-scroll rail (seamless), pause on hover/focus/drag */
+/* Infinite auto-scroll rail (dup children), pause on hover/focus/drag */
 function initInfiniteRail(rail){
   if(!rail) return;
-  rail.innerHTML += rail.innerHTML; // duplicate children
+  rail.innerHTML += rail.innerHTML;
   let paused=false, speed=0.28, rafId;
   function step(){
     if(!paused){
       rail.scrollLeft += speed;
-      if(rail.scrollLeft >= rail.scrollWidth/2) rail.scrollLeft = 0; // loop
+      if(rail.scrollLeft >= rail.scrollWidth/2) rail.scrollLeft = 0;
     }
     rafId=requestAnimationFrame(step);
   }
   rafId=requestAnimationFrame(step);
+
   ["mouseenter","focusin","pointerdown"].forEach(ev=>rail.addEventListener(ev,()=>paused=true));
   ["mouseleave","focusout","pointerup","pointercancel"].forEach(ev=>rail.addEventListener(ev,()=>paused=false));
+
   let isDown=false,startX=0,sl=0;
   rail.addEventListener("pointerdown",e=>{isDown=true;rail.setPointerCapture(e.pointerId);startX=e.clientX;sl=rail.scrollLeft;});
   rail.addEventListener("pointermove",e=>{if(isDown){rail.scrollLeft=sl-(e.clientX-startX);}});
@@ -217,7 +199,7 @@ function initInfiniteRail(rail){
 
   $("#year") && ($("#year").textContent = new Date().getFullYear());
 
-  // Store links (optional)
+  // Store links (home only)
   const iosBtn=$("#btn-ios"), andBtn=$("#btn-android");
   if(iosBtn&&andBtn){
     const isIOS=/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent);
@@ -226,13 +208,16 @@ function initInfiniteRail(rail){
     andBtn.href="https://play.google.com/store/apps/details?id=your.package";
   }
 
-  // Lang toggles
+  // Toggle handlers
   $("#lang-en")?.addEventListener("click", ()=>setLocale("en"));
   $("#lang-es")?.addEventListener("click", ()=>setLocale("es"));
 
-  // Space-saved animation on home
+  // Count-up when visible (home only)
   const gb=$("#gbCount");
-  if(gb){ const io=new IntersectionObserver((ent)=>{ if(ent[0].isIntersecting){ countUp(gb,16.82,5.6); io.disconnect(); }},{threshold:0.4}); io.observe(gb); }
+  if(gb){
+    const io=new IntersectionObserver((ent)=>{ if(ent[0].isIntersecting){ countUp(gb,16.82,5.6); io.disconnect(); } },{threshold:0.4});
+    io.observe(gb);
+  }
 
   // Pricing controls (home only)
   billing.currency = detectCurrency();
@@ -245,6 +230,6 @@ function initInfiniteRail(rail){
   curEUR?.addEventListener("click", ()=>{ billing.currency="EUR"; curEUR.classList.add("is-active"); curUSD?.classList.remove("is-active"); renderPrices(); });
   curUSD?.addEventListener("click", ()=>{ billing.currency="USD"; curUSD.classList.add("is-active"); curEUR?.classList.remove("is-active"); renderPrices(); });
 
-  // Auto-loop features (home only)
+  // Features auto-loop (home only)
   initInfiniteRail(document.getElementById("featureRail"));
 })();
