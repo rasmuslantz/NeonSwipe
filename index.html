@@ -65,7 +65,7 @@
             <div class="chip" data-i18n="metric_sort">Sort: screenshots • videos • photos</div>
           </div>
 
-          <!-- Green ticks (now fully translatable) -->
+          <!-- Green ticks -->
           <ul class="ticks hero-ticks">
             <li data-i18n="do_swipe">Swipe right to keep, left to delete</li>
             <li data-i18n="do_sort">Sort by screenshots, videos or photos</li>
@@ -142,6 +142,37 @@
       </div>
     </section>
 
+    <!-- TESTIMONIALS: auto-scroll, infinite loop, hover to pause -->
+    <section id="testimonials" class="section">
+      <div class="container">
+        <h3 class="section-title">What athletes say</h3>
+        <p class="section-sub">Snapshots from early users training for longevity, not just the next race.</p>
+
+        <div class="reviews-wrap">
+          <div class="slider" aria-live="off">
+            <div class="slider-track">
+              <!-- Set A -->
+              <div class="slide"><div class="quote-card"><div class="quote">“My deep sleep is up 35 minutes on average. The readiness score stops me from overdoing it.”</div><div class="who">— M.K., Cyclist</div></div></div>
+              <div class="slide"><div class="quote-card"><div class="quote">“The band is so light I forget it’s there, but the coaching is spot on.”</div><div class="who">— M.R., CrossFit</div></div></div>
+              <div class="slide"><div class="quote-card"><div class="quote">“It’s the first tracker that actually changed my habits.”</div><div class="who">— J.S., Entrepreneur</div></div></div>
+              <div class="slide"><div class="quote-card"><div class="quote">“I’ve shaved 2 minutes off my 10K while improving recovery scores — game changer.”</div><div class="who">— L.P., Marathon Runner</div></div></div>
+              <div class="slide"><div class="quote-card"><div class="quote">“Night shifts wrecked my sleep for years, but Aeon got me back on track.”</div><div class="who">— T.R., Paramedic</div></div></div>
+              <div class="slide"><div class="quote-card"><div class="quote">“The HRV data is so accurate I use it to plan my tournament prep.”</div><div class="who">— C.D., Tennis</div></div></div>
+              <!-- Set B (duplicate for seamless loop) -->
+              <div class="slide"><div class="quote-card"><div class="quote">“My deep sleep is up 35 minutes on average. The readiness score stops me from overdoing it.”</div><div class="who">— M.K., Cyclist</div></div></div>
+              <div class="slide"><div class="quote-card"><div class="quote">“The band is so light I forget it’s there, but the coaching is spot on.”</div><div class="who">— M.R., CrossFit</div></div></div>
+              <div class="slide"><div class="quote-card"><div class="quote">“It’s the first tracker that actually changed my habits.”</div><div class="who">— J.S., Entrepreneur</div></div></div>
+              <div class="slide"><div class="quote-card"><div class="quote">“I’ve shaved 2 minutes off my 10K while improving recovery scores — game changer.”</div><div class="who">— L.P., Marathon Runner</div></div></div>
+              <div class="slide"><div class="quote-card"><div class="quote">“Night shifts wrecked my sleep for years, but Aeon got me back on track.”</div><div class="who">— T.R., Paramedic</div></div></div>
+              <div class="slide"><div class="quote-card"><div class="quote">“The HRV data is so accurate I use it to plan my tournament prep.”</div><div class="who">— C.D., Tennis</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="note" style="margin-top:8px;">Auto-scrolling. Hover to pause.</p>
+      </div>
+    </section>
+
     <!-- PREMIUM (informational only) -->
     <section class="section" id="premium">
       <div class="container">
@@ -192,6 +223,6 @@
   </footer>
 
   <!-- IMPORTANT: root-absolute path + cache-buster -->
-  <script defer src="/lang.js?v=4"></script>
+  <script defer src="/lang.js?v=5"></script>
 </body>
 </html>
