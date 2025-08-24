@@ -5,18 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Neon Swipe — Clean photos with a swipe</title>
   <meta name="description" content="Swipe right to keep, left to delete. Sort by screenshots, videos or photos. See your queue and progress. Undo and recover from Recently Deleted.">
+
+  <!-- Social preview -->
   <meta property="og:title" content="Neon Swipe — Clean photos with a swipe">
   <meta property="og:description" content="Fast, fun, and safe photo cleanup. Keep the best, clear the rest.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="img/hero.png">
-  <link rel="icon" href="img/hero.png"/>
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+  <link rel="icon" href="img/favicon.png">
+  <!-- Optional SVG favicon -->
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
   <header class="header">
     <div class="container nav">
       <div class="brand">
-        <span class="logo">⥄</span>
+        <!-- Site logo -->
+        <img src="img/logo.svg" alt="Neon Swipe" class="logo-img">
         <span>Neon Swipe</span>
       </div>
       <nav>
@@ -54,7 +65,6 @@
             <div class="chip" data-i18n="metric_sort">Sort: screenshots • videos • photos</div>
           </div>
 
-          <!-- Quick checklist (no separate features screen) -->
           <ul class="ticks hero-ticks">
             <li data-i18n="do_swipe">Swipe right to keep, left to delete</li>
             <li data-i18n="do_sort">Sort by screenshots, videos or photos</li>
@@ -63,35 +73,87 @@
           </ul>
         </div>
 
-        <!-- iPhone mockup with swipe demo -->
+        <!-- iPhone mockup with autoplay video (no swipe overlays/labels) -->
         <div class="device-wrap" id="deviceWrap">
           <div class="iphone panel">
             <div class="iphone-notch"></div>
-            <img id="heroShot" src="img/hero.png" alt="Neon Swipe app screenshot"/>
-            <div class="swipe-overlay swipe-left" aria-hidden="true">
-              <span>🗑️</span>
-            </div>
-            <div class="swipe-overlay swipe-right" aria-hidden="true">
-              <span>✓</span>
-            </div>
+            <!-- Replace media/demo.mp4 with your video file -->
+            <video id="heroVideo" class="iphone-video" src="media/demo.mp4" autoplay muted playsinline loop></video>
+            <noscript><img src="img/hero.png" alt="Neon Swipe app screenshot"/></noscript>
           </div>
-          <div class="floating-tag" style="top:-10px;left:-14px">0%</div>
-          <div class="floating-tag" style="bottom:-10px;right:-14px" data-i18n="tag_queue">Queue</div>
         </div>
       </div>
     </section>
 
-    <!-- PREMIUM (placed lower on the page) -->
+    <!-- FEATURE RAIL (between Hero and Premium) -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="grad" data-i18n="feat_title">What you can do</h2>
+          <p class="subtitle" data-i18n="feat_sub">A focused toolkit for fast, safe cleanup — with clear progress and full control.</p>
+        </div>
+
+        <div class="rail-wrap">
+          <div class="rail" id="featureRail" tabindex="0" aria-label="Neon Swipe features">
+            <article class="fcard">
+              <img src="img/screen-3.png" alt="" class="fshot"/>
+              <h3 data-i18n="f_start_t">Start or continue a session</h3>
+              <p class="muted" data-i18n="f_start_d">Pick up where you left off or start fresh. Premium lets you continue across sessions without losing progress.</p>
+            </article>
+            <article class="fcard">
+              <img src="img/hero.png" alt="" class="fshot"/>
+              <h3 data-i18n="f_progress_t">See progress as you go</h3>
+              <p class="muted" data-i18n="f_progress_d">A clear progress view helps you finish confidently and build a quick daily habit.</p>
+            </article>
+            <article class="fcard">
+              <img src="img/screen-4.png" alt="" class="fshot"/>
+              <h3 data-i18n="f_recover_t">Inspect & recover from the queue</h3>
+              <p class="muted" data-i18n="f_recover_d">Review before removal, undo any step, and recover from “Recently Deleted” for ~30 days.</p>
+            </article>
+            <article class="fcard">
+              <img src="img/screen-1.png" alt="" class="fshot"/>
+              <h3 data-i18n="f_swipe_t">Swipe to keep or delete</h3>
+              <p class="muted" data-i18n="f_swipe_d">Right to keep, left to delete. Full-screen review so every decision is easy.</p>
+            </article>
+            <article class="fcard">
+              <img src="img/screen-2.png" alt="" class="fshot"/>
+              <h3 data-i18n="f_info_t">See info, share, and favorite</h3>
+              <p class="muted" data-i18n="f_info_d">Open details for photos & videos, share, or mark favorites without leaving the flow.</p>
+            </article>
+            <article class="fcard">
+              <img src="img/screen-2.png" alt="" class="fshot"/>
+              <h3 data-i18n="f_sort_t">Sort by type</h3>
+              <p class="muted" data-i18n="f_sort_d">Focus on screenshots, videos, or just photos to clear clutter faster.</p>
+            </article>
+            <article class="fcard">
+              <img src="img/screen-4.png" alt="" class="fshot"/>
+              <h3 data-i18n="f_zoom_t">Zoom & play</h3>
+              <p class="muted" data-i18n="f_zoom_d">Pinch to zoom into photos, or play videos inline to choose the best moments.</p>
+            </article>
+            <article class="fcard">
+              <img src="img/hero.png" alt="" class="fshot"/>
+              <h3 data-i18n="f_timeline_t">Timeline or random</h3>
+              <p class="muted" data-i18n="f_timeline_d">Work newest-to-oldest for momentum — or switch to random mode for a fresh mix.</p>
+            </article>
+          </div>
+          <div class="rail-fade rail-fade--left" aria-hidden="true"></div>
+          <div class="rail-fade rail-fade--right" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREMIUM (lower on the page) -->
     <section class="section" id="premium">
       <div class="container">
         <div class="section-head">
           <h2 class="grad" data-i18n="pro_title">Go Premium — remove ads & keep your session</h2>
           <p class="subtitle" data-i18n="pro_sub">
             The app shows ads by default. Premium removes ads and lets you continue a session so you never lose progress — plus access to future features.
+            <br><strong data-i18n="pro_freeboost">Tip:</strong> <span data-i18n="pro_freeboost2">Get 3 hours of Premium twice a day by watching two long ads.</span>
           </p>
         </div>
 
-        <!-- Currency + billing period controls -->
+        <!-- Currency + billing period controls (informational only) -->
         <div class="controls">
           <div class="pillbar" role="tablist" aria-label="Billing period">
             <button class="pill is-active" id="billMonthly" data-i18n="pro_monthly">Monthly</button>
@@ -115,13 +177,10 @@
               <li data-i18n="pro_future">Access to future features as they roll out</li>
             </ul>
             <p class="tiny muted" data-i18n="pro_legal">
-              Prices shown for your region. Billed via App Store / Google Play. Cancel anytime. Taxes may apply.
+              Prices shown for your region. Upgrades are made inside the app via App Store / Google Play. Cancel anytime. Taxes may apply.
             </p>
           </div>
-          <div class="price-cta">
-            <a id="btn-ios-premium" href="#" class="button primary" target="_blank" rel="noopener" data-i18n="get_ios_premium">Upgrade on App Store</a>
-            <a id="btn-android-premium" href="#" class="button ghost" target="_blank" rel="noopener" data-i18n="get_gp_premium">Upgrade on Google Play</a>
-          </div>
+          <!-- No external upgrade buttons -->
         </div>
       </div>
     </section>
@@ -130,7 +189,7 @@
   <footer class="footer">
     <div class="container footer-row">
       <span>© <span id="year"></span> Neon Swipe</span>
-      <span><a href="support/" data-i18n="footer_support">Support</a> • <a href="#" data-i18n="footer_privacy">Privacy</a></span>
+      <span><a href="support/" data-i18n="footer_support">Support</a> • <a href="privacy/" data-i18n="footer_privacy">Privacy</a></span>
     </div>
   </footer>
 

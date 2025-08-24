@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Black shapes = visible mask; background is transparent -->
+  <g fill="#000">
+    <!-- Rounded square card -->
+    <rect x="86" y="86" width="340" height="340" rx="72" ry="72"/>
+    <!-- Check mark -->
+    <path d="M200 278 L164 242 L142 264 L200 322 L370 152 L348 130 Z"/>
+  </g>
+</svg>
