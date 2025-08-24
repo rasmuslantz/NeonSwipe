@@ -1,4 +1,4 @@
-/* Neon Swipe — modern neon, smooth motion, iPhone video mockup */
+/* Neon Swipe — neon theme, iPhone video mockup, feature rail */
 :root{
   --bg:#070a12;
   --panel:#0f1220;
@@ -8,6 +8,7 @@
   --primary:#00e5ff;
   --accent:#8a4bff;
   --accent2:#ff00d4;
+  --ok:#48ff8a;              /* green tick like your screenshot */
   --glow:0 12px 40px rgba(0,229,255,.18), 0 8px 30px rgba(138,75,255,.16);
   --radius:22px;
 }
@@ -27,10 +28,7 @@ img,video{max-width:100%;display:block}
 }
 .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
 .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px}
-.logo{display:grid;place-items:center;width:36px;height:36px;border-radius:12px;
-  background:conic-gradient(from 180deg,var(--primary),var(--accent),var(--accent2),var(--primary));
-  color:#061218;font-size:18px;box-shadow:var(--glow)
-}
+.logo-img{width:36px;height:36px;border-radius:12px;box-shadow:var(--glow);background:#000;object-fit:cover}
 .nav a, .lang-btn{opacity:.9;margin-left:16px}
 .lang-btn{border:1px solid var(--edge);background:#0e1120;border-radius:12px;padding:6px 10px;cursor:pointer;color:var(--text)}
 .lang-btn[aria-pressed="true"]{background:#14182a}
@@ -48,12 +46,18 @@ img,video{max-width:100%;display:block}
 .kicker{font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
 
 /* Auto-scale official store badges 40–60px */
-.badges{display:flex;gap:clamp(10px,1.2vw,16px);flex-wrap:wrap;align-items:center;margin:10px 0 6px}
+.badges{display:flex;gap:clamp(10px,1.2vw,16px);flex-wrap:wrap;align-items:center;margin:12px 0 8px}
 .badges img{height:clamp(40px,5vw,60px);width:auto;display:block;filter:drop-shadow(0 8px 24px rgba(0,0,0,.45))}
 
-.hero-metrics{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+/* Pills */
+.hero-metrics{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 2px}
 .chip{background:#0c1020;border:1px solid var(--edge);border-radius:999px;padding:8px 12px;font-size:13px;color:var(--muted)}
 .chip strong{color:var(--text)}
+
+/* Check list (green ticks) */
+.ticks{list-style:none;margin:14px 0 0;padding:0}
+.ticks li{position:relative;margin:10px 0 0 0;padding-left:22px;color:var(--muted)}
+.ticks li::before{content:"✓";position:absolute;left:0;top:0;color:var(--ok);}
 
 /* iPhone mockup with autoplay video */
 .device-wrap{position:relative;display:grid;place-items:center}
@@ -70,7 +74,7 @@ img,video{max-width:100%;display:block}
 
 /* Feature RAIL */
 .rail-wrap{position:relative}
-.rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px, 1fr);gap:14px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px, 1fr);gap:14px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory;scroll-behavior:smooth}
 .fcard{scroll-snap-align:start;background:var(--panel);border:1px solid var(--edge);border-radius:20px;padding:14px}
 .fshot{width:100%;border-radius:14px;border:1px solid #1b1f33;margin-bottom:10px}
 .rail::-webkit-scrollbar{height:10px}
@@ -105,15 +109,3 @@ img,video{max-width:100%;display:block}
 @media (max-width:950px){
   .hero-grid{grid-template-columns:1fr}
 }
-
-/* Image logo (replaces the ⥄ span) */
-.logo-img{
-  width:36px;
-  height:36px;
-  border-radius:12px;      /* keeps the soft square vibe */
-  box-shadow:var(--glow);
-  background:#000;         /* looks good with transparent SVG/PNG */
-  object-fit:cover;        /* centers non-square PNGs nicely */
-}
-
-/* (Optional) If you won't use the old .logo glyph anymore, you can delete its CSS block. */

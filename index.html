@@ -17,7 +17,6 @@
   <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
   <link rel="icon" href="img/favicon.png">
-  <!-- Optional SVG favicon -->
   <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 
   <link rel="stylesheet" href="styles.css"/>
@@ -26,8 +25,8 @@
   <header class="header">
     <div class="container nav">
       <div class="brand">
-        <!-- Site logo -->
-        <img src="img/logo.svg" alt="Neon Swipe" class="logo-img">
+        <!-- PNG logo -->
+        <img src="img/logo.png" alt="Neon Swipe" class="logo-img">
         <span>Neon Swipe</span>
       </div>
       <nav>
@@ -39,7 +38,7 @@
   </header>
 
   <main>
-    <!-- HERO -->
+    <!-- HERO (styled like your screenshot) -->
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-copy">
@@ -59,12 +58,14 @@
             </a>
           </div>
 
+          <!-- Pills (chips) -->
           <div class="hero-metrics">
             <div class="chip"><span data-i18n="metric_saved">Space saved</span> <strong><span id="gbCount">0.00</span> GB</strong></div>
             <div class="chip" data-i18n="metric_safe">Undo & recovery safe</div>
             <div class="chip" data-i18n="metric_sort">Sort: screenshots • videos • photos</div>
           </div>
 
+          <!-- Check list -->
           <ul class="ticks hero-ticks">
             <li data-i18n="do_swipe">Swipe right to keep, left to delete</li>
             <li data-i18n="do_sort">Sort by screenshots, videos or photos</li>
@@ -73,7 +74,7 @@
           </ul>
         </div>
 
-        <!-- iPhone mockup with autoplay video (no swipe overlays/labels) -->
+        <!-- iPhone mockup with autoplay video (labels removed) -->
         <div class="device-wrap" id="deviceWrap">
           <div class="iphone panel">
             <div class="iphone-notch"></div>
@@ -85,7 +86,7 @@
       </div>
     </section>
 
-    <!-- FEATURE RAIL (between Hero and Premium) -->
+    <!-- FEATURE RAIL (auto-sliding, pauses on hover/focus/drag) -->
     <section class="section" id="features">
       <div class="container">
         <div class="section-head">
@@ -94,7 +95,7 @@
         </div>
 
         <div class="rail-wrap">
-          <div class="rail" id="featureRail" tabindex="0" aria-label="Neon Swipe features">
+          <div class="rail is-loop" id="featureRail" tabindex="0" aria-label="Neon Swipe features">
             <article class="fcard">
               <img src="img/screen-3.png" alt="" class="fshot"/>
               <h3 data-i18n="f_start_t">Start or continue a session</h3>
@@ -142,7 +143,7 @@
       </div>
     </section>
 
-    <!-- PREMIUM (lower on the page) -->
+    <!-- PREMIUM -->
     <section class="section" id="premium">
       <div class="container">
         <div class="section-head">
@@ -180,7 +181,6 @@
               Prices shown for your region. Upgrades are made inside the app via App Store / Google Play. Cancel anytime. Taxes may apply.
             </p>
           </div>
-          <!-- No external upgrade buttons -->
         </div>
       </div>
     </section>
