@@ -71,16 +71,24 @@ img,video{max-width:100%;display:block}
 .rail-fade--left{left:-2px;background:linear-gradient(90deg,var(--bg),transparent)}
 .rail-fade--right{right:-2px;background:linear-gradient(270deg,var(--bg),transparent)}
 
-/* Feature rail — CSS infinite loop for #features only */
+/* === Feature rail — CSS infinite loop for #features only === */
+#features{ --feat-card-w: 260px; }       /* <- SIZE like before; change if needed */
+
 #features .rail{display:block;overflow:hidden;padding-bottom:0}
 #features .rail-track{
   --loop-dur: 48s;          /* lower = faster */
   display:flex;
   gap:14px;
-  width:max-content;        /* so -50% equals one full set */
+  width:max-content;
   will-change:transform;
   animation:featureLoop var(--loop-dur) linear infinite;
 }
+
+/* make each card the same width as before (approx 260px) */
+#features .rail-track .fcard{
+  flex: 0 0 var(--feat-card-w);
+}
+
 #features .rail:hover .rail-track,
 #features .rail:focus-within .rail-track{animation-play-state:paused}
 
