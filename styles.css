@@ -5,6 +5,13 @@
   --radius:22px;
 }
 
+/* Animatable custom property for silky float */
+@property --floatY{
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.55}
 a{color:inherit;text-decoration:none}
@@ -65,8 +72,7 @@ img,video{max-width:100%;display:block}
   filter:blur(8px);
   opacity:.28;
   transform-origin:center;
-  /* faster + smoother to match float */
-  animation:shadowPulse 5.2s cubic-bezier(.4,0,.2,1) infinite alternate;
+  animation:shadowPulse 4.8s cubic-bezier(.4,0,.2,1) infinite;
 }
 
 .iphone{
@@ -82,37 +88,58 @@ img,video{max-width:100%;display:block}
   will-change:transform;
   backface-visibility:hidden;
   transform-style:preserve-3d;
+
+  /* Smooth, visible float driven by a custom property (but with a transform, so it's GPU-only) */
+  --floatY: 0px;
 }
 
-/* pin the video inside (no pan/bob), even if other CSS tries */
+/* Video stays optically fixed by counter-transform */
 .iphone-video{
   position:absolute; inset:0;
   width:100%; height:100%;
   object-fit:cover;
   border-radius:28px;
   animation:none!important;
-  transform:none!important;
-  translate:none!important;   /* extra guard for modern engines */
   will-change:auto;
   z-index:1;
+}
+
+/* Default (classic) float — used as fallback if custom props aren't supported */
+.smooth-float{
+  animation:floatYclassic 4.8s cubic-bezier(.4,0,.2,1) infinite alternate;
+}
+@keyframes floatYclassic{
+  from{ transform:translate3d(0, 10px, 0) }
+  to  { transform:translate3d(0,-22px, 0) }
+}
+
+/* High-fidelity float that also keeps video pinned (modern browsers) */
+@supports (transform: translate3d(0, var(--floatY), 0)){
+  .smooth-float{
+    animation:floatYvar 4.8s cubic-bezier(.4,0,.2,1) infinite;
+    transform:translate3d(0, var(--floatY), 0);
+  }
+  /* animate the custom property like a sine-y curve (no “pause” at ends) */
+  @keyframes floatYvar{
+    0%   { --floatY:  10px; }
+    12.5%{ --floatY:   4px; }
+    25%  { --floatY:  -6px; }
+    37.5%{ --floatY: -16px; }
+    50%  { --floatY: -22px; }
+    62.5%{ --floatY: -16px; }
+    75%  { --floatY:  -6px; }
+    87.5%{ --floatY:   4px; }
+    100% { --floatY:  10px; }
+  }
+  /* counter-translate the video so it appears locked while the shell floats */
+  .iphone .iphone-video{
+    transform:translate3d(0, calc(-1 * var(--floatY)), 0) !important;
+  }
 }
 
 .iphone-notch{
   position:absolute;top:8px;left:50%;transform:translateX(-50%);
   width:160px;height:26px;background:#0b0d14;border-radius:14px;box-shadow:inset 0 0 0 1px #1a1e2c
-}
-
-/* faster + smoother levitation using GPU translate3d */
-.smooth-float{
-  animation:floatY 5.2s cubic-bezier(.4,0,.2,1) infinite alternate;
-}
-@keyframes floatY{
-  from { transform:translate3d(0, 10px, 0) }
-  to   { transform:translate3d(0,-24px, 0) }
-}
-@keyframes shadowPulse{
-  from { transform:scale(1);    opacity:.30 }
-  to   { transform:scale(0.92); opacity:.20 }
 }
 
 .panel{background:linear-gradient(180deg,#0f1224,#0a0d1a);border:1px solid var(--edge);border-radius:28px;box-shadow:var(--glow);overflow:hidden}
@@ -178,9 +205,10 @@ details.card[open]{border-color:#2a3150}
 
 /* Accessibility */
 @media (prefers-reduced-motion: reduce){
-  .smooth-float{animation:none}
+  .smooth-float{animation:none !important; transform:none !important}
   .device-wrap::before{animation:none}
   #features .rail-track{animation:none}
+  .iphone .iphone-video{transform:none !important}
 }
 
 /* small screens */

@@ -202,9 +202,10 @@ function ensurePhoneFloat(){
     (phoneEl && phoneEl.querySelector("video, .iphone-video")) ||
     document.querySelector(".iphone-video, .iphone video");
   if (vidEl){
+    // Disable rogue animations but KEEP transform so CSS can counter-translate it.
     vidEl.style.animation = "none";
-    vidEl.style.transform  = "none";
-    vidEl.style.position   = "absolute"; // pin to frame
+    // do not set vidEl.style.transform here
+    vidEl.style.position   = "absolute";
     vidEl.style.inset      = "0";
   }
 }
@@ -285,7 +286,6 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
       billM.classList.add("is-active"); billA?.classList.remove("is-active");
       billM.setAttribute("aria-pressed","true"); billA?.setAttribute("aria-pressed","false");
       renderPrices();
-      // update /month label for current locale
       const loc = localStorage.getItem("locale")==="es" ? L.es : L.en;
       $("#pricePer")?.textContent = loc.per_month;
     });
@@ -295,7 +295,6 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
       billA.classList.add("is-active"); billM?.classList.remove("is-active");
       billA.setAttribute("aria-pressed","true"); billM?.setAttribute("aria-pressed","false");
       renderPrices();
-      // update /year label for current locale
       const loc = localStorage.getItem("locale")==="es" ? L.es : L.en;
       $("#pricePer")?.textContent = loc.per_year;
     });
