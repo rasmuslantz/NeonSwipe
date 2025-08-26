@@ -118,13 +118,15 @@ const detectCurrency = () => (navigator.language||"en").toLowerCase().includes("
 
 function setLocale(loc){
   const dict = L[loc] || L.en;
+  // Translate anything with data-i18n
   $all("[data-i18n]").forEach(el => { const k=el.dataset.i18n; if(dict[k]!==undefined) el.innerHTML=dict[k]; });
 
+  // lang buttons + remember
   $("#lang-en")?.setAttribute("aria-pressed", String(loc==="en"));
   $("#lang-es")?.setAttribute("aria-pressed", String(loc==="es"));
   localStorage.setItem("locale", loc);
 
-  // Store badges
+  // Badges
   const iosImg=$("#badge-ios"), andImg=$("#badge-android");
   if(iosImg){
     iosImg.src=(loc==="es"&&window.locales.es_has_badges)?"/img/badge-appstore-es.png":"/img/badge-appstore-en.png";
@@ -135,7 +137,7 @@ function setLocale(loc){
     andImg.alt = (loc==="es")?"Disponible en Google Play":"Get it on Google Play";
   }
 
-  // Update /month or /year label to match locale + current period
+  // /month or /year label to match locale + current period
   const pricePerEl=$("#pricePer");
   if(pricePerEl){
     pricePerEl.textContent=(loc==="es")
@@ -167,7 +169,7 @@ function countUp(el, to=16.82, secs=5.6){
   requestAnimationFrame(tick);
 }
 
-/* Legacy manual rail kept (unused for #featureRail now) */
+/* Legacy manual rail (kept for other rails if any) */
 function initInfiniteRail(rail){
   if(!rail) return;
   rail.innerHTML += rail.innerHTML;
@@ -188,12 +190,23 @@ function initInfiniteRail(rail){
   ["pointerup","pointercancel","pointerleave"].forEach(ev=>rail.addEventListener(ev,()=>{isDown=false;}));
 }
 
-/* Ensure phone floats + video still */
+/* Ensure phone floats + video is pinned (no drift) */
 function ensurePhoneFloat(){
   const phoneEl = document.querySelector(".iphone");
-  if (phoneEl && !phoneEl.classList.contains("smooth-float")) phoneEl.classList.add("smooth-float");
-  const vidEl = (phoneEl && phoneEl.querySelector("video, .iphone-video")) || document.querySelector(".iphone-video, .iphone video");
-  if (vidEl){ vidEl.style.animation = "none"; vidEl.style.transform = "none"; }
+  if (phoneEl && !phoneEl.classList.contains("smooth-float")) {
+    phoneEl.classList.add("smooth-float");
+    phoneEl.style.willChange = "transform";
+    phoneEl.style.backfaceVisibility = "hidden";
+  }
+  const vidEl =
+    (phoneEl && phoneEl.querySelector("video, .iphone-video")) ||
+    document.querySelector(".iphone-video, .iphone video");
+  if (vidEl){
+    vidEl.style.animation = "none";
+    vidEl.style.transform  = "none";
+    vidEl.style.position   = "absolute"; // pin to frame
+    vidEl.style.inset      = "0";
+  }
 }
 function retryEnsurePhoneFloat(ms=250, tries=16){
   ensurePhoneFloat();
@@ -212,6 +225,7 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
 
     $("#year") && ($("#year").textContent = new Date().getFullYear());
 
+    // Store links (home only)
     const iosBtn=$("#btn-ios"), andBtn=$("#btn-android");
     if(iosBtn&&andBtn){
       const isIOS=/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent);
@@ -220,9 +234,11 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
       andBtn.href="https://play.google.com/store/apps/details?id=your.package";
     }
 
+    // Language toggles
     $("#lang-en")?.addEventListener("click", ()=>setLocale("en"));
     $("#lang-es")?.addEventListener("click", ()=>setLocale("es"));
 
+    // Counter when visible
     const gb=$("#gbCount");
     if(gb){
       const io=new IntersectionObserver((ent)=>{ if(ent[0].isIntersecting){ countUp(gb,16.82,5.6); io.disconnect(); } },{threshold:0.4});
@@ -244,7 +260,7 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
       }
     }
 
-    /* === PRICING CONTROLS (re-added) === */
+    /* === PRICING CONTROLS === */
     billing.currency = detectCurrency();
 
     const curEUR=$("#curEUR"), curUSD=$("#curUSD"),
@@ -265,36 +281,34 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
 
     // Click handlers
     billM?.addEventListener("click", ()=>{
-      if(billing.period!=="monthly"){
-        billing.period="monthly";
-      }
+      billing.period="monthly";
       billM.classList.add("is-active"); billA?.classList.remove("is-active");
       billM.setAttribute("aria-pressed","true"); billA?.setAttribute("aria-pressed","false");
       renderPrices();
+      // update /month label for current locale
+      const loc = localStorage.getItem("locale")==="es" ? L.es : L.en;
+      $("#pricePer")?.textContent = loc.per_month;
     });
 
     billA?.addEventListener("click", ()=>{
-      if(billing.period!=="annual"){
-        billing.period="annual";
-      }
+      billing.period="annual";
       billA.classList.add("is-active"); billM?.classList.remove("is-active");
       billA.setAttribute("aria-pressed","true"); billM?.setAttribute("aria-pressed","false");
       renderPrices();
+      // update /year label for current locale
+      const loc = localStorage.getItem("locale")==="es" ? L.es : L.en;
+      $("#pricePer")?.textContent = loc.per_year;
     });
 
     curEUR?.addEventListener("click", ()=>{
-      if(billing.currency!=="EUR"){
-        billing.currency="EUR";
-      }
+      billing.currency="EUR";
       curEUR.classList.add("is-active"); curUSD?.classList.remove("is-active");
       curEUR.setAttribute("aria-pressed","true"); curUSD?.setAttribute("aria-pressed","false");
       renderPrices();
     });
 
     curUSD?.addEventListener("click", ()=>{
-      if(billing.currency!=="USD"){
-        billing.currency="USD";
-      }
+      billing.currency="USD";
       curUSD.classList.add("is-active"); curEUR?.classList.remove("is-active");
       curUSD.setAttribute("aria-pressed","true"); curEUR?.setAttribute("aria-pressed","false");
       renderPrices();

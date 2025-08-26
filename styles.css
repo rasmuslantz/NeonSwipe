@@ -45,14 +45,14 @@ img,video{max-width:100%;display:block}
 .ticks li{position:relative;margin:10px 0 0 0;padding-left:22px;color:var(--muted)}
 .ticks li::before{content:"✓";position:absolute;left:0;top:0;color:var(--ok)}
 
-/* iPhone mockup — LEVITATE: phone floats, video stays still */
+/* iPhone mockup — phone levitates, video stays pinned */
 .device-wrap{
   position:relative;
   display:grid;
   place-items:center;
 }
 
-/* soft oval shadow that subtly “breathes” as the phone floats */
+/* soft oval shadow that syncs with levitation */
 .device-wrap::before{
   content:"";
   position:absolute;
@@ -65,7 +65,8 @@ img,video{max-width:100%;display:block}
   filter:blur(8px);
   opacity:.28;
   transform-origin:center;
-  animation:shadowPulse 12s ease-in-out infinite;
+  /* faster + smoother to match float */
+  animation:shadowPulse 5.2s cubic-bezier(.4,0,.2,1) infinite alternate;
 }
 
 .iphone{
@@ -78,33 +79,40 @@ img,video{max-width:100%;display:block}
   border:1px solid #1b1f33;
   box-shadow:var(--glow);
   overflow:hidden;
-  will-change:transform; /* perf hint for animation */
+  will-change:transform;
+  backface-visibility:hidden;
+  transform-style:preserve-3d;
 }
+
+/* pin the video inside (no pan/bob), even if other CSS tries */
+.iphone-video{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  border-radius:28px;
+  animation:none!important;
+  transform:none!important;
+  translate:none!important;   /* extra guard for modern engines */
+  will-change:auto;
+  z-index:1;
+}
+
 .iphone-notch{
   position:absolute;top:8px;left:50%;transform:translateX(-50%);
   width:160px;height:26px;background:#0b0d14;border-radius:14px;box-shadow:inset 0 0 0 1px #1a1e2c
 }
 
-/* keep the video perfectly still relative to the device */
-.iphone-video{width:100%;height:100%;object-fit:cover;border-radius:28px;animation:none!important;transform:none!important}
-
-/* the levitation */
+/* faster + smoother levitation using GPU translate3d */
 .smooth-float{
-  animation:floatSmooth 12s cubic-bezier(.45,.05,.55,.95) infinite;
+  animation:floatY 5.2s cubic-bezier(.4,0,.2,1) infinite alternate;
 }
-
-@keyframes floatSmooth{
-  0%   { transform:translateY(0) }
-  25%  { transform:translateY(-8px) }
-  50%  { transform:translateY(-12px) }
-  75%  { transform:translateY(-8px) }
-  100% { transform:translateY(0) }
+@keyframes floatY{
+  from { transform:translate3d(0, 10px, 0) }
+  to   { transform:translate3d(0,-24px, 0) }
 }
-
 @keyframes shadowPulse{
-  0%   { transform:scale(1);    opacity:.30 }
-  50%  { transform:scale(0.92); opacity:.20 }
-  100% { transform:scale(1);    opacity:.30 }
+  from { transform:scale(1);    opacity:.30 }
+  to   { transform:scale(0.92); opacity:.20 }
 }
 
 .panel{background:linear-gradient(180deg,#0f1224,#0a0d1a);border:1px solid var(--edge);border-radius:28px;box-shadow:var(--glow);overflow:hidden}
@@ -114,9 +122,9 @@ img,video{max-width:100%;display:block}
 .section-head{margin:0 0 16px}
 .subtitle{color:var(--muted);margin:8px 0 0}
 
-/* Feature rail — base styles (kept) */
+/* Feature rail — auto loop + pause on hover (CSS-driven) */
 .rail-wrap{position:relative}
-.rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px, 1fr);gap:14px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory;scroll-behavior:smooth}
+.rail{display:block;overflow:hidden;padding-bottom:0}
 .fcard{scroll-snap-align:start;background:var(--panel);border:1px solid var(--edge);border-radius:20px;padding:14px}
 .fshot{width:100%;border-radius:14px;border:1px solid #1b1f33;margin-bottom:10px}
 .rail::-webkit-scrollbar{height:10px}
@@ -125,10 +133,7 @@ img,video{max-width:100%;display:block}
 .rail-fade--left{left:-2px;background:linear-gradient(90deg,var(--bg),transparent)}
 .rail-fade--right{right:-2px;background:linear-gradient(270deg,var(--bg),transparent)}
 
-/* Feature rail — CSS infinite loop for #features only (kept) */
-#features{ --feat-card-w: 260px; }  /* size like before */
-
-#features .rail{display:block;overflow:hidden;padding-bottom:0}
+#features{ --feat-card-w: 260px; }
 #features .rail-track{
   --loop-dur: 48s;
   display:flex;
@@ -138,7 +143,6 @@ img,video{max-width:100%;display:block}
   animation:featureLoop var(--loop-dur) linear infinite;
 }
 #features .rail-track .fcard{ flex:0 0 var(--feat-card-w); }
-
 #features .rail:hover .rail-track,
 #features .rail:focus-within .rail-track{ animation-play-state:paused }
 
@@ -172,7 +176,7 @@ details.card[open]{border-color:#2a3150}
 .footer{border-top:1px solid var(--edge);padding:28px 0;margin-top:40px;color:var(--muted);font-size:14px}
 .footer-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 
-/* Accessibility: respect users that prefer less motion */
+/* Accessibility */
 @media (prefers-reduced-motion: reduce){
   .smooth-float{animation:none}
   .device-wrap::before{animation:none}
