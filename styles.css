@@ -45,13 +45,67 @@ img,video{max-width:100%;display:block}
 .ticks li{position:relative;margin:10px 0 0 0;padding-left:22px;color:var(--muted)}
 .ticks li::before{content:"✓";position:absolute;left:0;top:0;color:var(--ok)}
 
-/* iPhone mockup — phone hovers, video stays still */
-.device-wrap{position:relative;display:grid;place-items:center}
-.iphone{position:relative;width:min(390px,90vw);aspect-ratio:9/19.5;background:#000;border-radius:36px;border:1px solid #1b1f33;box-shadow:var(--glow);overflow:hidden}
-.iphone-notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:160px;height:26px;background:#0b0d14;border-radius:14px;box-shadow:inset 0 0 0 1px #1a1e2c}
-.iphone-video{width:100%;height:100%;object-fit:cover;border-radius:28px;animation:none!important}
-.smooth-float{animation:floatSmooth 14s ease-in-out infinite}
-@keyframes floatSmooth{from{transform:translateY(0)}50%{transform:translateY(-6px)}to{transform:translateY(0)}}
+/* iPhone mockup — LEVITATE: phone floats, video stays still */
+.device-wrap{
+  position:relative;
+  display:grid;
+  place-items:center;
+}
+
+/* soft oval shadow that subtly “breathes” as the phone floats */
+.device-wrap::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  bottom:6px;
+  width:56%;
+  height:clamp(10px,6vw,24px);
+  border-radius:999px;
+  background:radial-gradient(50% 65% at 50% 50%, rgba(0,0,0,.45), rgba(0,0,0,0) 70%);
+  filter:blur(8px);
+  opacity:.28;
+  transform-origin:center;
+  animation:shadowPulse 12s ease-in-out infinite;
+}
+
+.iphone{
+  position:relative;
+  z-index:1;
+  width:min(390px,90vw);
+  aspect-ratio:9/19.5;
+  background:#000;
+  border-radius:36px;
+  border:1px solid #1b1f33;
+  box-shadow:var(--glow);
+  overflow:hidden;
+  will-change:transform; /* perf hint for animation */
+}
+.iphone-notch{
+  position:absolute;top:8px;left:50%;transform:translateX(-50%);
+  width:160px;height:26px;background:#0b0d14;border-radius:14px;box-shadow:inset 0 0 0 1px #1a1e2c
+}
+
+/* keep the video perfectly still relative to the device */
+.iphone-video{width:100%;height:100%;object-fit:cover;border-radius:28px;animation:none!important;transform:none!important}
+
+/* the levitation */
+.smooth-float{
+  animation:floatSmooth 12s cubic-bezier(.45,.05,.55,.95) infinite;
+}
+
+@keyframes floatSmooth{
+  0%   { transform:translateY(0) }
+  25%  { transform:translateY(-8px) }
+  50%  { transform:translateY(-12px) }
+  75%  { transform:translateY(-8px) }
+  100% { transform:translateY(0) }
+}
+
+@keyframes shadowPulse{
+  0%   { transform:scale(1);    opacity:.30 }
+  50%  { transform:scale(0.92); opacity:.20 }
+  100% { transform:scale(1);    opacity:.30 }
+}
 
 .panel{background:linear-gradient(180deg,#0f1224,#0a0d1a);border:1px solid var(--edge);border-radius:28px;box-shadow:var(--glow);overflow:hidden}
 
@@ -60,7 +114,7 @@ img,video{max-width:100%;display:block}
 .section-head{margin:0 0 16px}
 .subtitle{color:var(--muted);margin:8px 0 0}
 
-/* Feature rail — legacy base styles (kept) */
+/* Feature rail — base styles (kept) */
 .rail-wrap{position:relative}
 .rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px, 1fr);gap:14px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory;scroll-behavior:smooth}
 .fcard{scroll-snap-align:start;background:var(--panel);border:1px solid var(--edge);border-radius:20px;padding:14px}
@@ -71,26 +125,22 @@ img,video{max-width:100%;display:block}
 .rail-fade--left{left:-2px;background:linear-gradient(90deg,var(--bg),transparent)}
 .rail-fade--right{right:-2px;background:linear-gradient(270deg,var(--bg),transparent)}
 
-/* === Feature rail — CSS infinite loop for #features only === */
-#features{ --feat-card-w: 260px; }       /* <- SIZE like before; change if needed */
+/* Feature rail — CSS infinite loop for #features only (kept) */
+#features{ --feat-card-w: 260px; }  /* size like before */
 
 #features .rail{display:block;overflow:hidden;padding-bottom:0}
 #features .rail-track{
-  --loop-dur: 48s;          /* lower = faster */
+  --loop-dur: 48s;
   display:flex;
   gap:14px;
   width:max-content;
   will-change:transform;
   animation:featureLoop var(--loop-dur) linear infinite;
 }
-
-/* make each card the same width as before (approx 260px) */
-#features .rail-track .fcard{
-  flex: 0 0 var(--feat-card-w);
-}
+#features .rail-track .fcard{ flex:0 0 var(--feat-card-w); }
 
 #features .rail:hover .rail-track,
-#features .rail:focus-within .rail-track{animation-play-state:paused}
+#features .rail:focus-within .rail-track{ animation-play-state:paused }
 
 @keyframes featureLoop{
   from{transform:translateX(0)}
@@ -122,8 +172,10 @@ details.card[open]{border-color:#2a3150}
 .footer{border-top:1px solid var(--edge);padding:28px 0;margin-top:40px;color:var(--muted);font-size:14px}
 .footer-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 
+/* Accessibility: respect users that prefer less motion */
 @media (prefers-reduced-motion: reduce){
   .smooth-float{animation:none}
+  .device-wrap::before{animation:none}
   #features .rail-track{animation:none}
 }
 
