@@ -119,10 +119,12 @@ const detectCurrency = () => (navigator.language||"en").toLowerCase().includes("
 function setLocale(loc){
   const dict = L[loc] || L.en;
   $all("[data-i18n]").forEach(el => { const k=el.dataset.i18n; if(dict[k]!==undefined) el.innerHTML=dict[k]; });
-  $("#lang-en")?.setAttribute("aria-pressed", loc==="en");
-  $("#lang-es")?.setAttribute("aria-pressed", loc==="es");
+
+  $("#lang-en")?.setAttribute("aria-pressed", String(loc==="en"));
+  $("#lang-es")?.setAttribute("aria-pressed", String(loc==="es"));
   localStorage.setItem("locale", loc);
 
+  // Store badges
   const iosImg=$("#badge-ios"), andImg=$("#badge-android");
   if(iosImg){
     iosImg.src=(loc==="es"&&window.locales.es_has_badges)?"/img/badge-appstore-es.png":"/img/badge-appstore-en.png";
@@ -133,10 +135,12 @@ function setLocale(loc){
     andImg.alt = (loc==="es")?"Disponible en Google Play":"Get it on Google Play";
   }
 
+  // Update /month or /year label to match locale + current period
   const pricePerEl=$("#pricePer");
   if(pricePerEl){
-    pricePerEl.textContent=(loc==="es") ? (billing.period==="monthly"?L.es.per_month:L.es.per_year)
-                                        : (billing.period==="monthly"?L.en.per_month:L.en.per_year);
+    pricePerEl.textContent=(loc==="es")
+      ? (billing.period==="monthly"?L.es.per_month:L.es.per_year)
+      : (billing.period==="monthly"?L.en.per_month:L.en.per_year);
   }
   renderPrices();
 }
@@ -229,7 +233,7 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
     ensurePhoneFloat();
     retryEnsurePhoneFloat(250,16);
 
-    /* NEW: Pause CSS loop on hover & respect reduced motion for the features rail */
+    /* Pause CSS loop on hover & respect reduced motion for the features rail */
     const featTrack = document.querySelector('#featureRail .rail-track');
     const featRail  = document.getElementById('featureRail');
     if(featTrack && featRail){
@@ -240,8 +244,63 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
       }
     }
 
-    /* NOTE: We no longer call initInfiniteRail(featureRail) because the CSS loop handles it */
-    // initInfiniteRail(document.getElementById("featureRail"));
+    /* === PRICING CONTROLS (re-added) === */
+    billing.currency = detectCurrency();
+
+    const curEUR=$("#curEUR"), curUSD=$("#curUSD"),
+          billM=$("#billMonthly"), billA=$("#billAnnual");
+
+    // Initial active state
+    if(curEUR&&curUSD){
+      (billing.currency==="USD" ? curUSD : curEUR).classList.add("is-active");
+      curEUR?.setAttribute("aria-pressed", String(billing.currency==="EUR"));
+      curUSD?.setAttribute("aria-pressed", String(billing.currency==="USD"));
+    }
+    if(billM){
+      billM.classList.add("is-active");
+      billM.setAttribute("aria-pressed","true");
+      billA?.setAttribute("aria-pressed","false");
+    }
+    renderPrices();
+
+    // Click handlers
+    billM?.addEventListener("click", ()=>{
+      if(billing.period!=="monthly"){
+        billing.period="monthly";
+      }
+      billM.classList.add("is-active"); billA?.classList.remove("is-active");
+      billM.setAttribute("aria-pressed","true"); billA?.setAttribute("aria-pressed","false");
+      renderPrices();
+    });
+
+    billA?.addEventListener("click", ()=>{
+      if(billing.period!=="annual"){
+        billing.period="annual";
+      }
+      billA.classList.add("is-active"); billM?.classList.remove("is-active");
+      billA.setAttribute("aria-pressed","true"); billM?.setAttribute("aria-pressed","false");
+      renderPrices();
+    });
+
+    curEUR?.addEventListener("click", ()=>{
+      if(billing.currency!=="EUR"){
+        billing.currency="EUR";
+      }
+      curEUR.classList.add("is-active"); curUSD?.classList.remove("is-active");
+      curEUR.setAttribute("aria-pressed","true"); curUSD?.setAttribute("aria-pressed","false");
+      renderPrices();
+    });
+
+    curUSD?.addEventListener("click", ()=>{
+      if(billing.currency!=="USD"){
+        billing.currency="USD";
+      }
+      curUSD.classList.add("is-active"); curEUR?.classList.remove("is-active");
+      curUSD.setAttribute("aria-pressed","true"); curEUR?.setAttribute("aria-pressed","false");
+      renderPrices();
+    });
+
+    /* We no longer call initInfiniteRail(featureRail) — CSS loop handles it */
   }
 
   if (document.readyState === "loading") {
