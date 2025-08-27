@@ -193,18 +193,20 @@ function initInfiniteRail(rail){
 /* Ensure phone floats + video is pinned (no drift) */
 function ensurePhoneFloat(){
   const phoneEl = document.querySelector(".iphone");
-  if (phoneEl && !phoneEl.classList.contains("smooth-float")) {
-    phoneEl.classList.add("smooth-float");
+  if (phoneEl) {
+    // keep class (in case your CSS styles it) but disable its keyframe animation
+    if (!phoneEl.classList.contains("smooth-float")) phoneEl.classList.add("smooth-float");
+    phoneEl.style.animation = "none"; // JS will drive transform for perfect smoothness
     phoneEl.style.willChange = "transform";
     phoneEl.style.backfaceVisibility = "hidden";
+    phoneEl.style.transform = "translate3d(0,0,0)";
   }
   const vidEl =
     (phoneEl && phoneEl.querySelector("video, .iphone-video")) ||
     document.querySelector(".iphone-video, .iphone video");
   if (vidEl){
-    // Disable rogue animations but KEEP transform so CSS can counter-translate it.
     vidEl.style.animation = "none";
-    // do not set vidEl.style.transform here
+    vidEl.style.transform  = "none";
     vidEl.style.position   = "absolute";
     vidEl.style.inset      = "0";
   }
@@ -213,6 +215,74 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
   ensurePhoneFloat();
   let count=1;
   const id=setInterval(()=>{ ensurePhoneFloat(); if(++count>=tries) clearInterval(id); }, ms);
+}
+
+/* Ultra-smooth levitation via rAF + sine (no endpoints pause) */
+function startPhoneSineFloat(){
+  const phoneEl = document.querySelector(".iphone");
+  if (!phoneEl) return;
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const TWO_PI = Math.PI * 2;
+  const amplitude = 16;     // px peak offset (visible but not jumpy)
+  const periodSec = 5.2;    // seconds per full cycle (a bit faster)
+  const omega = TWO_PI / periodSec;
+
+  // Stop any CSS animation on the element to avoid conflicts
+  phoneEl.style.animation = "none";
+
+  // Only animate when on-screen to avoid jank/throttling rebounds
+  let isActive = true;
+  const io = new IntersectionObserver((entries)=> {
+    isActive = entries[0]?.isIntersecting ?? true;
+  }, { threshold: 0.1 });
+  io.observe(phoneEl);
+
+  let raf = 0;
+  let start = performance.now();
+
+  function loop(now){
+    if (reduce.matches) {
+      phoneEl.style.transform = "translate3d(0,0,0)";
+      raf = requestAnimationFrame(loop);
+      return;
+    }
+    if (!isActive) {
+      raf = requestAnimationFrame(loop);
+      return;
+    }
+    const t = (now - start) / 1000;
+    const y = Math.sin(omega * t) * amplitude;
+    // GPU path; subpixel precision prevents micro-stops
+    phoneEl.style.transform = `translate3d(0, ${y.toFixed(2)}px, 0)`;
+    raf = requestAnimationFrame(loop);
+  }
+
+  // Cancel any previous loop and start fresh
+  if (phoneEl._floatRafId) cancelAnimationFrame(phoneEl._floatRafId);
+  phoneEl._floatRafId = requestAnimationFrame(loop);
+
+  // Pause/resume with tab visibility to keep timing consistent
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      if (phoneEl._floatRafId) cancelAnimationFrame(phoneEl._floatRafId);
+      phoneEl._floatRafId = 0;
+    } else {
+      start = performance.now(); // reset phase for a seamless resume
+      phoneEl._floatRafId = requestAnimationFrame(loop);
+    }
+  });
+
+  // Respect changes to reduced-motion on the fly
+  reduce.addEventListener?.("change", (e) => {
+    if (e.matches) {
+      if (phoneEl._floatRafId) cancelAnimationFrame(phoneEl._floatRafId);
+      phoneEl.style.transform = "translate3d(0,0,0)";
+    } else {
+      start = performance.now();
+      phoneEl._floatRafId = requestAnimationFrame(loop);
+    }
+  });
 }
 
 (function init(){
@@ -246,9 +316,10 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
       io.observe(gb);
     }
 
-    /* Phone animation safety */
+    /* Phone: pin video & start ultra-smooth levitation */
     ensurePhoneFloat();
     retryEnsurePhoneFloat(250,16);
+    startPhoneSineFloat();
 
     /* Pause CSS loop on hover & respect reduced motion for the features rail */
     const featTrack = document.querySelector('#featureRail .rail-track');
