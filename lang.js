@@ -33,13 +33,14 @@ const L = {
     pro_monthly:"Monthly", pro_annual:"Annual", per_month:"/month", per_year:"/year",
     pro_noads:"No ads — cleaner, faster experience", pro_session:"Continue session so you don’t lose progress", pro_future:"Access to future features as they roll out",
     pro_legal:"Prices shown for your region. Upgrades are made inside the app via App Store / Google Play. Cancel anytime. Taxes may apply.",
+    pro_offline: "Works offline — no Wi-Fi needed",
     s_title:"Support",
     s_intro:"We’re here to help. Start with the quick fixes below or contact us — we usually reply within 1–2 business days.",
     s_quick_title:"Quick fixes",
     s_q_perm_t:"Allow Photos access", s_q_perm_d:"iOS: Settings → Privacy & Security → Photos → Neon Swipe → Allow “All Photos”.",
     s_q_undo_t:"Undo a deletion", s_q_undo_d:"Photos → Albums → Recently Deleted (available ~30 days).",
     s_q_space_t:"Storage not changing?", s_q_space_d:"After a cleanup, empty “Recently Deleted” to reclaim space immediately.",
-    s_q_restore_t:"Restore purchases", s_q_restore_d:"Open Neon Swipe → Settings → Restore Purchases.",
+    s_q_restore_t:"How do I cancel my subscription?", s_q_restore_d:"Open Neon Swipe → Settings → scroll to the bottom and tap “Cancel my subscription”.",
     s_contact_title:"Contact us", s_contact_desc:"Can’t find what you need? Email us and include your device model and iOS/Android version.",
     s_email_label:"Email", s_email_value:"neonswipe.help@gmail.com",
     p_title:"Privacy Policy",
@@ -56,6 +57,8 @@ const L = {
     p_ret_t:"Retention", p_ret_d:"Support emails and related correspondence are retained only as long as necessary to resolve your request and meet legal obligations.",
     p_changes_t:"Changes to this policy", p_changes_d:"We may update this notice from time to time. Material changes will be posted here with a new effective date.",
     p_contact_t:"Contact", p_contact_d:'Questions about privacy? Email <a href="mailto:neonswipe.help@gmail.com">neonswipe.help@gmail.com</a>.',
+    p_wifi_t: "Connectivity (Free vs Premium)",
+    p_wifi_d: "The free version requires an internet connection to load ads. If your device is offline and ads cannot load, the app pauses until a connection is restored, as part of our ad-supported model. Premium does not require Wi-Fi or mobile data; all features work offline.",
     p_effective_t:"Effective date", p_effective_d:"This policy is effective as of 1 October 2025."
   },
   es: {
@@ -83,13 +86,14 @@ const L = {
     pro_monthly:"Mensual", pro_annual:"Anual", per_month:"/mes", per_year:"/año",
     pro_noads:"Sin anuncios — experiencia más limpia y rápida", pro_session:"Continúa la sesión para no perder tu progreso", pro_future:"Acceso a funciones futuras a medida que salgan",
     pro_legal:"Precios según tu región. La mejora se realiza dentro de la app (App Store / Google Play). Cancela cuando quieras. Pueden aplicarse impuestos.",
+    pro_offline: "Funciona sin conexión — no necesitas Wi-Fi",
     s_title:"Soporte",
     s_intro:"Estamos para ayudarte. Prueba primero estas soluciones rápidas o contáctanos — solemos responder en 1–2 días laborables.",
     s_quick_title:"Soluciones rápidas",
     s_q_perm_t:"Permitir acceso a Fotos", s_q_perm_d:"iOS: Ajustes → Privacidad y seguridad → Fotos → Neon Swipe → “Todas las fotos”.",
     s_q_undo_t:"Deshacer un borrado", s_q_undo_d:"Fotos → Álbumes → Eliminado recientemente (≈30 días).",
     s_q_space_t:"¿El espacio no cambia?", s_q_space_d:"Tras limpiar, vacía “Eliminado recientemente” para recuperar espacio al instante.",
-    s_q_restore_t:"Restaurar compras", s_q_restore_d:"Neon Swipe → Ajustes → Restaurar compras.",
+    s_q_restore_t:"¿Cómo cancelo mi suscripción?", s_q_restore_d:"Abre Neon Swipe → Ajustes → desplázate hasta el final y toca «Cancelar mi suscripción».",
     s_contact_title:"Contáctanos", s_contact_desc:"¿No encuentras lo que necesitas? Escríbenos e incluye tu modelo de dispositivo y versión de iOS/Android.",
     s_email_label:"Correo", s_email_value:"neonswipe.help@gmail.com",
     p_title:"Política de privacidad",
@@ -106,7 +110,9 @@ const L = {
     p_ret_t:"Conservación", p_ret_d:"Los correos de soporte y la correspondencia relacionada se conservan solo el tiempo necesario para atender tu solicitud y cumplir obligaciones legales.",
     p_changes_t:"Cambios en esta política", p_changes_d:"Podemos actualizar este aviso. Los cambios relevantes se publicarán aquí con una nueva fecha de vigencia.",
     p_contact_t:"Contacto", p_contact_d:'¿Preguntas sobre privacidad? Escribe a <a href="mailto:neonswipe.help@gmail.com">neonswipe.help@gmail.com</a>.',
-    p_effective_t:"Fecha de vigencia", p_effective_d:"Esta política entra en vigor el 1 de octubre de 2025."
+    p_wifi_t: "Conectividad (Gratis vs Premium)",
+    p_wifi_d: "La versión gratuita requiere conexión a internet para cargar anuncios. Si tu dispositivo está sin conexión y los anuncios no pueden cargarse, la app se detiene hasta que haya conexión, como parte de nuestro modelo con anuncios. Con Premium no necesitas Wi-Fi ni datos móviles; todas las funciones funcionan sin conexión.",
+    p_effective_t:"Fecha de vigencia", p_effective_d:"Esta política entra en vigor el 1 de octubre de 2025.",
   }
 };
 
