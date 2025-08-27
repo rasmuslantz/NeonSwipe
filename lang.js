@@ -139,28 +139,29 @@ function setLocale(loc){
     andImg.alt=(loc==="es")?"Disponible en Google Play":"Get it on Google Play";
   }
 
-  // Ensure labels reflect current period
   syncPriceLabel();
   renderPrices();
 }
+
 function renderPrices(){
-  const sym=$("#curSymbol"), amountEl=$("#priceAmount"), per=$("#pricePer");
-  if(!sym||!amountEl||!per) return;
+  const sym=$("#curSymbol"), amountEl=$("#priceAmount");
+  if(!sym||!amountEl) return;
   const cfg=PRICING[billing.currency];
   sym.textContent = cfg.symbol;
   amountEl.textContent = (billing.period==="monthly"?cfg.monthly:cfg.annual).toFixed(2);
   syncPriceLabel();
 }
+
 function syncPriceLabel(){
   const per=$("#pricePer");
   if(!per) return;
   const loc = localStorage.getItem("locale")==="es" ? L.es : L.en;
   per.textContent = (billing.period==="monthly") ? loc.per_month : loc.per_year;
 }
+
 function setPeriod(period){
   if(period!=="monthly" && period!=="annual") return;
   billing.period = period;
-  // UI state
   const billM=$("#billMonthly"), billA=$("#billAnnual");
   billM?.classList.toggle("is-active", period==="monthly");
   billA?.classList.toggle("is-active", period==="annual");
@@ -168,6 +169,7 @@ function setPeriod(period){
   billA?.setAttribute("aria-pressed", String(period==="annual"));
   renderPrices();
 }
+
 function setCurrency(cur){
   if(cur!=="EUR" && cur!=="USD") return;
   billing.currency = cur;
@@ -213,7 +215,7 @@ function initInfiniteRail(rail){
   ["pointerup","pointercancel","pointerleave"].forEach(ev=>rail.addEventListener(ev,()=>{isDown=false;}));
 }
 
-/* ---------- Phone float safety (keeps video pinned) ---------- */
+/* ---------- Phone float safety (video pinned) ---------- */
 function ensurePhoneFloat(){
   const phoneEl = document.querySelector(".iphone");
   if (phoneEl && !phoneEl.classList.contains("smooth-float")) phoneEl.classList.add("smooth-float");
@@ -279,39 +281,39 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
       }
     }
 
-    /* ==== PRICING: robust event delegation (survives DOM swaps) ==== */
-    billing.currency = detectCurrency();
-    setCurrency(billing.currency);     // set initial currency UI
-    setPeriod("monthly");              // default period UI
+    /* ==== PRICING (robust) ==== */
+    // Initial state
+    setCurrency(detectCurrency());
+    setPeriod("monthly");
+    renderPrices();
 
-    // Pointer safety (if something overlays by mistake)
+    // Make sure buttons can receive clicks (in case of accidental overlays)
     $("#billMonthly") && ($("#billMonthly").style.pointerEvents = "auto");
     $("#billAnnual")  && ($("#billAnnual").style.pointerEvents  = "auto");
     $("#curEUR")      && ($("#curEUR").style.pointerEvents      = "auto");
     $("#curUSD")      && ($("#curUSD").style.pointerEvents      = "auto");
 
-    // Click delegation
+    // Event delegation so clicks work even if markup is re-rendered
     document.addEventListener("click", (e)=>{
-      const target = e.target.closest("#billMonthly,#billAnnual,#curEUR,#curUSD");
-      if(!target) return;
+      const btn = e.target.closest("#billMonthly,#billAnnual,#curEUR,#curUSD");
+      if(!btn) return;
       e.preventDefault();
-      if(target.id==="billMonthly") setPeriod("monthly");
-      else if(target.id==="billAnnual") setPeriod("annual");
-      else if(target.id==="curEUR") setCurrency("EUR");
-      else if(target.id==="curUSD") setCurrency("USD");
+      switch(btn.id){
+        case "billMonthly": setPeriod("monthly"); break;
+        case "billAnnual":  setPeriod("annual");  break;
+        case "curEUR":      setCurrency("EUR");   break;
+        case "curUSD":      setCurrency("USD");   break;
+      }
     });
 
-    // Keyboard (Enter/Space) accessibility
+    // Keyboard accessibility
     document.addEventListener("keydown", (e)=>{
       if(e.key!=="Enter" && e.key!==" ") return;
-      const target = e.target.closest("#billMonthly,#billAnnual,#curEUR,#curUSD");
-      if(!target) return;
+      const btn = e.target.closest("#billMonthly,#billAnnual,#curEUR,#curUSD");
+      if(!btn) return;
       e.preventDefault();
-      target.click();
+      btn.click();
     });
-
-    // Initial render
-    renderPrices();
   }
 
   if (document.readyState === "loading") {
