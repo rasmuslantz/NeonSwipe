@@ -225,7 +225,7 @@ function startPhoneSineFloat(){
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
   const TWO_PI = Math.PI * 2;
   const amplitude = 16;     // px peak offset (visible but not jumpy)
-  const periodSec = 5.2;    // seconds per full cycle (a bit faster)
+  const periodSec = 1;    // seconds per full cycle (a bit faster)
   const omega = TWO_PI / periodSec;
 
   // Stop any CSS animation on the element to avoid conflicts
