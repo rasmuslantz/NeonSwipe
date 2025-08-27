@@ -116,12 +116,14 @@ function $all(q,scope=document){ return Array.from(scope.querySelectorAll(q)); }
 const billing = { currency:"EUR", period:"monthly" };
 const detectCurrency = () => (navigator.language||"en").toLowerCase().includes("en-us") ? "USD" : "EUR";
 
+/* ---------- I18N + PRICING RENDER ---------- */
 function setLocale(loc){
   const dict = L[loc] || L.en;
-  // Translate anything with data-i18n
+
+  // Translate
   $all("[data-i18n]").forEach(el => { const k=el.dataset.i18n; if(dict[k]!==undefined) el.innerHTML=dict[k]; });
 
-  // lang buttons + remember
+  // Lang buttons
   $("#lang-en")?.setAttribute("aria-pressed", String(loc==="en"));
   $("#lang-es")?.setAttribute("aria-pressed", String(loc==="es"));
   localStorage.setItem("locale", loc);
@@ -130,33 +132,54 @@ function setLocale(loc){
   const iosImg=$("#badge-ios"), andImg=$("#badge-android");
   if(iosImg){
     iosImg.src=(loc==="es"&&window.locales.es_has_badges)?"/img/badge-appstore-es.png":"/img/badge-appstore-en.png";
-    iosImg.alt = (loc==="es")?"Descárgalo en el App Store":"Download on the App Store";
+    iosImg.alt=(loc==="es")?"Descárgalo en el App Store":"Download on the App Store";
   }
   if(andImg){
     andImg.src=(loc==="es"&&window.locales.es_has_badges)?"/img/badge-google-es.png":"/img/badge-google-en.png";
-    andImg.alt = (loc==="es")?"Disponible en Google Play":"Get it on Google Play";
+    andImg.alt=(loc==="es")?"Disponible en Google Play":"Get it on Google Play";
   }
 
-  // /month or /year label to match locale + current period
-  const pricePerEl=$("#pricePer");
-  if(pricePerEl){
-    pricePerEl.textContent=(loc==="es")
-      ? (billing.period==="monthly"?L.es.per_month:L.es.per_year)
-      : (billing.period==="monthly"?L.en.per_month:L.en.per_year);
-  }
+  // Ensure labels reflect current period
+  syncPriceLabel();
   renderPrices();
 }
-
 function renderPrices(){
   const sym=$("#curSymbol"), amountEl=$("#priceAmount"), per=$("#pricePer");
   if(!sym||!amountEl||!per) return;
   const cfg=PRICING[billing.currency];
-  sym.textContent=cfg.symbol;
-  amountEl.textContent=(billing.period==="monthly"?cfg.monthly:cfg.annual).toFixed(2);
-  const loc=localStorage.getItem("locale")==="es"?L.es:L.en;
-  per.textContent=billing.period==="monthly"?loc.per_month:loc.per_year;
+  sym.textContent = cfg.symbol;
+  amountEl.textContent = (billing.period==="monthly"?cfg.monthly:cfg.annual).toFixed(2);
+  syncPriceLabel();
+}
+function syncPriceLabel(){
+  const per=$("#pricePer");
+  if(!per) return;
+  const loc = localStorage.getItem("locale")==="es" ? L.es : L.en;
+  per.textContent = (billing.period==="monthly") ? loc.per_month : loc.per_year;
+}
+function setPeriod(period){
+  if(period!=="monthly" && period!=="annual") return;
+  billing.period = period;
+  // UI state
+  const billM=$("#billMonthly"), billA=$("#billAnnual");
+  billM?.classList.toggle("is-active", period==="monthly");
+  billA?.classList.toggle("is-active", period==="annual");
+  billM?.setAttribute("aria-pressed", String(period==="monthly"));
+  billA?.setAttribute("aria-pressed", String(period==="annual"));
+  renderPrices();
+}
+function setCurrency(cur){
+  if(cur!=="EUR" && cur!=="USD") return;
+  billing.currency = cur;
+  const curEUR=$("#curEUR"), curUSD=$("#curUSD");
+  curEUR?.classList.toggle("is-active", cur==="EUR");
+  curUSD?.classList.toggle("is-active", cur==="USD");
+  curEUR?.setAttribute("aria-pressed", String(cur==="EUR"));
+  curUSD?.setAttribute("aria-pressed", String(cur==="USD"));
+  renderPrices();
 }
 
+/* ---------- COUNT-UP ---------- */
 function countUp(el, to=16.82, secs=5.6){
   if(!el) return;
   const start=performance.now(); const from=parseFloat(el.textContent)||0;
@@ -169,7 +192,7 @@ function countUp(el, to=16.82, secs=5.6){
   requestAnimationFrame(tick);
 }
 
-/* Legacy manual rail (kept for other rails if any) */
+/* ---------- (Optional) Legacy rail if you use it elsewhere ---------- */
 function initInfiniteRail(rail){
   if(!rail) return;
   rail.innerHTML += rail.innerHTML;
@@ -190,20 +213,11 @@ function initInfiniteRail(rail){
   ["pointerup","pointercancel","pointerleave"].forEach(ev=>rail.addEventListener(ev,()=>{isDown=false;}));
 }
 
-/* Ensure phone floats + video is pinned (no drift) */
+/* ---------- Phone float safety (keeps video pinned) ---------- */
 function ensurePhoneFloat(){
   const phoneEl = document.querySelector(".iphone");
-  if (phoneEl) {
-    // keep class (in case your CSS styles it) but disable its keyframe animation
-    if (!phoneEl.classList.contains("smooth-float")) phoneEl.classList.add("smooth-float");
-    phoneEl.style.animation = "none"; // JS will drive transform for perfect smoothness
-    phoneEl.style.willChange = "transform";
-    phoneEl.style.backfaceVisibility = "hidden";
-    phoneEl.style.transform = "translate3d(0,0,0)";
-  }
-  const vidEl =
-    (phoneEl && phoneEl.querySelector("video, .iphone-video")) ||
-    document.querySelector(".iphone-video, .iphone video");
+  if (phoneEl && !phoneEl.classList.contains("smooth-float")) phoneEl.classList.add("smooth-float");
+  const vidEl = (phoneEl && phoneEl.querySelector("video, .iphone-video")) || document.querySelector(".iphone-video, .iphone video");
   if (vidEl){
     vidEl.style.animation = "none";
     vidEl.style.transform  = "none";
@@ -217,76 +231,10 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
   const id=setInterval(()=>{ ensurePhoneFloat(); if(++count>=tries) clearInterval(id); }, ms);
 }
 
-/* Ultra-smooth levitation via rAF + sine (no endpoints pause) */
-function startPhoneSineFloat(){
-  const phoneEl = document.querySelector(".iphone");
-  if (!phoneEl) return;
-
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const TWO_PI = Math.PI * 2;
-  const amplitude = 16;     // px peak offset (visible but not jumpy)
-  const periodSec = 12;    // seconds per full cycle (a bit faster)
-  const omega = TWO_PI / periodSec;
-
-  // Stop any CSS animation on the element to avoid conflicts
-  phoneEl.style.animation = "none";
-
-  // Only animate when on-screen to avoid jank/throttling rebounds
-  let isActive = true;
-  const io = new IntersectionObserver((entries)=> {
-    isActive = entries[0]?.isIntersecting ?? true;
-  }, { threshold: 0.1 });
-  io.observe(phoneEl);
-
-  let raf = 0;
-  let start = performance.now();
-
-  function loop(now){
-    if (reduce.matches) {
-      phoneEl.style.transform = "translate3d(0,0,0)";
-      raf = requestAnimationFrame(loop);
-      return;
-    }
-    if (!isActive) {
-      raf = requestAnimationFrame(loop);
-      return;
-    }
-    const t = (now - start) / 1000;
-    const y = Math.sin(omega * t) * amplitude;
-    // GPU path; subpixel precision prevents micro-stops
-    phoneEl.style.transform = `translate3d(0, ${y.toFixed(2)}px, 0)`;
-    raf = requestAnimationFrame(loop);
-  }
-
-  // Cancel any previous loop and start fresh
-  if (phoneEl._floatRafId) cancelAnimationFrame(phoneEl._floatRafId);
-  phoneEl._floatRafId = requestAnimationFrame(loop);
-
-  // Pause/resume with tab visibility to keep timing consistent
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      if (phoneEl._floatRafId) cancelAnimationFrame(phoneEl._floatRafId);
-      phoneEl._floatRafId = 0;
-    } else {
-      start = performance.now(); // reset phase for a seamless resume
-      phoneEl._floatRafId = requestAnimationFrame(loop);
-    }
-  });
-
-  // Respect changes to reduced-motion on the fly
-  reduce.addEventListener?.("change", (e) => {
-    if (e.matches) {
-      if (phoneEl._floatRafId) cancelAnimationFrame(phoneEl._floatRafId);
-      phoneEl.style.transform = "translate3d(0,0,0)";
-    } else {
-      start = performance.now();
-      phoneEl._floatRafId = requestAnimationFrame(loop);
-    }
-  });
-}
-
+/* ---------- BOOT ---------- */
 (function init(){
   let booted=false;
+
   function onReady(){
     if(booted) return; booted=true;
 
@@ -296,7 +244,7 @@ function startPhoneSineFloat(){
 
     $("#year") && ($("#year").textContent = new Date().getFullYear());
 
-    // Store links (home only)
+    // Store links
     const iosBtn=$("#btn-ios"), andBtn=$("#btn-android");
     if(iosBtn&&andBtn){
       const isIOS=/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent);
@@ -316,12 +264,11 @@ function startPhoneSineFloat(){
       io.observe(gb);
     }
 
-    /* Phone: pin video & start ultra-smooth levitation */
+    // Phone safety
     ensurePhoneFloat();
     retryEnsurePhoneFloat(250,16);
-    startPhoneSineFloat();
 
-    /* Pause CSS loop on hover & respect reduced motion for the features rail */
+    // Feature rail pause on hover (CSS loop)
     const featTrack = document.querySelector('#featureRail .rail-track');
     const featRail  = document.getElementById('featureRail');
     if(featTrack && featRail){
@@ -332,59 +279,39 @@ function startPhoneSineFloat(){
       }
     }
 
-    /* === PRICING CONTROLS === */
+    /* ==== PRICING: robust event delegation (survives DOM swaps) ==== */
     billing.currency = detectCurrency();
+    setCurrency(billing.currency);     // set initial currency UI
+    setPeriod("monthly");              // default period UI
 
-    const curEUR=$("#curEUR"), curUSD=$("#curUSD"),
-          billM=$("#billMonthly"), billA=$("#billAnnual");
+    // Pointer safety (if something overlays by mistake)
+    $("#billMonthly") && ($("#billMonthly").style.pointerEvents = "auto");
+    $("#billAnnual")  && ($("#billAnnual").style.pointerEvents  = "auto");
+    $("#curEUR")      && ($("#curEUR").style.pointerEvents      = "auto");
+    $("#curUSD")      && ($("#curUSD").style.pointerEvents      = "auto");
 
-    // Initial active state
-    if(curEUR&&curUSD){
-      (billing.currency==="USD" ? curUSD : curEUR).classList.add("is-active");
-      curEUR?.setAttribute("aria-pressed", String(billing.currency==="EUR"));
-      curUSD?.setAttribute("aria-pressed", String(billing.currency==="USD"));
-    }
-    if(billM){
-      billM.classList.add("is-active");
-      billM.setAttribute("aria-pressed","true");
-      billA?.setAttribute("aria-pressed","false");
-    }
+    // Click delegation
+    document.addEventListener("click", (e)=>{
+      const target = e.target.closest("#billMonthly,#billAnnual,#curEUR,#curUSD");
+      if(!target) return;
+      e.preventDefault();
+      if(target.id==="billMonthly") setPeriod("monthly");
+      else if(target.id==="billAnnual") setPeriod("annual");
+      else if(target.id==="curEUR") setCurrency("EUR");
+      else if(target.id==="curUSD") setCurrency("USD");
+    });
+
+    // Keyboard (Enter/Space) accessibility
+    document.addEventListener("keydown", (e)=>{
+      if(e.key!=="Enter" && e.key!==" ") return;
+      const target = e.target.closest("#billMonthly,#billAnnual,#curEUR,#curUSD");
+      if(!target) return;
+      e.preventDefault();
+      target.click();
+    });
+
+    // Initial render
     renderPrices();
-
-    // Click handlers
-    billM?.addEventListener("click", ()=>{
-      billing.period="monthly";
-      billM.classList.add("is-active"); billA?.classList.remove("is-active");
-      billM.setAttribute("aria-pressed","true"); billA?.setAttribute("aria-pressed","false");
-      renderPrices();
-      const loc = localStorage.getItem("locale")==="es" ? L.es : L.en;
-      $("#pricePer")?.textContent = loc.per_month;
-    });
-
-    billA?.addEventListener("click", ()=>{
-      billing.period="annual";
-      billA.classList.add("is-active"); billM?.classList.remove("is-active");
-      billA.setAttribute("aria-pressed","true"); billM?.setAttribute("aria-pressed","false");
-      renderPrices();
-      const loc = localStorage.getItem("locale")==="es" ? L.es : L.en;
-      $("#pricePer")?.textContent = loc.per_year;
-    });
-
-    curEUR?.addEventListener("click", ()=>{
-      billing.currency="EUR";
-      curEUR.classList.add("is-active"); curUSD?.classList.remove("is-active");
-      curEUR.setAttribute("aria-pressed","true"); curUSD?.setAttribute("aria-pressed","false");
-      renderPrices();
-    });
-
-    curUSD?.addEventListener("click", ()=>{
-      billing.currency="USD";
-      curUSD.classList.add("is-active"); curEUR?.classList.remove("is-active");
-      curUSD.setAttribute("aria-pressed","true"); curEUR?.setAttribute("aria-pressed","false");
-      renderPrices();
-    });
-
-    /* We no longer call initInfiniteRail(featureRail) — CSS loop handles it */
   }
 
   if (document.readyState === "loading") {
