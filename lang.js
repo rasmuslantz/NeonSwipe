@@ -221,16 +221,25 @@ function initInfiniteRail(rail){
   ["pointerup","pointercancel","pointerleave"].forEach(ev=>rail.addEventListener(ev,()=>{isDown=false;}));
 }
 
-/* ---------- Phone float safety (video pinned) ---------- */
+/* ---------- Phone float safety (video pinned inside mockup) ---------- */
 function ensurePhoneFloat(){
   const phoneEl = document.querySelector(".iphone");
   if (phoneEl && !phoneEl.classList.contains("smooth-float")) phoneEl.classList.add("smooth-float");
-  const vidEl = (phoneEl && phoneEl.querySelector("video, .iphone-video")) || document.querySelector(".iphone-video, .iphone video");
+
+  // Prefer an element with class .iphone-video (your markup), otherwise fall back to any video inside .iphone
+  let vidEl = phoneEl ? phoneEl.querySelector(".iphone-video") : null;
+  if (!vidEl) vidEl = (phoneEl && phoneEl.querySelector("video")) || document.querySelector(".iphone-video, .iphone video");
   if (vidEl){
-    vidEl.style.animation = "none";
-    vidEl.style.transform  = "none";
-    vidEl.style.position   = "absolute";
-    vidEl.style.inset      = "0";
+    // Ensure it has the expected class so the CSS counter-translate & masking apply
+    vidEl.classList.add("iphone-video");
+
+    // Let CSS handle the counter-transform (important to keep the video optically pinned)
+    vidEl.style.removeProperty("transform");       // avoid overriding CSS translate with 'none'
+    vidEl.style.removeProperty("animation");       // CSS sets animation: none !important already
+
+    // Make sure it fills and stays inside the mockup bounds
+    vidEl.style.position = "absolute";
+    vidEl.style.inset = "0";
   }
 }
 function retryEnsurePhoneFloat(ms=250, tries=16){
@@ -248,14 +257,14 @@ function initPhoneFloatRaf(){
   // Respect reduced motion
   if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  // Add hooks that your CSS uses to disable the old keyframe animations
+  // Add hooks to disable keyframe anims while keeping transform driven by --floatY
   phone.classList.add("js-float-active");
   const wrap = phone.closest(".device-wrap");
   if (wrap) wrap.classList.add("js-float-active");
 
   const amplitude = 16;  // px, half swing
   const mid = -6;        // px, midpoint so range ≈ [-22, +10]
-  const period = 4800;   // ms, matches your original timing
+  const period = 4800;   // ms, matches original timing
 
   let t0;
 
@@ -265,10 +274,10 @@ function initPhoneFloatRaf(){
     const theta = (t / period) * Math.PI * 2;
     const y = mid + amplitude * Math.sin(theta);
 
-    // Drive the CSS variable so existing styles (incl. video counter-translate) keep working
+    // Drive CSS variable; CSS applies translate3d on .iphone and inverse on .iphone-video
     phone.style.setProperty("--floatY", y.toFixed(3) + "px");
 
-    // Subtle shadow scale sync (if your CSS reads --shadowScale on .device-wrap::before)
+    // Shadow sync (optional, if CSS reads --shadowScale on .device-wrap::before)
     if (wrap){
       const scale = 1 - ((y - mid) / (amplitude * 2)) * 0.16; // ~0.92..1.08
       wrap.style.setProperty("--shadowScale", scale.toFixed(4));
@@ -319,11 +328,11 @@ function initPhoneFloatRaf(){
       io.observe(gb);
     }
 
-    // Phone safety
+    // Phone safety + ensure the video sits inside the mockup
     ensurePhoneFloat();
     retryEnsurePhoneFloat(250,16);
 
-    // >>> Start ultra-smooth float
+    // Ultra-smooth float
     initPhoneFloatRaf();
 
     // Feature rail pause on hover (CSS loop)
