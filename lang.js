@@ -239,6 +239,53 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
   const id=setInterval(()=>{ ensurePhoneFloat(); if(++count>=tries) clearInterval(id); }, ms);
 }
 
+/* ---------- Super-smooth phone float (requestAnimationFrame sine) ---------- */
+let __phoneFloatRaf = 0;
+function initPhoneFloatRaf(){
+  const phone = document.querySelector(".iphone");
+  if(!phone) return;
+
+  // Respect reduced motion
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  // Add hooks that your CSS uses to disable the old keyframe animations
+  phone.classList.add("js-float-active");
+  const wrap = phone.closest(".device-wrap");
+  if (wrap) wrap.classList.add("js-float-active");
+
+  const amplitude = 16;  // px, half swing
+  const mid = -6;        // px, midpoint so range ≈ [-22, +10]
+  const period = 4800;   // ms, matches your original timing
+
+  let t0;
+
+  function frame(ts){
+    if(!t0) t0 = ts;
+    const t = (ts - t0) % period;
+    const theta = (t / period) * Math.PI * 2;
+    const y = mid + amplitude * Math.sin(theta);
+
+    // Drive the CSS variable so existing styles (incl. video counter-translate) keep working
+    phone.style.setProperty("--floatY", y.toFixed(3) + "px");
+
+    // Subtle shadow scale sync (if your CSS reads --shadowScale on .device-wrap::before)
+    if (wrap){
+      const scale = 1 - ((y - mid) / (amplitude * 2)) * 0.16; // ~0.92..1.08
+      wrap.style.setProperty("--shadowScale", scale.toFixed(4));
+    }
+
+    __phoneFloatRaf = requestAnimationFrame(frame);
+  }
+
+  function start(){ cancelAnimationFrame(__phoneFloatRaf); t0 = undefined; __phoneFloatRaf = requestAnimationFrame(frame); }
+  function stop(){ cancelAnimationFrame(__phoneFloatRaf); }
+
+  document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); else start(); }, { passive:true });
+  window.addEventListener("pagehide", stop, { passive:true });
+
+  start();
+}
+
 /* ---------- BOOT ---------- */
 (function init(){
   let booted=false;
@@ -275,6 +322,9 @@ function retryEnsurePhoneFloat(ms=250, tries=16){
     // Phone safety
     ensurePhoneFloat();
     retryEnsurePhoneFloat(250,16);
+
+    // >>> Start ultra-smooth float
+    initPhoneFloatRaf();
 
     // Feature rail pause on hover (CSS loop)
     const featTrack = document.querySelector('#featureRail .rail-track');
