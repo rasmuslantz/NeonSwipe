@@ -48,6 +48,9 @@ const L = {
     p_local_t:"On-device processing", p_local_d:"All photo and video review happens locally on your device. We do not upload or store your library on our servers, and we do not view your content.",
     p_perm_t:"Permissions", p_perm_d:"Access to your Photos library is requested only to display items and perform actions you choose (keep, delete, favorite). You can change or revoke permission anytime in system settings.",
     p_ads_t:"Advertising & connectivity", p_ads_d:"The app needs an internet connection to load ads. Your photo/video content is never sent with ad requests. Ad providers may receive device identifiers and coarse information (like language and region) required to deliver and measure ads under their own policies.",
+    /* NEW: AdMob consent section (EN) */
+    p_admob_t:"Personalized ads & AdMob consent",
+    p_admob_d:"On launch we may ask for your consent to allow Google AdMob to use device identifiers and similar data to show personalized ads. This tracking is optional — if you decline, we will only serve contextual/non-personalized ads. You can change your choice at any time in the in-app consent dialog, or via your device settings (iOS: Settings → Privacy & Security → Tracking; Android: Settings → Google → Ads). Your photo/video content is never shared with AdMob.",
     p_iap_t:"In-app purchases", p_iap_d:"Subscriptions and purchases are processed by Apple or Google. They may maintain purchase metadata and receipts per their privacy terms. We do not receive your full payment details.",
     p_data_t:"Data we do not collect", p_data_d:"We do not collect on our servers: your photo/video files, albums, favorites, or the structure of your library. Actions you take (keep/delete) remain on your device.",
     p_diag_t:"Diagnostics", p_diag_d:"If you opt in to share diagnostics with Apple/Google or send us logs via support, we may receive anonymized crash reports and technical data used only to fix issues and improve performance.",
@@ -101,6 +104,9 @@ const L = {
     p_local_t:"Procesamiento en el dispositivo", p_local_d:"Toda la revisión de fotos y vídeos ocurre localmente en tu dispositivo. No subimos ni almacenamos tu biblioteca en nuestros servidores, ni vemos tu contenido.",
     p_perm_t:"Permisos", p_perm_d:"El acceso a tu Fototeca se solicita únicamente para mostrar elementos y realizar las acciones que elijas (conservar, borrar, favorito). Puedes cambiar o revocar el permiso en Ajustes del sistema.",
     p_ads_t:"Publicidad y conectividad", p_ads_d:"La app necesita conexión a internet para cargar anuncios. Tu contenido nunca se envía con las solicitudes de anuncios. Los proveedores pueden recibir identificadores del dispositivo e información general (idioma y región) para ofrecer y medir anuncios según sus políticas.",
+    /* NUEVO: sección de consentimiento de AdMob (ES) */
+    p_admob_t:"Anuncios personalizados y consentimiento de AdMob",
+    p_admob_d:"Al abrir la app podemos pedir tu consentimiento para que Google AdMob use identificadores del dispositivo y datos similares para mostrar anuncios personalizados. Este seguimiento es opcional: si no aceptas, solo mostraremos anuncios contextuales/no personalizados. Puedes cambiar tu elección en cualquier momento desde el cuadro de consentimiento en la app o en los ajustes del dispositivo (iOS: Ajustes → Privacidad y seguridad → Rastreo; Android: Ajustes → Google → Anuncios). Tu contenido de fotos/vídeos nunca se comparte con AdMob.",
     p_iap_t:"Compras dentro de la app", p_iap_d:"Las suscripciones y compras las procesan Apple o Google. Pueden mantener metadatos y recibos de compra conforme a sus políticas de privacidad. No recibimos tus datos de pago completos.",
     p_data_t:"Datos que no recopilamos", p_data_d:"No recopilamos en nuestros servidores tus archivos de fotos/vídeos, álbumes, favoritos ni la estructura de tu biblioteca. Las acciones (conservar/borrar) permanecen en tu dispositivo.",
     p_diag_t:"Diagnósticos", p_diag_d:"Si aceptas compartir diagnósticos con Apple/Google o nos envías registros por soporte, podemos recibir informes anónimos de fallos y datos técnicos para corregir errores y mejorar el rendimiento.",
@@ -226,18 +232,12 @@ function ensurePhoneFloat(){
   const phoneEl = document.querySelector(".iphone");
   if (phoneEl && !phoneEl.classList.contains("smooth-float")) phoneEl.classList.add("smooth-float");
 
-  // Prefer an element with class .iphone-video (your markup), otherwise fall back to any video inside .iphone
   let vidEl = phoneEl ? phoneEl.querySelector(".iphone-video") : null;
   if (!vidEl) vidEl = (phoneEl && phoneEl.querySelector("video")) || document.querySelector(".iphone-video, .iphone video");
   if (vidEl){
-    // Ensure it has the expected class so the CSS counter-translate & masking apply
     vidEl.classList.add("iphone-video");
-
-    // Let CSS handle the counter-transform (important to keep the video optically pinned)
-    vidEl.style.removeProperty("transform");       // avoid overriding CSS translate with 'none'
-    vidEl.style.removeProperty("animation");       // CSS sets animation: none !important already
-
-    // Make sure it fills and stays inside the mockup bounds
+    vidEl.style.removeProperty("transform");
+    vidEl.style.removeProperty("animation");
     vidEl.style.position = "absolute";
     vidEl.style.inset = "0";
   }
@@ -253,19 +253,13 @@ let __phoneFloatRaf = 0;
 function initPhoneFloatRaf(){
   const phone = document.querySelector(".iphone");
   if(!phone) return;
-
-  // Respect reduced motion
   if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  // Add hooks to disable keyframe anims while keeping transform driven by --floatY
   phone.classList.add("js-float-active");
   const wrap = phone.closest(".device-wrap");
   if (wrap) wrap.classList.add("js-float-active");
 
-  const amplitude = 16;  // px, half swing
-  const mid = -6;        // px, midpoint so range ≈ [-22, +10]
-  const period = 4800;   // ms, matches original timing
-
+  const amplitude = 16, mid = -6, period = 4800;
   let t0;
 
   function frame(ts){
@@ -274,15 +268,11 @@ function initPhoneFloatRaf(){
     const theta = (t / period) * Math.PI * 2;
     const y = mid + amplitude * Math.sin(theta);
 
-    // Drive CSS variable; CSS applies translate3d on .iphone and inverse on .iphone-video
     phone.style.setProperty("--floatY", y.toFixed(3) + "px");
-
-    // Shadow sync (optional, if CSS reads --shadowScale on .device-wrap::before)
     if (wrap){
-      const scale = 1 - ((y - mid) / (amplitude * 2)) * 0.16; // ~0.92..1.08
+      const scale = 1 - ((y - mid) / (amplitude * 2)) * 0.16;
       wrap.style.setProperty("--shadowScale", scale.toFixed(4));
     }
-
     __phoneFloatRaf = requestAnimationFrame(frame);
   }
 
@@ -293,6 +283,29 @@ function initPhoneFloatRaf(){
   window.addEventListener("pagehide", stop, { passive:true });
 
   start();
+}
+
+/* ---------- Inject AdMob consent card on Privacy page ---------- */
+function injectPrivacyAdmobSection(){
+  const cards = document.querySelector(".cards");
+  if(!cards) return;
+  const loc = (localStorage.getItem("locale")==="es") ? L.es : L.en;
+
+  const card = document.createElement("article");
+  card.className = "card";
+  card.innerHTML = `
+    <h3 data-i18n="p_admob_t">${loc.p_admob_t}</h3>
+    <p data-i18n="p_admob_d">${loc.p_admob_d}</p>
+  `;
+
+  const adsCard = cards.querySelector("[data-i18n='p_ads_t']")?.closest(".card");
+  if (adsCard && adsCard.nextSibling){
+    adsCard.parentNode.insertBefore(card, adsCard.nextSibling);
+  } else if (adsCard){
+    adsCard.after(card);
+  } else {
+    cards.appendChild(card);
+  }
 }
 
 /* ---------- BOOT ---------- */
@@ -328,11 +341,9 @@ function initPhoneFloatRaf(){
       io.observe(gb);
     }
 
-    // Phone safety + ensure the video sits inside the mockup
+    // Phone safety + mockup containment
     ensurePhoneFloat();
     retryEnsurePhoneFloat(250,16);
-
-    // Ultra-smooth float
     initPhoneFloatRaf();
 
     // Feature rail pause on hover (CSS loop)
@@ -347,18 +358,17 @@ function initPhoneFloatRaf(){
     }
 
     /* ==== PRICING (robust) ==== */
-    // Initial state
     setCurrency(detectCurrency());
     setPeriod("monthly");
     renderPrices();
 
-    // Make sure buttons can receive clicks (in case of accidental overlays)
+    // Ensure buttons work
     $("#billMonthly") && ($("#billMonthly").style.pointerEvents = "auto");
     $("#billAnnual")  && ($("#billAnnual").style.pointerEvents  = "auto");
     $("#curEUR")      && ($("#curEUR").style.pointerEvents      = "auto");
     $("#curUSD")      && ($("#curUSD").style.pointerEvents      = "auto");
 
-    // Event delegation so clicks work even if markup is re-rendered
+    // Delegated clicks
     document.addEventListener("click", (e)=>{
       const btn = e.target.closest("#billMonthly,#billAnnual,#curEUR,#curUSD");
       if(!btn) return;
@@ -371,7 +381,7 @@ function initPhoneFloatRaf(){
       }
     });
 
-    // Keyboard accessibility
+    // Keyboard
     document.addEventListener("keydown", (e)=>{
       if(e.key!=="Enter" && e.key!==" ") return;
       const btn = e.target.closest("#billMonthly,#billAnnual,#curEUR,#curUSD");
@@ -379,6 +389,9 @@ function initPhoneFloatRaf(){
       e.preventDefault();
       btn.click();
     });
+
+    // Inject the new AdMob consent section on the Privacy page (if present)
+    injectPrivacyAdmobSection();
   }
 
   if (document.readyState === "loading") {
