@@ -332,42 +332,31 @@ function injectPrivacyAdmobSection(){
 
     /* >>> ADDED: Deep-link to App Store app on iOS, HTTPS fallback elsewhere <<< */
     (function(){
-      const iosBtn = $("#btn-ios"); if(!iosBtn) return;
+      const iosBtn = $("#btn-ios"); if (!iosBtn) return;
+
       const APPLE_ID = "6751445669";
-      const httpsUrl = `https://apps.apple.com/app/id${APPLE_ID}`;
-      const itmsUrl  = `itms-apps://apps.apple.com/app/id${APPLE_ID}`;
-      const isRealIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
-      iosBtn.href = isRealIOS ? itmsUrl : httpsUrl;
-      if (isRealIOS) iosBtn.removeAttribute("target");
+      const region = ((navigator.language || "en").split("-")[1] || "us").toLowerCase();
+
+      const httpsUrl = `https://apps.apple.com/${region}/app/id${APPLE_ID}`;
+      const itmsUrl  = `itms-apps://apps.apple.com/${region}/app/id${APPLE_ID}`;
+
+      // iOS detection that also catches iPadOS when it pretends to be macOS
+      const isiOSUA = /iPhone|iPad|iPod/.test(navigator.userAgent);
+      const isiPadDesktopUA = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+      const isiOS = isiOSUA || isiPadDesktopUA;
+
+      // Set the href appropriately
+      iosBtn.href = isiOS ? itmsUrl : httpsUrl;
+      if (isiOS) iosBtn.removeAttribute("target");
+
+      // In some in-app browsers, directly setting location works better and we need a fallback
+      iosBtn.addEventListener("click", function(){
+        if (!isiOS) return;
+        // Try deep link; if blocked, fall back to HTTPS shortly after
+        const fallback = setTimeout(()=>{ window.location.href = httpsUrl; }, 400);
+        try { window.location.href = itmsUrl; } catch (_) {}
+      }, { passive: true });
     })();
-    /* <<< END ADDED >>> */
-
-    // Language toggles
-    $("#lang-en")?.addEventListener("click", ()=>setLocale("en"));
-    $("#lang-es")?.addEventListener("click", ()=>setLocale("es"));
-
-    // Counter when visible
-    const gb=$("#gbCount");
-    if(gb){
-      const io=new IntersectionObserver((ent)=>{ if(ent[0].isIntersecting){ countUp(gb,16.82,5.6); io.disconnect(); } },{threshold:0.4});
-      io.observe(gb);
-    }
-
-    // Phone safety + mockup containment
-    ensurePhoneFloat();
-    retryEnsurePhoneFloat(250,16);
-    initPhoneFloatRaf();
-
-    // Feature rail pause on hover (CSS loop)
-    const featTrack = document.querySelector('#featureRail .rail-track');
-    const featRail  = document.getElementById('featureRail');
-    if(featTrack && featRail){
-      featRail.addEventListener('mouseenter', ()=> featTrack.style.animationPlayState='paused');
-      featRail.addEventListener('mouseleave', ()=> featTrack.style.animationPlayState='running');
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-        featTrack.style.animationPlayState = 'paused';
-      }
-    }
 
     /* ==== PRICING (robust) ==== */
     setCurrency(detectCurrency());
