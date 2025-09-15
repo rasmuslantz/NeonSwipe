@@ -330,6 +330,18 @@ function injectPrivacyAdmobSection(){
       andBtn.href="https://play.google.com/store/apps/details?id=your.package";
     }
 
+    /* >>> ADDED: Deep-link to App Store app on iOS, HTTPS fallback elsewhere <<< */
+    (function(){
+      const iosBtn = $("#btn-ios"); if(!iosBtn) return;
+      const APPLE_ID = "6751445669";
+      const httpsUrl = `https://apps.apple.com/app/id${APPLE_ID}`;
+      const itmsUrl  = `itms-apps://apps.apple.com/app/id${APPLE_ID}`;
+      const isRealIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+      iosBtn.href = isRealIOS ? itmsUrl : httpsUrl;
+      if (isRealIOS) iosBtn.removeAttribute("target");
+    })();
+    /* <<< END ADDED >>> */
+
     // Language toggles
     $("#lang-en")?.addEventListener("click", ()=>setLocale("en"));
     $("#lang-es")?.addEventListener("click", ()=>setLocale("es"));
