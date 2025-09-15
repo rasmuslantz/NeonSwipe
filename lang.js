@@ -331,7 +331,7 @@ function injectPrivacyAdmobSection(){
     }
 
     /* >>> ADDED: Deep-link to App Store app on iOS, HTTPS fallback elsewhere <<< */
-    (function(){
+    setTimeout(()=>{
       const iosBtn = $("#btn-ios"); if (!iosBtn) return;
 
       const APPLE_ID = "6751445669";
@@ -340,47 +340,20 @@ function injectPrivacyAdmobSection(){
       const httpsUrl = `https://apps.apple.com/${region}/app/id${APPLE_ID}`;
       const itmsUrl  = `itms-apps://apps.apple.com/${region}/app/id${APPLE_ID}`;
 
-      // iOS detection that also catches iPadOS when it pretends to be macOS
-      const isiOSUA = /iPhone|iPad|iPod/.test(navigator.userAgent);
-      const isiPadDesktopUA = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
-      const isiOS = isiOSUA || isiPadDesktopUA;
+      // iPadOS "desktop site" detection too
+      const isiOS = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+                    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
-      // Set the href appropriately
       iosBtn.href = isiOS ? itmsUrl : httpsUrl;
       if (isiOS) iosBtn.removeAttribute("target");
 
-      // In some in-app browsers, directly setting location works better and we need a fallback
-      iosBtn.addEventListener("click", function(){
+      // Help stubborn in-app browsers: try deep link, fall back to https
+      iosBtn.addEventListener("click", () => {
         if (!isiOS) return;
-        // Try deep link; if blocked, fall back to HTTPS shortly after
-        const fallback = setTimeout(()=>{ window.location.href = httpsUrl; }, 400);
-        try { window.location.href = itmsUrl; } catch (_) {}
-      }, { passive: true });
-    })();
-
-    /* ==== PRICING (robust) ==== */
-    setCurrency(detectCurrency());
-    setPeriod("monthly");
-    renderPrices();
-
-    // Ensure buttons work
-    $("#billMonthly") && ($("#billMonthly").style.pointerEvents = "auto");
-    $("#billAnnual")  && ($("#billAnnual").style.pointerEvents  = "auto");
-    $("#curEUR")      && ($("#curEUR").style.pointerEvents      = "auto");
-    $("#curUSD")      && ($("#curUSD").style.pointerEvents      = "auto");
-
-    // Delegated clicks
-    document.addEventListener("click", (e)=>{
-      const btn = e.target.closest("#billMonthly,#billAnnual,#curEUR,#curUSD");
-      if(!btn) return;
-      e.preventDefault();
-      switch(btn.id){
-        case "billMonthly": setPeriod("monthly"); break;
-        case "billAnnual":  setPeriod("annual");  break;
-        case "curEUR":      setCurrency("EUR");   break;
-        case "curUSD":      setCurrency("USD");   break;
-      }
-    });
+        setTimeout(()=>{ location.href = httpsUrl; }, 400);
+        try { location.href = itmsUrl; } catch (_) {}
+      }, { passive:true });
+    }, 0);
 
     // Keyboard
     document.addEventListener("keydown", (e)=>{
