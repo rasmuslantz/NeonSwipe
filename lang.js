@@ -331,29 +331,21 @@ function injectPrivacyAdmobSection(){
     }
 
     /* >>> ADDED: Deep-link to App Store app on iOS, HTTPS fallback elsewhere <<< */
-    setTimeout(()=>{
-      const iosBtn = $("#btn-ios"); if (!iosBtn) return;
+    setTimeout(() => {
+      const btn = document.getElementById('btn-ios'); if (!btn) return;
+      const ID = '6751445669';
 
-      const APPLE_ID = "6751445669";
-      const region = ((navigator.language || "en").split("-")[1] || "us").toLowerCase();
-
-      const httpsUrl = `https://apps.apple.com/${region}/app/id${APPLE_ID}`;
-      const itmsUrl  = `itms-apps://apps.apple.com/${region}/app/id${APPLE_ID}`;
-
-      // iPadOS "desktop site" detection too
+      // Detect iOS, including iPadOS with "desktop" UA
       const isiOS = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
-                    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+                    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-      iosBtn.href = isiOS ? itmsUrl : httpsUrl;
-      if (isiOS) iosBtn.removeAttribute("target");
+      btn.href = isiOS
+        ? `itms-apps://apps.apple.com/app/id${ID}`
+        : `https://apps.apple.com/app/id${ID}`;
 
-      // Help stubborn in-app browsers: try deep link, fall back to https
-      iosBtn.addEventListener("click", () => {
-        if (!isiOS) return;
-        setTimeout(()=>{ location.href = httpsUrl; }, 400);
-        try { location.href = itmsUrl; } catch (_) {}
-      }, { passive:true });
+      if (isiOS) btn.removeAttribute('target');
     }, 0);
+
 
     // Keyboard
     document.addEventListener("keydown", (e)=>{
