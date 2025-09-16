@@ -333,19 +333,32 @@ function injectPrivacyAdmobSection(){
     /* >>> ADDED: Deep-link to App Store app on iOS, HTTPS fallback elsewhere <<< */
     setTimeout(() => {
       const btn = document.getElementById('btn-ios'); if (!btn) return;
-      const ID = '6751445669';
+      const APPLE_ID = '6751445669';
 
-      // Detect iOS, including iPadOS with "desktop" UA
+      const navLang = navigator.language || 'en';
+      const parts = navLang.split('-'); // e.g. ['en','GB']
+      const region = (parts[1] || (parts[0].toLowerCase()==='es' ? 'es' : 'us')).toLowerCase();
+      const langParam = encodeURIComponent(navLang); // e.g. en-GB
+
+      const httpsUrl = `https://apps.apple.com/${region}/app/id${APPLE_ID}?l=${langParam}`;
+      const itmsUrl  = `itms-apps://apps.apple.com/${region}/app/id${APPLE_ID}`;
+
+      // Detect iOS, including iPadOS "desktop site" UA
       const isiOS = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
                     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-      btn.href = isiOS
-        ? `itms-apps://apps.apple.com/app/id${ID}`
-        : `https://apps.apple.com/app/id${ID}`;
-
+      // Apply link
+      btn.href = isiOS ? itmsUrl : httpsUrl;
       if (isiOS) btn.removeAttribute('target');
-    }, 0);
 
+      // Help stubborn in-app browsers: try deep link, then fast HTTPS fallback
+      btn.addEventListener('click', () => {
+        if (!isiOS) return;
+        const timer = setTimeout(() => { location.href = httpsUrl; }, 450);
+        try { location.href = itmsUrl; } catch (_) {}
+      }, { passive:true });
+    }, 0);
+    /* <<< END ADDED >>> */
 
     // Keyboard
     document.addEventListener("keydown", (e)=>{
