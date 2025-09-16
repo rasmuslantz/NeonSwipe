@@ -326,39 +326,33 @@ function injectPrivacyAdmobSection(){
     if(iosBtn&&andBtn){
       const isIOS=/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent);
       iosBtn.style.order=isIOS?0:1; andBtn.style.order=isIOS?1:0;
-      iosBtn.href="https://apps.apple.com/app/your-app-id";
+      // CHANGED: real App Store URL for your app (no more placeholder)
+      iosBtn.href="https://apps.apple.com/es/app/neon-swipe/id6751445669?l=en-GB";
       andBtn.href="https://play.google.com/store/apps/details?id=your.package";
     }
 
-    /* >>> ADDED: Deep-link to App Store app on iOS, HTTPS fallback elsewhere <<< */
+    /* Deep-link to the App Store app on iOS; keep HTTPS for others.
+       Runs after everything else so it always wins. */
     setTimeout(() => {
       const btn = document.getElementById('btn-ios'); if (!btn) return;
-      const APPLE_ID = '6751445669';
 
-      const navLang = navigator.language || 'en';
-      const parts = navLang.split('-'); // e.g. ['en','GB']
-      const region = (parts[1] || (parts[0].toLowerCase()==='es' ? 'es' : 'us')).toLowerCase();
-      const langParam = encodeURIComponent(navLang); // e.g. en-GB
+      const HTTPS_URL = "https://apps.apple.com/es/app/neon-swipe/id6751445669?l=en-GB";
+      const ITMS_URL  = "itms-apps://apps.apple.com/es/app/id6751445669";
 
-      const httpsUrl = `https://apps.apple.com/${region}/app/id${APPLE_ID}?l=${langParam}`;
-      const itmsUrl  = `itms-apps://apps.apple.com/${region}/app/id${APPLE_ID}`;
-
-      // Detect iOS, including iPadOS "desktop site" UA
+      // Detect iOS, including iPadOS with desktop UA
       const isiOS = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
                     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-      // Apply link
-      btn.href = isiOS ? itmsUrl : httpsUrl;
+      btn.href = isiOS ? ITMS_URL : HTTPS_URL;
       if (isiOS) btn.removeAttribute('target');
 
-      // Help stubborn in-app browsers: try deep link, then fast HTTPS fallback
+      // In some in-app browsers custom schemes are blocked; force deep link then fall back fast.
       btn.addEventListener('click', () => {
         if (!isiOS) return;
-        const timer = setTimeout(() => { location.href = httpsUrl; }, 450);
-        try { location.href = itmsUrl; } catch (_) {}
+        const timer = setTimeout(() => { location.href = HTTPS_URL; }, 450);
+        try { location.href = ITMS_URL; } catch(_) {}
       }, { passive:true });
     }, 0);
-    /* <<< END ADDED >>> */
 
     // Keyboard
     document.addEventListener("keydown", (e)=>{
