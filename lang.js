@@ -324,35 +324,31 @@ function injectPrivacyAdmobSection(){
     // Store links
     const iosBtn=$("#btn-ios"), andBtn=$("#btn-android");
     if(iosBtn&&andBtn){
-      const isIOS=/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent);
-      iosBtn.style.order=isIOS?0:1; andBtn.style.order=isIOS?1:0;
-      // CHANGED: real App Store URL for your app (no more placeholder)
-      iosBtn.href="https://apps.apple.com/es/app/neon-swipe/id6751445669?l=en-GB";
+      // order badges for iOS users
+      const isIOSForOrder=/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent);
+      iosBtn.style.order=isIOSForOrder?0:1; 
+      andBtn.style.order=isIOSForOrder?1:0;
+
+      // REAL App Store URL (no placeholder)
+      const HTTPS_URL = "https://apps.apple.com/app/id6751445669";
+      iosBtn.href = HTTPS_URL;
+
+      // Deep-link to App Store app on iOS (incl. iPadOS desktop UA), with HTTPS fallback
+      const isiOS = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+                    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      if (isiOS){
+        const ITMS_URL = "itms-apps://apps.apple.com/app/id6751445669";
+        iosBtn.href = ITMS_URL;
+        iosBtn.removeAttribute("target");
+        iosBtn.addEventListener("click", () => {
+          const timer = setTimeout(()=>{ location.href = HTTPS_URL; }, 450);
+          try { location.href = ITMS_URL; } catch(_) {}
+        }, { passive:true });
+      }
+
+      // Android link (leave as-is if you don't have a package yet)
       andBtn.href="https://play.google.com/store/apps/details?id=your.package";
     }
-
-    /* Deep-link to the App Store app on iOS; keep HTTPS for others.
-       Runs after everything else so it always wins. */
-    setTimeout(() => {
-      const btn = document.getElementById('btn-ios'); if (!btn) return;
-
-      const HTTPS_URL = "https://apps.apple.com/es/app/neon-swipe/id6751445669?l=en-GB";
-      const ITMS_URL  = "itms-apps://apps.apple.com/es/app/id6751445669";
-
-      // Detect iOS, including iPadOS with desktop UA
-      const isiOS = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
-                    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
-      btn.href = isiOS ? ITMS_URL : HTTPS_URL;
-      if (isiOS) btn.removeAttribute('target');
-
-      // In some in-app browsers custom schemes are blocked; force deep link then fall back fast.
-      btn.addEventListener('click', () => {
-        if (!isiOS) return;
-        const timer = setTimeout(() => { location.href = HTTPS_URL; }, 450);
-        try { location.href = ITMS_URL; } catch(_) {}
-      }, { passive:true });
-    }, 0);
 
     // Keyboard
     document.addEventListener("keydown", (e)=>{
